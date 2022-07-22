@@ -1,0 +1,109 @@
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'eclipse'
+
+def generateSourceDir = new File("${project.buildDir}/gen-src/main/java")
+
+version             = '2.1-SNAPSHOT'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+mainClassName       = "com.jramoyo.qfixmessenger.QFixMessenger"
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    xjc
+}
+
+dependencies {
+
+    xjc 'com.sun.xml.bind:jaxb-xjc:4.0.0'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
+// https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+
+    implementation 'jdom:jdom:1.1'
+    implementation 'log4j:log4j:1.2.17'
+    implementation 'org.apache.mina:mina-core:1.1.7'
+    implementation 'org.slf4j:slf4j-api:1.7.7'
+    implementation 'org.slf4j:slf4j-log4j12:1.7.7'
+    testImplementation 'junit:junit:4.11'
+    testImplementation 'org.hamcrest:hamcrest-core:1.3'
+
+    implementation     fileTree(dir: 'lib/compile', include: '*.jar')
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir generateSourceDir
+        }
+    }
+}
+
+task createDirs () {
+    generateSourceDir.mkdirs();
+}
+
+task xjc(dependsOn: createDirs) {
+    ant.taskdef(
+        name:      'xjc',
+        classname: 'com.sun.tools.xjc.XJCTask',
+        classpath: configurations.xjc.asPath
+    )
+
+    ant.xjc(
+        destdir:   generateSourceDir,
+        extension: true,
+        readonly:  true,
+    ) {
+        schema(
+            dir: 'src/main/xsd',
+            includes: '*.xsd'
+        )
+    }
+}
+
+task generateSource (dependsOn: xjc) {
+}
+
+clean.doLast {
+    ant.delete(dir: 'log')
+    ant.delete(dir: 'data')
+}
+
+cleanEclipse.doLast {
+    ant.delete(dir: 'bin')
+}
+
+compileJava.dependsOn generateSource
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'QuickFIX Messenger', 'Implementation-Version': version
+    }
+}
+
+applicationDistribution.from('src/main/cfg') {
+    into 'cfg'
+}
+
+applicationDistribution.from('src/main/cfg/log4j.properties') {
+    into 'lib/log4j'
+}
+
+applicationDistribution.from('src/main/dictionary') {
+    into 'lib/dictionary'
+}
+
+applicationDistribution.from('src/main/scripts') {
+    into '.'
+}
+
+startScripts{
+    classpath += files('$APP_HOME/dictionary')
+    classpath += files('$APP_HOME/log4j')
+}
+
