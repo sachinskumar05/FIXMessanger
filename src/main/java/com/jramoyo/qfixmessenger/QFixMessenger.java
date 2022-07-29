@@ -239,6 +239,7 @@ public class QFixMessenger
 		} catch (JAXBException ex)
 		{
 			logger.error("Unable to create JAXB context for com.jramoyo.fix.xml");
+			ex.printStackTrace();
 			System.exit(1);
 		}
 	}
