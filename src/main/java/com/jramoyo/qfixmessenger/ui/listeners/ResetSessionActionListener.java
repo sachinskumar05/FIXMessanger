@@ -66,20 +66,12 @@ public class ResetSessionActionListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		try
+		int choice = JOptionPane.showConfirmDialog(frame,
+				"Are you sure you want to reset the sequence numbers?",
+				"Confirm", JOptionPane.YES_NO_OPTION);
+		if (choice == JOptionPane.YES_OPTION)
 		{
-			int choice = JOptionPane.showConfirmDialog(frame,
-					"Are you sure you want to reset the sequence numbers?",
-					"Confirm", JOptionPane.YES_NO_OPTION);
-			if (choice == JOptionPane.YES_OPTION)
-			{
-				session.reset();
-			}
-		} catch (IOException ex)
-		{
-			logger.error("An IOException occurred!", ex);
-			JOptionPane.showMessageDialog(frame, "An exception occured: " + ex,
-					"Error", JOptionPane.ERROR_MESSAGE);
+			session.reset();
 		}
 	}
 }

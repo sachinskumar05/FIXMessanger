@@ -73,17 +73,8 @@ public class ResetAllSessionsActionListener implements ActionListener
 			for (SessionID sessionId : frame.getMessenger().getConnector()
 					.getSessions())
 			{
-				try
-				{
-					Session session = Session.lookupSession(sessionId);
-					session.reset();
-				} catch (IOException ex)
-				{
-					logger.error("An IOException occurred!", ex);
-					JOptionPane.showMessageDialog(frame,
-							"An exception occured: " + ex, "Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
+				Session session = Session.lookupSession(sessionId);
+				session.reset();
 			}
 		}
 	}
