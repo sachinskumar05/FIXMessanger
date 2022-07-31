@@ -60,6 +60,8 @@ public class QFixMessengerConfig
 	private static final String DICT_FIX43_PROP = "messenger.dict.fix43";
 	private static final String DICT_FIX44_PROP = "messenger.dict.fix44";
 	private static final String DICT_FIX50_PROP = "messenger.dict.fix50";
+	private static final String DICT_FIX50SP1_PROP = "messenger.dict.fix50SP1";
+	private static final String DICT_FIX50SP2_PROP = "messenger.dict.fix50SP2";
 	private static final String DICT_FIXT11_PROP = "messenger.dict.fixt11";
 
 	private static final String LOG_PATH = "logFilePath";
@@ -102,6 +104,15 @@ public class QFixMessengerConfig
 		return properties.getProperty(DICT_FIX50_PROP, "/FIX50.xml");
 	}
 
+	public String getFix50SP1DictionaryLocation()
+	{
+		return properties.getProperty(DICT_FIX50SP1_PROP, "/FIX50SP1.xml");
+	}
+	public String getFix50SP2DictionaryLocation()
+	{
+		return properties.getProperty(DICT_FIX50SP2_PROP, "/FIX50SP2.xml");
+	}
+
 	public String getFixDictionaryLocation(String beginString)
 	{
 		if (beginString.equals(QFixMessengerConstants.BEGIN_STRING_FIX40))
@@ -132,6 +143,14 @@ public class QFixMessengerConfig
 		else if (beginString.equals(QFixMessengerConstants.BEGIN_STRING_FIX50))
 		{
 			return getFix50DictionaryLocation();
+		}
+		else if (beginString.equals(QFixMessengerConstants.BEGIN_STRING_FIX50SP1))
+		{
+			return getFix50SP1DictionaryLocation();
+		}
+		else if (beginString.equals(QFixMessengerConstants.BEGIN_STRING_FIX50SP2))
+		{
+			return getFix50SP2DictionaryLocation();
 		}
 
 		else if (beginString.equals(QFixMessengerConstants.BEGIN_STRING_FIXT11))
