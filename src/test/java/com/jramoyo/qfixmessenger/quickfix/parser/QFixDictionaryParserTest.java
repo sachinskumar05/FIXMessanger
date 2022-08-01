@@ -32,17 +32,15 @@
  */
 package com.jramoyo.qfixmessenger.quickfix.parser;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.BlockJUnit4ClassRunner;
+import org.junit.jupiter.api.Test;
 
 import com.jramoyo.fix.model.Component;
 import com.jramoyo.fix.model.Field;
@@ -58,8 +56,9 @@ import com.jramoyo.fix.model.parser.FixParsingException;
  * JUnit test case for QFixDictionaryParser
  * 
  * @author jamoyo
+ * @author skumar
  */
-@RunWith(BlockJUnit4ClassRunner.class)
+
 public class QFixDictionaryParserTest
 {
 	private static final String INDENT = "   ";
