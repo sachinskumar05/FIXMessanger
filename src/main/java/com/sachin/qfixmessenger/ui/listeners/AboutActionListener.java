@@ -26,21 +26,18 @@ import org.slf4j.LoggerFactory;
 
 import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 
-public class AboutActionListener implements ActionListener
-{
+public class AboutActionListener implements ActionListener {
 	private static final Logger logger = LoggerFactory
 			.getLogger(AboutActionListener.class);
 
 	private FixMessengerFrame frame;
 
-	public AboutActionListener(FixMessengerFrame frame)
-	{
+	public AboutActionListener(FixMessengerFrame frame) {
 		this.frame = frame;
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e)
-	{
+	public void actionPerformed(ActionEvent e) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -50,11 +47,11 @@ public class AboutActionListener implements ActionListener
 		c.ipadx = 2;
 		c.ipady = 2;
 
-		JLabel titleLabel = new JLabel("<html><b>QuickFIX Messenger</b></html>");
-		JLabel nameLabel = new JLabel("<html><i>by Jan Amoyo</i></html>");
-		JLabel emailLabel = new JLabel("<html>sachin@gmail.com</html>");
+		JLabel titleLabel = new JLabel("<html><b>FIX Messenger</b></html>");
+		JLabel nameLabel = new JLabel("<html><i>by Sachin Kumar</i></html>");
+		JLabel emailLabel = new JLabel("<html>sachin.skumar05@gmail.com</html>");
 		JLabel webpageLabel = new JLabel(
-				"<html><a href=''>quickfix-messenger</a></html>");
+				"<html><a href=''>FIX-messenger</a></html>");
 		webpageLabel.addMouseListener(new LinkMouseAdapter(this, frame
 				.getMessenger().getConfig().getHomeUrl()));
 		webpageLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -102,42 +99,33 @@ public class AboutActionListener implements ActionListener
 				JOptionPane.PLAIN_MESSAGE);
 	}
 
-	private void goToWikiPage(String url) throws IOException
-	{
+	private void goToWikiPage(String url) throws IOException {
 		java.awt.Desktop.getDesktop().browse(java.net.URI.create(url));
 	}
 
-	private String readLicenseFile()
-	{
+	private String readLicenseFile() {
 		StringBuilder license = new StringBuilder();
 
 		BufferedReader reader = null;
-		try
-		{
+		try {
 			reader = new BufferedReader(new InputStreamReader(getClass()
 					.getResourceAsStream(
 							frame.getMessenger().getConfig()
 									.getLicenseLocation())));
 
 			String line = null;
-			while ((line = reader.readLine()) != null)
-			{
+			while ((line = reader.readLine()) != null) {
 				license.append(line).append("\n");
 			}
-		} catch (IOException ex)
-		{
+		} catch (IOException ex) {
 			logger.error("An error occured while reading license file!", ex);
 			license.append("An error occured while reading license file!\n");
 			license.append("Please refer to log file.");
-		} finally
-		{
-			if (reader != null)
-			{
-				try
-				{
+		} finally {
+			if (reader != null) {
+				try {
 					reader.close();
-				} catch (IOException ex)
-				{
+				} catch (IOException ex) {
 					logger.error("An error occured"
 							+ " while closing license file!", ex);
 				}
@@ -147,28 +135,22 @@ public class AboutActionListener implements ActionListener
 		return license.toString();
 	}
 
-	private static class LinkMouseAdapter extends MouseAdapter
-	{
+	private static class LinkMouseAdapter extends MouseAdapter {
 		private AboutActionListener listener;
 
 		private String url;
 
-		public LinkMouseAdapter(AboutActionListener listener, String url)
-		{
+		public LinkMouseAdapter(AboutActionListener listener, String url) {
 			this.listener = listener;
 			this.url = url;
 		}
 
 		@Override
-		public void mouseClicked(MouseEvent e)
-		{
-			if (e.getClickCount() == 2)
-			{
-				try
-				{
+		public void mouseClicked(MouseEvent e) {
+			if (e.getClickCount() == 2) {
+				try {
 					listener.goToWikiPage(url);
-				} catch (IOException ex)
-				{
+				} catch (IOException ex) {
 					logger.error("An exception occured!", ex);
 					JOptionPane.showMessageDialog(
 							listener.frame,

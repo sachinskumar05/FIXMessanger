@@ -1,8 +1,8 @@
 package com.sachin.qfixmessenger.ui.panels;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.agrona.collections.Object2ObjectHashMap;
 
 import com.sachin.fix.model.Member;
 
@@ -19,8 +19,8 @@ public class MemberPanelCache
 
 	public MemberPanelCache()
 	{
-		cache = new HashMap<Member, MemberPanel<?, ?, ?>>();
-		groupCache = new HashMap<GroupMemberKey, MemberPanel<?, ?, ?>>();
+		cache = new Object2ObjectHashMap<>();
+		groupCache = new Object2ObjectHashMap<>();
 	}
 
 	public void clear()

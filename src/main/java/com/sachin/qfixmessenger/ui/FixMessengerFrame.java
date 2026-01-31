@@ -18,13 +18,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.agrona.collections.Object2ObjectHashMap;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -661,7 +661,7 @@ public class FixMessengerFrame extends JFrame {
 		// Messages Panel
 		messagesList = new JList<Message>();
 
-		recentMessagesMap = new HashMap<>();
+		recentMessagesMap = new Object2ObjectHashMap<>();
 		recentMessagesListModel = new DefaultListModel<Message>();
 		recentMessagesList = new JList<Message>(recentMessagesListModel);
 
@@ -919,7 +919,7 @@ public class FixMessengerFrame extends JFrame {
 		sessionsList = new JList<Session>();
 
 		List<SessionID> sessionIds = messenger.getConnector().getSessions();
-		List<Session> sessions = new ArrayList<Session>(sessionIds.size());
+		List<Session> sessions = new ArrayList<>();
 		for (SessionID sessionId : sessionIds) {
 			Session session = Session.lookupSession(sessionId);
 			session.addStateListener(new SessionsListSessionStateListener(
@@ -999,7 +999,7 @@ public class FixMessengerFrame extends JFrame {
 
 	private void loadMessagesList() {
 		if (activeDictionary != null) {
-			List<Message> messages = new ArrayList<Message>();
+			List<Message> messages = new ArrayList<>();
 			messages.addAll(activeDictionary.getMessages().values());
 			Collections.sort(messages);
 
@@ -1942,6 +1942,7 @@ public class FixMessengerFrame extends JFrame {
 	}
 
 }
+
 
 
 

@@ -8,8 +8,8 @@ import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -38,8 +38,8 @@ public class FieldPanel extends
 		AbstractMemberPanel<Field, StringField, com.sachin.fix.xml.FieldType>
 {
 	
-	 @java.io.Serial
-	 private static final long serialVersionUID = -8397965355420860765L;
+	@java.io.Serial
+	private static final long serialVersionUID = -8397965355420860765L;
 	private static final FieldValue EMPTY_FIELD_VALUE = new FieldValue("", "");
 
 	private final boolean isRequired;
@@ -172,7 +172,7 @@ public class FieldPanel extends
 		if (getMember().getValues() != null
 				&& !getMember().getValues().isEmpty())
 		{
-			List<FieldValue> fieldValues = new ArrayList<FieldValue>();
+			List<FieldValue> fieldValues = new ArrayList<>();
 			fieldValues.add(EMPTY_FIELD_VALUE);
 			fieldValues.addAll(getMember().getValues());
 
@@ -299,6 +299,7 @@ public class FieldPanel extends
 		}
 	}
 }
+
 
 
 

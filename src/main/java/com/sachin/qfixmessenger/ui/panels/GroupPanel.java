@@ -43,8 +43,8 @@ public class GroupPanel extends
 		AbstractMemberPanel<Group, List<quickfix.Group>, GroupsType>
 {
 	
-	 @java.io.Serial
-	 private static final long serialVersionUID = -1327365939623841550L;
+	@java.io.Serial
+	private static final long serialVersionUID = -1327365939623841550L;
 	private final boolean isRequired;
 
 	private final boolean isRequiredOnly;
@@ -71,7 +71,7 @@ public class GroupPanel extends
 		this.isRequiredOnly = isRequiredOnly;
 		this.initialNoOfGroups = initialNoOfGroups;
 
-		this.groups = new ArrayList<List<MemberPanel<?, ?, ?>>>();
+		this.groups = new ArrayList<>();
 
 		initComponents();
 	}
@@ -97,7 +97,7 @@ public class GroupPanel extends
 
 	public List<quickfix.Group> getQuickFixMember()
 	{
-		List<quickfix.Group> qfixGroups = new ArrayList<quickfix.Group>();
+		List<quickfix.Group> qfixGroups = new ArrayList<>();
 
 		for (List<MemberPanel<?, ?, ?>> groupMembers : groups)
 		{
@@ -364,7 +364,7 @@ public class GroupPanel extends
 		{
 			for (int i = 0; i < initialNoOfGroups; i++)
 			{
-				List<MemberPanel<?, ?, ?>> groupMembers = new ArrayList<MemberPanel<?, ?, ?>>();
+				List<MemberPanel<?, ?, ?>> groupMembers = new ArrayList<>();
 
 				JPanel groupPanel = new JPanel();
 				groupPanel.setLayout(new GridBagLayout());
@@ -481,6 +481,7 @@ public class GroupPanel extends
 		}
 	}
 }
+
 
 
 

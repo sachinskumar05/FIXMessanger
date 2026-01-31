@@ -2,8 +2,8 @@ package com.sachin.qfixmessenger.ui.panels;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -41,8 +41,8 @@ public class MessagePanel extends JPanel implements
 		MemberPanel<Message, quickfix.Message, MessageType>
 {
 	
-	 @java.io.Serial
-	 private static final long serialVersionUID = 7937359075224178112L;
+	@java.io.Serial
+	private static final long serialVersionUID = 7937359075224178112L;
 	private final FixMessengerFrame frame;
 
 	private final Session session;
@@ -83,9 +83,9 @@ public class MessagePanel extends JPanel implements
 		this.isModifyTrailer = builder.isModifyTrailer;
 		this.isFixTSession = builder.isFixTSession;
 
-		this.headerMembers = new ArrayList<MemberPanel<?, ?, ?>>();
-		this.bodyMembers = new ArrayList<MemberPanel<?, ?, ?>>();
-		this.trailerMembers = new ArrayList<MemberPanel<?, ?, ?>>();
+		this.headerMembers = new ArrayList<>();
+		this.bodyMembers = new ArrayList<>();
+		this.trailerMembers = new ArrayList<>();
 
 		this.dictionary = builder.dictionary;
 		this.fixTDictionary = builder.fixTDictionary;
@@ -715,6 +715,7 @@ public class MessagePanel extends JPanel implements
 		}
 	}
 }
+
 
 
 

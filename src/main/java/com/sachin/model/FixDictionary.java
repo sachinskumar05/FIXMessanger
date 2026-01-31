@@ -1,8 +1,8 @@
 package com.sachin.fix.model;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.Collections;
+import java.util.Map;
+import org.agrona.collections.Object2ObjectHashMap;
 
 /**
  * Represents a dictionary of a FIX version
@@ -15,9 +15,9 @@ public final class FixDictionary
 	private final String minorVersion;
 	private final String type;
 
-	private final ConcurrentMap<String, Component> components;
-	private final ConcurrentMap<String, Field> fields;
-	private final ConcurrentMap<String, Message> messages;
+	private final Map<String, Component> components;
+	private final Map<String, Field> fields;
+	private final Map<String, Message> messages;
 
 	private Header header;
 	private Trailer trailer;
@@ -28,9 +28,9 @@ public final class FixDictionary
 		this.majorVersion = majorVersion;
 		this.minorVersion = minorVersion;
 
-		this.fields = new ConcurrentHashMap<>();
-		this.components = new ConcurrentHashMap<>();
-		this.messages = new ConcurrentSkipListMap<>();
+		this.fields = Collections.synchronizedMap(new Object2ObjectHashMap<>());
+		this.components = Collections.synchronizedMap(new Object2ObjectHashMap<>());
+		this.messages = Collections.synchronizedMap(new Object2ObjectHashMap<>());
 	}
 
 	public FixDictionary(String type, String majorVersion, String minorVersion)
@@ -39,17 +39,17 @@ public final class FixDictionary
 		this.majorVersion = majorVersion;
 		this.minorVersion = minorVersion;
 
-		this.fields = new ConcurrentHashMap<>();
-		this.components = new ConcurrentHashMap<>();
-		this.messages = new ConcurrentHashMap<>();
+		this.fields = Collections.synchronizedMap(new Object2ObjectHashMap<>());
+		this.components = Collections.synchronizedMap(new Object2ObjectHashMap<>());
+		this.messages = Collections.synchronizedMap(new Object2ObjectHashMap<>());
 	}
 
-	public ConcurrentMap<String, Component> getComponents()
+	public Map<String, Component> getComponents()
 	{
 		return components;
 	}
 
-	public ConcurrentMap<String, Field> getFields()
+	public Map<String, Field> getFields()
 	{
 		return fields;
 	}
@@ -64,7 +64,7 @@ public final class FixDictionary
 		return majorVersion;
 	}
 
-	public ConcurrentMap<String, Message> getMessages()
+	public Map<String, Message> getMessages()
 	{
 		return messages;
 	}

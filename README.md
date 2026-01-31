@@ -43,7 +43,7 @@ After building, the application scripts are generated in the `build/install/FIXM
 
 ## Architecture
 
-The project is structured around the `com.sachin` package (refactored from `com.jramoyo`).
+The project is structured around the `com.sachin` package.
 *   **Core**: `com.sachin.qfixmessenger.QFixMessenger` is the main entry point.
 *   **UI**: Swing components in `com.sachin.qfixmessenger.ui`.
 *   **FIX Engine**: Wraps QuickFIX/J `SocketInitiator` and `SocketAcceptor`.
@@ -52,4 +52,4 @@ The project is structured around the `com.sachin` package (refactored from `com.
 For more details, see [ARCHITECTURE.md](ARCHITECTURE.md).
 
 ## Author
-Original code copyright Jan Amoyo. Refactored and maintained by Sachin.
+Sachin Kumar

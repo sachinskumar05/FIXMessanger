@@ -1,7 +1,7 @@
 package com.sachin.fix.model;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,7 +16,7 @@ public record Field(int number, String name, FieldType type,
 	{
 		if (values != null)
 		{
-			values = Collections.unmodifiableList(new ArrayList<FieldValue>(
+			values = Collections.unmodifiableList(new ArrayList<>(
 					values));
 		}
 	}
@@ -54,3 +54,4 @@ public record Field(int number, String name, FieldType type,
 				.append(" [").append(type.name()).append("]").toString();
 	}
 }
+

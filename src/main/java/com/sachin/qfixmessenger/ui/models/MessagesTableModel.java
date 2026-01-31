@@ -1,7 +1,7 @@
 package com.sachin.qfixmessenger.ui.models;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -30,9 +30,9 @@ public class MessagesTableModel extends AbstractTableModel implements
 			.getLogger(MessagesTableModel.class);
 
 	
-	 @java.io.Serial
-	 private static final long serialVersionUID = 3045456639720725016L;
-	private final List<MessagesTableModelData> tableData = new ArrayList<MessagesTableModelData>();
+	@java.io.Serial
+	private static final long serialVersionUID = 3045456639720725016L;
+	private final List<MessagesTableModelData> tableData = new ArrayList<>();
 
 	/**
 	 * Adds a message to the table
@@ -128,6 +128,7 @@ public class MessagesTableModel extends AbstractTableModel implements
 		}
 	}
 }
+
 
 
 

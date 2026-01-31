@@ -5,9 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.Thread.UncaughtExceptionHandler;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -435,3 +435,4 @@ public class FixMessenger {
 		return new StringField(xmlFieldType.getId(), xmlFieldType.getValue());
 	}
 }
+
