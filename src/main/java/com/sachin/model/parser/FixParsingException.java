@@ -7,6 +7,7 @@ package com.sachin.fix.model.parser;
  */
 public class FixParsingException extends Exception
 {
+	@java.io.Serial
 	private static final long serialVersionUID = -1530572421465962040L;
 
 	public FixParsingException()

@@ -17,7 +17,8 @@ import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 public abstract class AbstractMemberPanel<M extends Member, Q, X> extends
 		JPanel implements MemberPanel<M, Q, X>
 {
-	private static final long serialVersionUID = 6904389112190383945L;
+\t@java.io.Serial
+\tprivate static final long serialVersionUID = 6904389112190383945L;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(AbstractMemberPanel.class);
@@ -81,3 +82,4 @@ public abstract class AbstractMemberPanel<M extends Member, Q, X> extends
 		}
 	}
 }
+

@@ -13,7 +13,8 @@ import com.sachin.qfixmessenger.ui.models.data.MessagesTableModelData;
 
 public class MessagesTableCellRender extends DefaultTableCellRenderer
 {
-	private static final long serialVersionUID = -5031829092122831674L;
+\t@java.io.Serial
+\tprivate static final long serialVersionUID = -5031829092122831674L;
 
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value,
@@ -40,3 +41,4 @@ public class MessagesTableCellRender extends DefaultTableCellRenderer
 		return component;
 	}
 }
+

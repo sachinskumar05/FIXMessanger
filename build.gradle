@@ -12,8 +12,14 @@ java {
     }
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.release = 25
+    options.compilerArgs += ["--enable-preview"]
+}
+
 application {
     mainClass = "com.sachin.qfixmessenger.FixMessenger"
+    applicationDefaultJvmArgs = ["--enable-preview"]
 }
 
 repositories {
@@ -95,6 +101,7 @@ compileJava.dependsOn generateSource
 
 test {
     useJUnitPlatform()
+    jvmArgs("--enable-preview")
 }
 
 jar {

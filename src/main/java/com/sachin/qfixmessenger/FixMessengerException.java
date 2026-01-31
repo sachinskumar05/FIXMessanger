@@ -7,6 +7,7 @@ package com.sachin.qfixmessenger;
  */
 public class FixMessengerException extends Exception
 {
+	@java.io.Serial
 	private static final long serialVersionUID = -3835891077672513984L;
 
 	public FixMessengerException(String message)

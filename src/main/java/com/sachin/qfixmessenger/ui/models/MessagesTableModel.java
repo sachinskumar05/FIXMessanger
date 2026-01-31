@@ -29,7 +29,8 @@ public class MessagesTableModel extends AbstractTableModel implements
 	private static final Logger logger = LoggerFactory
 			.getLogger(MessagesTableModel.class);
 
-	private static final long serialVersionUID = 3045456639720725016L;
+\t@java.io.Serial
+\tprivate static final long serialVersionUID = 3045456639720725016L;
 
 	private final List<MessagesTableModelData> tableData = new ArrayList<MessagesTableModelData>();
 
@@ -127,3 +128,4 @@ public class MessagesTableModel extends AbstractTableModel implements
 		}
 	}
 }
+

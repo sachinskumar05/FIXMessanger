@@ -71,18 +71,13 @@ public class QuickFixDictionaryParser implements FixDictionaryParser
 	@Deprecated
 	public FixDictionary parse(String fileName) throws FixParsingException
 	{
-		FixDictionary dictionary;
-		try
+		try (FileInputStream fileInputStream = new FileInputStream(fileName))
 		{
-			FileInputStream fileInputStream = new FileInputStream(fileName);
-			dictionary = parse(fileInputStream);
-
+			return parse(fileInputStream);
 		} catch (FileNotFoundException ex)
 		{
 			throw new FixParsingException("File " + fileName + " not foud!", ex);
 		}
-
-		return dictionary;
 	}
 
 	@Override
@@ -94,22 +89,22 @@ public class QuickFixDictionaryParser implements FixDictionaryParser
 		FixDictionary dictionary;
 		try
 		{
-			SAXBuilder saxBuilder = new SAXBuilder();
-			Document document = saxBuilder.build(inputStream);
+			var saxBuilder = new SAXBuilder();
+			var document = saxBuilder.build(inputStream);
 
-			Element root = document.getRootElement();
+			var root = document.getRootElement();
 
 			// Parse the dictionary (version) attributes
-			String type = root.getAttributeValue("type");
-			String majorVersion = root.getAttributeValue("major");
-			String minorVersion = root.getAttributeValue("minor");
+			var type = root.getAttributeValue("type");
+			var majorVersion = root.getAttributeValue("major");
+			var minorVersion = root.getAttributeValue("minor");
 
 			dictionary = new FixDictionary(type, majorVersion, minorVersion);
 
 			// Parse the field definitions
 			logger.debug("Parsing field definitions...");
 
-			Element fieldsElement = root.getChild("fields");
+			var fieldsElement = root.getChild("fields");
 			@SuppressWarnings("unchecked")
 			List<Element> fieldElements = fieldsElement.getChildren("field");
 			parseFields(dictionary, fieldElements);
@@ -117,7 +112,7 @@ public class QuickFixDictionaryParser implements FixDictionaryParser
 			// Parse the component definitions
 			logger.debug("Parsing component definitions...");
 
-			Element componentsElement = root.getChild("components");
+			var componentsElement = root.getChild("components");
 			if (componentsElement != null)
 			{
 				@SuppressWarnings("unchecked")
@@ -129,7 +124,7 @@ public class QuickFixDictionaryParser implements FixDictionaryParser
 			// Parse the message definitions
 			logger.debug("Parsing message definitions...");
 
-			Element messagesElement = root.getChild("messages");
+			var messagesElement = root.getChild("messages");
 			@SuppressWarnings("unchecked")
 			List<Element> messageElements = messagesElement
 					.getChildren("message");
@@ -138,13 +133,13 @@ public class QuickFixDictionaryParser implements FixDictionaryParser
 			// Parse the header definition
 			logger.debug("Parsing header definition...");
 
-			Element headerElement = root.getChild("header");
+			var headerElement = root.getChild("header");
 			parseHeader(dictionary, headerElement);
 
 			// Parse the trailer definition
 			logger.debug("Parsing trailer definition...");
 
-			Element trailerElement = root.getChild("trailer");
+			var trailerElement = root.getChild("trailer");
 			parseTrailer(dictionary, trailerElement);
 		} catch (IOException ex)
 		{
@@ -167,10 +162,10 @@ public class QuickFixDictionaryParser implements FixDictionaryParser
 	private Component parseComponent(FixDictionary dictionary,
 			Element componentElement) throws FixParsingException
 	{
-		String name = componentElement.getAttributeValue("name");
+		var name = componentElement.getAttributeValue("name");
 		logger.trace("Parsing component " + name);
 
-		Element firstTagElement = componentElement.getChild("field");
+		var firstTagElement = componentElement.getChild("field");
 		String firstTagName = null;
 		if (firstTagElement != null)
 		{
@@ -238,7 +233,7 @@ public class QuickFixDictionaryParser implements FixDictionaryParser
 		List<Element> valueElements = fieldElement.getChildren("value");
 		if (valueElements != null && !valueElements.isEmpty())
 		{
-			values = new ArrayList<FieldValue>();
+			values = new ArrayList<>();
 			for (Element valueElement : valueElements)
 			{
 				String enumValue = valueElement.getAttributeValue("enum");
@@ -265,17 +260,12 @@ public class QuickFixDictionaryParser implements FixDictionaryParser
 		final CountDownLatch latch = new CountDownLatch(fieldElements.size());
 		for (final Element fieldElement : fieldElements)
 		{
-			threadPool.execute(new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					Field field = parseField(fieldElement);
-					dictionary.getFields().put(field.getName(), field);
-					latch.countDown();
-					logger.trace("Completed parsing " + field
-							+ ". Remaining field tasks: " + latch.getCount());
-				}
+			threadPool.execute(() -> {
+				Field field = parseField(fieldElement);
+				dictionary.getFields().put(field.getName(), field);
+				latch.countDown();
+				logger.trace("Completed parsing " + field
+						+ ". Remaining field tasks: " + latch.getCount());
 			});
 		}
 
@@ -306,23 +296,26 @@ public class QuickFixDictionaryParser implements FixDictionaryParser
 
 		Member firstMember = null;
 		Element firstChildElement = (Element) groupElement.getChildren().get(0);
-		if (firstChildElement.getName().equals("field"))
+		switch (firstChildElement.getName())
 		{
-			String firstFieldName = firstChildElement.getAttributeValue("name");
-			if (!StringUtil.isNullOrEmpty(firstFieldName))
-			{
-				firstMember = dictionary.getFields().get(firstFieldName);
+			case "field" -> {
+				String firstFieldName = firstChildElement
+						.getAttributeValue("name");
+				if (!StringUtil.isNullOrEmpty(firstFieldName))
+				{
+					firstMember = dictionary.getFields().get(firstFieldName);
+				}
 			}
-		}
-
-		else if (firstChildElement.getName().equals("component"))
-		{
-			String firstComponentName = firstChildElement
-					.getAttributeValue("name");
-			if (!StringUtil.isNullOrEmpty(firstComponentName))
-			{
-				firstMember = dictionary.getComponents()
-						.get(firstComponentName);
+			case "component" -> {
+				String firstComponentName = firstChildElement
+						.getAttributeValue("name");
+				if (!StringUtil.isNullOrEmpty(firstComponentName))
+				{
+					firstMember = dictionary.getComponents()
+							.get(firstComponentName);
+				}
+			}
+			default -> {
 			}
 		}
 
@@ -341,67 +334,68 @@ public class QuickFixDictionaryParser implements FixDictionaryParser
 			FixDictionary dictionary, Element element)
 			throws FixParsingException
 	{
-		SortedMap<MemberOrder, Boolean> members = new TreeMap<MemberOrder, Boolean>();
+		SortedMap<MemberOrder, Boolean> members = new TreeMap<>();
 
 		@SuppressWarnings("unchecked")
 		List<Element> memberElements = element.getChildren();
 		for (int i = 0; i < memberElements.size(); i++)
 		{
 			Element memberElement = memberElements.get(i);
-			if (memberElement.getName().equals("field"))
+			switch (memberElement.getName())
 			{
-				String fieldName = memberElement.getAttributeValue("name");
-				Boolean isRequired = convertStringToBoolean(memberElement
-						.getAttributeValue("required"));
+				case "field" -> {
+					String fieldName = memberElement.getAttributeValue("name");
+					Boolean isRequired = convertStringToBoolean(memberElement
+							.getAttributeValue("required"));
 
-				Field field = dictionary.getFields().get(fieldName);
-				if (field != null)
-				{
-					members.put(new MemberOrder(i, field), isRequired);
-				} else
-				{
-					throw new FixParsingException(fieldName
-							+ " is not defined!");
-				}
-			}
-
-			else if (memberElement.getName().equals("group"))
-			{
-				Boolean isRequired = convertStringToBoolean(memberElement
-						.getAttributeValue("required"));
-				members.put(
-						new MemberOrder(i,
-								parseGroup(dictionary, memberElement)),
-						isRequired);
-			}
-
-			else if (memberElement.getName().equals("component"))
-			{
-				String componentName = memberElement.getAttributeValue("name");
-				Boolean isRequired = convertStringToBoolean(memberElement
-						.getAttributeValue("required"));
-
-				Component component = dictionary.getComponents().get(
-						componentName);
-				if (component == null)
-				{
-					// TODO Improve
-					Element root = element.getDocument().getRootElement();
-					@SuppressWarnings("unchecked")
-					List<Element> componentElements = root.getChild(
-							"components").getChildren("component");
-					for (Element componentElement : componentElements)
+					Field field = dictionary.getFields().get(fieldName);
+					if (field != null)
 					{
-						String componentElementName = componentElement
-								.getAttributeValue("name");
-						if (componentElementName.equals(componentName))
-						{
-							component = parseComponent(dictionary,
-									componentElement);
-						}
+						members.put(new MemberOrder(i, field), isRequired);
+					} else
+					{
+						throw new FixParsingException(fieldName
+								+ " is not defined!");
 					}
 				}
-				members.put(new MemberOrder(i, component), isRequired);
+				case "group" -> {
+					Boolean isRequired = convertStringToBoolean(memberElement
+							.getAttributeValue("required"));
+					members.put(
+							new MemberOrder(i,
+									parseGroup(dictionary, memberElement)),
+							isRequired);
+				}
+				case "component" -> {
+					String componentName = memberElement
+							.getAttributeValue("name");
+					Boolean isRequired = convertStringToBoolean(memberElement
+							.getAttributeValue("required"));
+
+					Component component = dictionary.getComponents().get(
+							componentName);
+					if (component == null)
+					{
+						// TODO Improve
+						Element root = element.getDocument().getRootElement();
+						@SuppressWarnings("unchecked")
+						List<Element> componentElements = root.getChild(
+								"components").getChildren("component");
+						for (Element componentElement : componentElements)
+						{
+							String componentElementName = componentElement
+									.getAttributeValue("name");
+							if (componentElementName.equals(componentName))
+							{
+								component = parseComponent(dictionary,
+										componentElement);
+							}
+						}
+					}
+					members.put(new MemberOrder(i, component), isRequired);
+				}
+				default -> {
+				}
 			}
 		}
 
@@ -433,23 +427,18 @@ public class QuickFixDictionaryParser implements FixDictionaryParser
 		long startTime = System.nanoTime();
 
 		final CountDownLatch latch = new CountDownLatch(messageElements.size());
-		List<Future<Void>> results = new ArrayList<Future<Void>>();
+		List<Future<Void>> results = new ArrayList<>();
 		for (final Element messageElement : messageElements)
 		{
-			Future<Void> result = threadPool.submit(new Callable<Void>()
-			{
-				@Override
-				public Void call() throws Exception
-				{
-					Message message = parseMessage(dictionary, messageElement);
-					dictionary.getMessages().put(message.getName(), message);
-					latch.countDown();
+			Future<Void> result = threadPool.submit(() -> {
+				Message message = parseMessage(dictionary, messageElement);
+				dictionary.getMessages().put(message.getName(), message);
+				latch.countDown();
 
-					logger.trace("Completed parsing " + message
-							+ ". Remaining message tasks: " + latch.getCount());
+				logger.trace("Completed parsing " + message
+						+ ". Remaining message tasks: " + latch.getCount());
 
-					return null;
-				}
+				return null;
 			});
 			results.add(result);
 		}
@@ -493,16 +482,10 @@ public class QuickFixDictionaryParser implements FixDictionaryParser
 
 	private Boolean convertStringToBoolean(String string)
 	{
-		if (string == null)
-			return Boolean.FALSE;
-
-		if (string.equalsIgnoreCase("Y"))
-			return Boolean.TRUE;
-		else
-			return Boolean.FALSE;
+		return "Y".equalsIgnoreCase(string);
 	}
 
-	private static class ParserThreadFactory implements ThreadFactory
+	private static final class ParserThreadFactory implements ThreadFactory
 	{
 		@Override
 		public Thread newThread(Runnable r)

@@ -28,9 +28,9 @@ public final class FixDictionary
 		this.majorVersion = majorVersion;
 		this.minorVersion = minorVersion;
 
-		this.fields = new ConcurrentHashMap<String, Field>();
-		this.components = new ConcurrentHashMap<String, Component>();
-		this.messages = new ConcurrentSkipListMap<String, Message>();
+		this.fields = new ConcurrentHashMap<>();
+		this.components = new ConcurrentHashMap<>();
+		this.messages = new ConcurrentSkipListMap<>();
 	}
 
 	public FixDictionary(String type, String majorVersion, String minorVersion)
@@ -39,9 +39,9 @@ public final class FixDictionary
 		this.majorVersion = majorVersion;
 		this.minorVersion = minorVersion;
 
-		this.fields = new ConcurrentHashMap<String, Field>();
-		this.components = new ConcurrentHashMap<String, Component>();
-		this.messages = new ConcurrentHashMap<String, Message>();
+		this.fields = new ConcurrentHashMap<>();
+		this.components = new ConcurrentHashMap<>();
+		this.messages = new ConcurrentHashMap<>();
 	}
 
 	public ConcurrentMap<String, Component> getComponents()
@@ -56,8 +56,7 @@ public final class FixDictionary
 
 	public String getFullVersion()
 	{
-		return new StringBuilder(majorVersion).append('.').append(minorVersion)
-				.toString();
+		return "%s.%s".formatted(majorVersion, minorVersion);
 	}
 
 	public String getMajorVersion()

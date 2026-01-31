@@ -40,7 +40,8 @@ import com.sachin.qfixmessenger.ui.util.TitledBorderUtil;
 public class MessagePanel extends JPanel implements
 		MemberPanel<Message, quickfix.Message, MessageType>
 {
-	private static final long serialVersionUID = 7937359075224178112L;
+\t@java.io.Serial
+\tprivate static final long serialVersionUID = 7937359075224178112L;
 
 	private final FixMessengerFrame frame;
 
@@ -714,3 +715,4 @@ public class MessagePanel extends JPanel implements
 		}
 	}
 }
+

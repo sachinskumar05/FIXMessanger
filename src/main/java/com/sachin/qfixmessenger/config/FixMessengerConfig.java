@@ -39,7 +39,10 @@ public class FixMessengerConfig
 	public FixMessengerConfig(String configFileName) throws IOException
 	{
 		properties = new Properties();
-		properties.load(new FileInputStream(configFileName));
+		try (FileInputStream inputStream = new FileInputStream(configFileName))
+		{
+			properties.load(inputStream);
+		}
 	}
 
 	public String getFix40DictionaryLocation()
@@ -83,50 +86,28 @@ public class FixMessengerConfig
 
 	public String getFixDictionaryLocation(String beginString)
 	{
-		if (beginString.equals(FixMessengerConstants.BEGIN_STRING_FIX40))
+		return switch (beginString)
 		{
-			return getFix40DictionaryLocation();
-		}
-
-		else if (beginString.equals(FixMessengerConstants.BEGIN_STRING_FIX41))
-		{
-			return getFix41DictionaryLocation();
-		}
-
-		else if (beginString.equals(FixMessengerConstants.BEGIN_STRING_FIX42))
-		{
-			return getFix42DictionaryLocation();
-		}
-
-		else if (beginString.equals(FixMessengerConstants.BEGIN_STRING_FIX43))
-		{
-			return getFix43DictionaryLocation();
-		}
-
-		else if (beginString.equals(FixMessengerConstants.BEGIN_STRING_FIX44))
-		{
-			return getFix44DictionaryLocation();
-		}
-
-		else if (beginString.equals(FixMessengerConstants.BEGIN_STRING_FIX50))
-		{
-			return getFix50DictionaryLocation();
-		}
-		else if (beginString.equals(FixMessengerConstants.BEGIN_STRING_FIX50SP1))
-		{
-			return getFix50SP1DictionaryLocation();
-		}
-		else if (beginString.equals(FixMessengerConstants.BEGIN_STRING_FIX50SP2))
-		{
-			return getFix50SP2DictionaryLocation();
-		}
-
-		else if (beginString.equals(FixMessengerConstants.BEGIN_STRING_FIXT11))
-		{
-			return getFixT11DictionaryLocation();
-		}
-
-		return "";
+			case FixMessengerConstants.BEGIN_STRING_FIX40 ->
+				getFix40DictionaryLocation();
+			case FixMessengerConstants.BEGIN_STRING_FIX41 ->
+				getFix41DictionaryLocation();
+			case FixMessengerConstants.BEGIN_STRING_FIX42 ->
+				getFix42DictionaryLocation();
+			case FixMessengerConstants.BEGIN_STRING_FIX43 ->
+				getFix43DictionaryLocation();
+			case FixMessengerConstants.BEGIN_STRING_FIX44 ->
+				getFix44DictionaryLocation();
+			case FixMessengerConstants.BEGIN_STRING_FIX50 ->
+				getFix50DictionaryLocation();
+			case FixMessengerConstants.BEGIN_STRING_FIX50SP1 ->
+				getFix50SP1DictionaryLocation();
+			case FixMessengerConstants.BEGIN_STRING_FIX50SP2 ->
+				getFix50SP2DictionaryLocation();
+			case FixMessengerConstants.BEGIN_STRING_FIXT11 ->
+				getFixT11DictionaryLocation();
+			default -> "";
+		};
 	}
 
 	public String getFixT11DictionaryLocation()
@@ -136,9 +117,8 @@ public class FixMessengerConfig
 
 	public boolean isInitiator()
 	{
-		return Boolean.valueOf(
-				properties.getProperty(IS_INITIATOR_PROP, "true"))
-				.booleanValue();
+		return Boolean.parseBoolean(properties.getProperty(IS_INITIATOR_PROP,
+				"true"));
 	}
 
 	public String getIconsLocation()

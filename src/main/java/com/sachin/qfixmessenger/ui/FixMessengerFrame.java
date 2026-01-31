@@ -116,7 +116,8 @@ import com.sachin.qfixmessenger.ui.util.IconBuilder;
  * 
  */
 public class FixMessengerFrame extends JFrame {
-	private static final long serialVersionUID = 7906369617506618477L;
+\t@java.io.Serial
+\tprivate static final long serialVersionUID = 7906369617506618477L;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(FixMessengerFrame.class);
@@ -1941,3 +1942,4 @@ public class FixMessengerFrame extends JFrame {
 	}
 
 }
+

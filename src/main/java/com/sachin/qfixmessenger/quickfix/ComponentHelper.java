@@ -1,5 +1,6 @@
 package com.sachin.qfixmessenger.quickfix;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,24 +14,22 @@ import quickfix.StringField;
  * 
 
  */
-public class ComponentHelper
+public record ComponentHelper(List<StringField> fields,
+		List<quickfix.Group> groups)
 {
-	private final List<StringField> fields;
-	private final List<quickfix.Group> groups;
-
-	public ComponentHelper(List<StringField> fields, List<quickfix.Group> groups)
+	public ComponentHelper
 	{
-		this.fields = fields;
-		this.groups = groups;
+		fields = Collections.unmodifiableList(new ArrayList<>(fields));
+		groups = Collections.unmodifiableList(new ArrayList<>(groups));
 	}
 
 	public List<StringField> getFields()
 	{
-		return Collections.unmodifiableList(fields);
+		return fields;
 	}
 
 	public List<quickfix.Group> getGroups()
 	{
-		return Collections.unmodifiableList(groups);
+		return groups;
 	}
 }

@@ -10,28 +10,18 @@ import java.util.TreeMap;
  * 
 
  */
-public final class Message extends AbstractMember
+public record Message(String name, String msgType, MessageCategory category,
+		SortedMap<MemberOrder, Boolean> members) implements Member
 {
-	private final String name;
-	private final String msgType;
-	private final MessageCategory category;
-	private final SortedMap<MemberOrder, Boolean> members;
-
-	public Message(String name, String msgType, MessageCategory category,
-			Map<MemberOrder, Boolean> members)
+	public Message
 	{
-		this.name = name;
-		this.msgType = msgType;
-		this.category = category;
-		this.members = new TreeMap<MemberOrder, Boolean>(members);
+		members = Collections.unmodifiableSortedMap(new TreeMap<MemberOrder, Boolean>(
+				members));
 	}
 
 	public Message(Message message)
 	{
-		this.name = message.name;
-		this.msgType = message.msgType;
-		this.category = message.category;
-		this.members = new TreeMap<MemberOrder, Boolean>(message.members);
+		this(message.name, message.msgType, message.category, message.members);
 	}
 
 	@Override
@@ -47,7 +37,7 @@ public final class Message extends AbstractMember
 
 	public Map<MemberOrder, Boolean> getMembers()
 	{
-		return Collections.unmodifiableMap(members);
+		return members;
 	}
 
 	public MessageCategory getCategory()
@@ -70,55 +60,5 @@ public final class Message extends AbstractMember
 	{
 		return new StringBuilder(name).append(" (").append(msgType).append(")")
 				.toString();
-	}
-
-	@Override
-	public int hashCode()
-	{
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((category == null) ? 0 : category.hashCode());
-		result = prime * result + ((members == null) ? 0 : members.hashCode());
-		result = prime * result + ((msgType == null) ? 0 : msgType.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Message other = (Message) obj;
-		if (category == null)
-		{
-			if (other.category != null)
-				return false;
-		} else if (!category.equals(other.category))
-			return false;
-		if (members == null)
-		{
-			if (other.members != null)
-				return false;
-		} else if (!members.equals(other.members))
-			return false;
-		if (msgType == null)
-		{
-			if (other.msgType != null)
-				return false;
-		} else if (!msgType.equals(other.msgType))
-			return false;
-		if (name == null)
-		{
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		return true;
 	}
 }

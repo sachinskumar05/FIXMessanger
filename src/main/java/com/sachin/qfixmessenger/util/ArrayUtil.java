@@ -5,93 +5,49 @@ package com.sachin.qfixmessenger.util;
  * 
 
  */
-public class ArrayUtil
+public final class ArrayUtil
 {
+	private ArrayUtil()
+	{
+	}
+
 	public static boolean isNullOrEmpty(byte[] array)
 	{
-		if (array == null || array.length <= 0)
-		{
-			return true;
-		} else
-		{
-			return false;
-		}
+		return array == null || array.length == 0;
 	}
 
 	public static boolean isNullOrEmpty(char[] array)
 	{
-		if (array == null || array.length <= 0)
-		{
-			return true;
-		} else
-		{
-			return false;
-		}
+		return array == null || array.length == 0;
 	}
 
 	public static boolean isNullOrEmpty(int[] array)
 	{
-		if (array == null || array.length <= 0)
-		{
-			return true;
-		} else
-		{
-			return false;
-		}
+		return array == null || array.length == 0;
 	}
 
 	public static boolean isNullOrEmpty(short[] array)
 	{
-		if (array == null || array.length <= 0)
-		{
-			return true;
-		} else
-		{
-			return false;
-		}
+		return array == null || array.length == 0;
 	}
 
 	public static boolean isNullOrEmpty(long[] array)
 	{
-		if (array == null || array.length <= 0)
-		{
-			return true;
-		} else
-		{
-			return false;
-		}
+		return array == null || array.length == 0;
 	}
 
 	public static boolean isNullOrEmpty(float[] array)
 	{
-		if (array == null || array.length <= 0)
-		{
-			return true;
-		} else
-		{
-			return false;
-		}
+		return array == null || array.length == 0;
 	}
 
 	public static boolean isNullOrEmpty(double[] array)
 	{
-		if (array == null || array.length <= 0)
-		{
-			return true;
-		} else
-		{
-			return false;
-		}
+		return array == null || array.length == 0;
 	}
 
 	public static boolean isNullOrEmpty(Object[] array)
 	{
-		if (array == null || array.length <= 0)
-		{
-			return true;
-		} else
-		{
-			return false;
-		}
+		return array == null || array.length == 0;
 	}
 }

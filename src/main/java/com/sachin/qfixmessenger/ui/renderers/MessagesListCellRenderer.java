@@ -12,7 +12,8 @@ import com.sachin.fix.model.MessageCategory;
 
 public class MessagesListCellRenderer extends DefaultListCellRenderer
 {
-	private static final long serialVersionUID = -8761695467958549991L;
+\t@java.io.Serial
+\tprivate static final long serialVersionUID = -8761695467958549991L;
 
 	@Override
 	public Component getListCellRendererComponent(JList<?> list, Object value,
@@ -46,3 +47,4 @@ public class MessagesListCellRenderer extends DefaultListCellRenderer
 		return label;
 	}
 }
+

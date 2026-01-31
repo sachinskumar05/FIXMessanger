@@ -63,11 +63,11 @@ public enum FieldType
 
 	COUNTRY;
 
-	private Class<?> javaClass;
+	private final Class<?> javaClass;
 
 	private FieldType()
 	{
-		this.javaClass = String.class;
+		this(String.class);
 	}
 
 	private FieldType(Class<?> javaClass)

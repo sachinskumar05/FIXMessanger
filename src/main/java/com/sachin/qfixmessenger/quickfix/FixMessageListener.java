@@ -8,6 +8,7 @@ import quickfix.SessionID;
  * 
 
  */
+@FunctionalInterface
 public interface FixMessageListener
 {
 	public static final String SENT = "Sent";

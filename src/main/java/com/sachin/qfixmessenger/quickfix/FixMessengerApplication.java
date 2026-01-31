@@ -39,7 +39,7 @@ public class FixMessengerApplication implements Application
 
 	private final SessionSettings sessionSettings;
 
-	private final List<FixMessageListener> messageListeners = new ArrayList<FixMessageListener>();
+	private final List<FixMessageListener> messageListeners = new ArrayList<>();
 
 	public FixMessengerApplication(SessionSettings sessionSettings)
 	{
@@ -65,7 +65,7 @@ public class FixMessengerApplication implements Application
 		MsgType msgType = (MsgType) message.getHeader().getField(new MsgType());
 		if (msgType.getValue().equals("3"))
 		{
-			for (FixMessageListener messageListener : messageListeners)
+			for (var messageListener : messageListeners)
 			{
 				messageListener.onMessage(FixMessageListener.RECV, message,
 						sessionId);
@@ -78,7 +78,7 @@ public class FixMessengerApplication implements Application
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue,
 			UnsupportedMessageType
 	{
-		for (FixMessageListener messageListener : messageListeners)
+		for (var messageListener : messageListeners)
 		{
 			messageListener.onMessage(FixMessageListener.RECV, message,
 					sessionId);
@@ -185,7 +185,7 @@ public class FixMessengerApplication implements Application
 	@Override
 	public void toApp(Message message, SessionID sessionId) throws DoNotSend
 	{
-		for (FixMessageListener messageListener : messageListeners)
+		for (var messageListener : messageListeners)
 		{
 			messageListener.onMessage(FixMessageListener.SENT, message,
 					sessionId);

@@ -32,7 +32,8 @@ import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 public class ComponentPanel extends
 		AbstractMemberPanel<Component, ComponentHelper, ComponentType>
 {
-	private static final long serialVersionUID = 1982089310942186498L;
+\t@java.io.Serial
+\tprivate static final long serialVersionUID = 1982089310942186498L;
 
 	private final boolean isRequired;
 
@@ -299,3 +300,4 @@ public class ComponentPanel extends
 		}
 	}
 }
+

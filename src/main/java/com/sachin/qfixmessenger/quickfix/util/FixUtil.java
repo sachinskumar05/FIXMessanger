@@ -7,8 +7,12 @@ import quickfix.SessionID;
  * 
 
  */
-public class FixUtil
+public final class FixUtil
 {
+	private FixUtil()
+	{
+	}
+
 	/**
 	 * Returns the preferred session name format from a QuickFIX SessionID
 	 * instance
@@ -19,8 +23,7 @@ public class FixUtil
 	 */
 	public static String getSessionName(SessionID sessionId)
 	{
-		return new StringBuilder(sessionId.getBeginString()).append(':')
-				.append(sessionId.getSenderCompID()).append(">").append(
-						sessionId.getTargetCompID()).toString();
+		return "%s:%s>%s".formatted(sessionId.getBeginString(),
+				sessionId.getSenderCompID(), sessionId.getTargetCompID());
 	}
 }

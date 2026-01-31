@@ -80,52 +80,42 @@ public class FixMessenger {
 			}
 		});
 
-		if (args.length == 2) {
-			InputStream inputStream = null;
-			String configFileName = args[0];
-			try {
-				inputStream = new FileInputStream(args[1]);
-			} catch (FileNotFoundException ex) {
-				logger.error("File not found: " + args[1]);
-				logger.error("Quitting...");
-				System.err.println("File not found: " + args[1]);
-				System.err.println("Quitting...");
-				System.exit(0);
-			}
-
-			if (inputStream != null) {
-				try {
-					SessionSettings settings = new SessionSettings(inputStream);
-					inputStream.close();
-
-					FixMessenger messenger = new FixMessenger(configFileName,
-							settings);
-					messenger.logon();
-					FixMessengerFrame.launch(messenger);
-
-					shutdownLatch.await();
-					logger.info("Shutting down at " + new Date() + "...");
-					System.exit(0);
-				} catch (ConfigError ex) {
-					logger.error("Unable to read config file!", ex);
-					logger.error("Quitting...");
-					System.err.println("Unable to read config file!");
-					System.err.println("Quitting...");
-					System.exit(1);
-				} catch (IOException ex) {
-					logger.warn("Unable to close config files!", ex);
-				}
-			}
-		} else {
-			System.out.println("Usage: FixMessenger <app cfg file>"
-					+ " <quickfix cfg file>");
+		if (args.length != 2) {
+			System.out.println("""
+					Usage: FixMessenger <app cfg file> <quickfix cfg file>
+					""");
 			System.exit(0);
+		}
+
+		String configFileName = args[0];
+		try (InputStream inputStream = new FileInputStream(args[1])) {
+			SessionSettings settings = new SessionSettings(inputStream);
+
+			FixMessenger messenger = new FixMessenger(configFileName, settings);
+			messenger.logon();
+			FixMessengerFrame.launch(messenger);
+
+			shutdownLatch.await();
+			logger.info("Shutting down at " + new Date() + "...");
+			System.exit(0);
+		} catch (FileNotFoundException ex) {
+			logger.error("File not found: " + args[1]);
+			logger.error("Quitting...");
+			System.err.println("File not found: " + args[1]);
+			System.err.println("Quitting...");
+			System.exit(0);
+		} catch (ConfigError ex) {
+			logger.error("Unable to read config file!", ex);
+			logger.error("Quitting...");
+			System.err.println("Unable to read config file!");
+			System.err.println("Quitting...");
+			System.exit(1);
 		}
 	}
 
 	private static void setLookAndFeel() {
 		try {
-			String useSystemLookAndFeelProperty = System
+			var useSystemLookAndFeelProperty = System
 					.getProperty("useSystemLaF");
 			if (Boolean.valueOf(useSystemLookAndFeelProperty)) {
 				UIManager.setLookAndFeel(UIManager
@@ -256,7 +246,7 @@ public class FixMessenger {
 		} else {
 			Iterator<SessionID> sessionIds = connector.getSessions().iterator();
 			while (sessionIds.hasNext()) {
-				SessionID sessionId = (SessionID) sessionIds.next();
+				SessionID sessionId = sessionIds.next();
 				Session.lookupSession(sessionId).logon();
 			}
 		}
@@ -268,7 +258,7 @@ public class FixMessenger {
 	public void logout() {
 		Iterator<SessionID> sessionIds = connector.getSessions().iterator();
 		while (sessionIds.hasNext()) {
-			SessionID sessionId = (SessionID) sessionIds.next();
+			SessionID sessionId = sessionIds.next();
 			Session.lookupSession(sessionId).logout("user requested");
 		}
 	}
@@ -332,28 +322,26 @@ public class FixMessenger {
 				BodyType xmlBodyType = xmlMessageType.getBody();
 				for (Object xmlObject : xmlBodyType
 						.getFieldOrGroupsOrComponent()) {
-					if (xmlObject instanceof FieldType) {
-						FieldType xmlFieldType = (FieldType) xmlObject;
-						message.setField(createStringField(xmlFieldType));
-					}
-
-					else if (xmlObject instanceof GroupsType) {
-						GroupsType xmlGroupsType = (GroupsType) xmlObject;
-						for (Group group : createGroups(xmlGroupsType)) {
-							message.addGroup(group);
+					switch (xmlObject) {
+						case FieldType xmlFieldType -> message
+								.setField(createStringField(xmlFieldType));
+						case GroupsType xmlGroupsType -> {
+							for (Group group : createGroups(xmlGroupsType)) {
+								message.addGroup(group);
+							}
 						}
-					}
+						case ComponentType xmlComponentType -> {
+							ComponentHelper componentHelper = createComponent(xmlComponentType);
+							for (StringField stringField : componentHelper
+									.getFields()) {
+								message.setField(stringField);
+							}
 
-					else if (xmlObject instanceof ComponentType) {
-						ComponentType xmlComponentType = (ComponentType) xmlObject;
-						ComponentHelper componentHelper = createComponent(xmlComponentType);
-						for (StringField stringField : componentHelper
-								.getFields()) {
-							message.setField(stringField);
+							for (Group group : componentHelper.getGroups()) {
+								message.addGroup(group);
+							}
 						}
-
-						for (Group group : componentHelper.getGroups()) {
-							message.addGroup(group);
+						default -> {
 						}
 					}
 				}
@@ -378,17 +366,17 @@ public class FixMessenger {
 	}
 
 	private ComponentHelper createComponent(ComponentType xmlComponentType) {
-		List<StringField> fields = new ArrayList<StringField>();
+		List<StringField> fields = new ArrayList<>();
 		for (Object xmlObject : xmlComponentType.getFieldOrGroupsOrComponent()) {
-			if (xmlObject instanceof FieldType) {
-				fields.add(createStringField((FieldType) xmlObject));
+			if (xmlObject instanceof FieldType xmlFieldType) {
+				fields.add(createStringField(xmlFieldType));
 			}
 		}
 
-		List<quickfix.Group> groups = new ArrayList<quickfix.Group>();
+		List<quickfix.Group> groups = new ArrayList<>();
 		for (Object xmlObject : xmlComponentType.getFieldOrGroupsOrComponent()) {
-			if (xmlObject instanceof GroupsType) {
-				groups.addAll(createGroups((GroupsType) xmlObject));
+			if (xmlObject instanceof GroupsType xmlGroupsType) {
+				groups.addAll(createGroups(xmlGroupsType));
 			}
 		}
 
@@ -396,44 +384,43 @@ public class FixMessenger {
 	}
 
 	private List<Group> createGroups(GroupsType xmlGroupsType) {
-		List<Group> groups = new ArrayList<Group>();
+		List<Group> groups = new ArrayList<>();
 
 		for (GroupType xmlGroupType : xmlGroupsType.getGroup()) {
 			Object firstMember = xmlGroupType.getFieldOrGroupsOrComponent()
 					.get(0);
-			FieldType firstFieldType;
-			if (firstMember instanceof ComponentType) {
-				firstFieldType = (FieldType) ((ComponentType) firstMember)
+			FieldType firstFieldType = switch (firstMember) {
+				case ComponentType componentType -> (FieldType) componentType
 						.getFieldOrGroupsOrComponent().get(0);
-			} else {
-				firstFieldType = (FieldType) firstMember;
-			}
+				case FieldType fieldType -> fieldType;
+				default -> (FieldType) firstMember;
+			};
 
 			int i = 0;
 			Group group = new Group(xmlGroupsType.getId(),
 					firstFieldType.getId());
 			for (Object xmlObject : xmlGroupType.getFieldOrGroupsOrComponent()) {
-				if (xmlObject instanceof FieldType) {
-					FieldType xmlFieldType = (FieldType) xmlObject;
-					group.setField(++i, createStringField(xmlFieldType));
-				}
+				switch (xmlObject) {
+					case FieldType xmlFieldType ->
+						group.setField(++i, createStringField(xmlFieldType));
+					case ComponentType xmlComponentType -> {
+						ComponentHelper componentHelper = createComponent(xmlComponentType);
+						for (StringField stringField : componentHelper
+								.getFields()) {
+							group.setField(++i, stringField);
+						}
 
-				else if (xmlObject instanceof ComponentType) {
-					ComponentType xmlComponentType = (ComponentType) xmlObject;
-					ComponentHelper componentHelper = createComponent(xmlComponentType);
-					for (StringField stringField : componentHelper.getFields()) {
-						group.setField(++i, stringField);
+						for (Group memberGroup : componentHelper.getGroups()) {
+							group.addGroup(memberGroup);
+						}
 					}
-
-					for (Group memberGroup : componentHelper.getGroups()) {
-						group.addGroup(memberGroup);
+					case GroupsType memberXmlGroupsType -> {
+						for (Group memberGroup : createGroups(
+								memberXmlGroupsType)) {
+							group.addGroup(memberGroup);
+						}
 					}
-				}
-
-				else if (xmlObject instanceof GroupsType) {
-					GroupsType memberXmlGroupsType = (GroupsType) xmlObject;
-					for (Group memberGroup : createGroups(memberXmlGroupsType)) {
-						group.addGroup(memberGroup);
+					default -> {
 					}
 				}
 			}

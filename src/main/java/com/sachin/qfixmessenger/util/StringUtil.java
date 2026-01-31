@@ -5,8 +5,12 @@ package com.sachin.qfixmessenger.util;
  * 
 
  */
-public class StringUtil
+public final class StringUtil
 {
+	private StringUtil()
+	{
+	}
+
 	/**
 	 * Indicates if the specified string is null or empty. An empty string is
 	 * one that has a length of zero after being trimmed.
@@ -16,6 +20,6 @@ public class StringUtil
 	 */
 	public static boolean isNullOrEmpty(String value)
 	{
-		return value == null || value.trim().length() == 0;
+		return value == null || value.trim().isEmpty();
 	}
 }

@@ -42,7 +42,8 @@ import com.sachin.qfixmessenger.ui.util.TitledBorderUtil;
 public class GroupPanel extends
 		AbstractMemberPanel<Group, List<quickfix.Group>, GroupsType>
 {
-	private static final long serialVersionUID = -1327365939623841550L;
+\t@java.io.Serial
+\tprivate static final long serialVersionUID = -1327365939623841550L;
 
 	private final boolean isRequired;
 
@@ -480,3 +481,4 @@ public class GroupPanel extends
 		}
 	}
 }
+
