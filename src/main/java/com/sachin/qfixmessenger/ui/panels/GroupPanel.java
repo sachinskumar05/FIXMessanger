@@ -34,8 +34,8 @@ import com.sachin.fix.xml.FieldType;
 import com.sachin.fix.xml.GroupType;
 import com.sachin.fix.xml.GroupsType;
 import com.sachin.fix.xml.ObjectFactory;
-import com.sachin.qfixmessenger.QFixMessengerConstants;
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.FixMessengerConstants;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 import com.sachin.qfixmessenger.ui.layers.FieldValidationLayerUI;
 import com.sachin.qfixmessenger.ui.util.TitledBorderUtil;
 
@@ -62,7 +62,7 @@ public class GroupPanel extends
 
 	private int initialNoOfGroups;
 
-	public GroupPanel(QFixMessengerFrame frame, Group group,
+	public GroupPanel(FixMessengerFrame frame, Group group,
 			boolean isRequiredOnly, boolean isRequired, int initialNoOfGroups)
 	{
 		super(frame, group);
@@ -80,14 +80,14 @@ public class GroupPanel extends
 	{
 		StringBuilder sb = new StringBuilder("" + getMember().getNumber())
 				.append('=').append(groupTextField.getText().trim())
-				.append(QFixMessengerConstants.SOH);
+				.append(FixMessengerConstants.SOH);
 
 		for (List<MemberPanel<?, ?, ?>> groupMembers : groups)
 		{
 			for (MemberPanel<?, ?, ?> memberPanel : groupMembers)
 			{
 				sb.append(memberPanel.getFixString());
-				sb.append(QFixMessengerConstants.SOH);
+				sb.append(FixMessengerConstants.SOH);
 			}
 		}
 

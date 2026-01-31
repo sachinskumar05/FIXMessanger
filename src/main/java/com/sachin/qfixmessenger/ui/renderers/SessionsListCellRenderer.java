@@ -9,7 +9,7 @@ import javax.swing.JList;
 
 import quickfix.Session;
 
-import com.sachin.qfixmessenger.quickfix.util.QFixUtil;
+import com.sachin.qfixmessenger.quickfix.util.FixUtil;
 
 public class SessionsListCellRenderer extends DefaultListCellRenderer
 {
@@ -23,7 +23,7 @@ public class SessionsListCellRenderer extends DefaultListCellRenderer
 				index, isSelected, cellHasFocus);
 
 		Session session = (Session) value;
-		label.setText(QFixUtil.getSessionName(session.getSessionID()));
+		label.setText(FixUtil.getSessionName(session.getSessionID()));
 
 		if (session.isLoggedOn())
 		{

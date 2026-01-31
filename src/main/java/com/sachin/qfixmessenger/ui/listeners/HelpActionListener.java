@@ -10,16 +10,16 @@ import javax.swing.JOptionPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 
 public class HelpActionListener implements ActionListener
 {
 	private static final Logger logger = LoggerFactory
 			.getLogger(HelpActionListener.class);
 
-	private QFixMessengerFrame frame;
+	private FixMessengerFrame frame;
 
-	public HelpActionListener(QFixMessengerFrame frame)
+	public HelpActionListener(FixMessengerFrame frame)
 	{
 		this.frame = frame;
 	}

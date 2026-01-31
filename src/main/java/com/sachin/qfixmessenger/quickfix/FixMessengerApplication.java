@@ -32,26 +32,26 @@ import com.sachin.qfixmessenger.util.StringUtil;
  * 
 
  */
-public class QFixMessengerApplication implements Application
+public class FixMessengerApplication implements Application
 {
 	private static final Logger logger = LoggerFactory
-			.getLogger(QFixMessengerApplication.class);
+			.getLogger(FixMessengerApplication.class);
 
 	private final SessionSettings sessionSettings;
 
-	private final List<QFixMessageListener> messageListeners = new ArrayList<QFixMessageListener>();
+	private final List<FixMessageListener> messageListeners = new ArrayList<FixMessageListener>();
 
-	public QFixMessengerApplication(SessionSettings sessionSettings)
+	public FixMessengerApplication(SessionSettings sessionSettings)
 	{
 		this.sessionSettings = sessionSettings;
 	}
 
-	public void addMessageListener(QFixMessageListener messageListener)
+	public void addMessageListener(FixMessageListener messageListener)
 	{
 		messageListeners.add(messageListener);
 	}
 
-	public void removeMessageListener(QFixMessageListener messageListener)
+	public void removeMessageListener(FixMessageListener messageListener)
 	{
 		messageListeners.remove(messageListener);
 	}
@@ -65,9 +65,9 @@ public class QFixMessengerApplication implements Application
 		MsgType msgType = (MsgType) message.getHeader().getField(new MsgType());
 		if (msgType.getValue().equals("3"))
 		{
-			for (QFixMessageListener messageListener : messageListeners)
+			for (FixMessageListener messageListener : messageListeners)
 			{
-				messageListener.onMessage(QFixMessageListener.RECV, message,
+				messageListener.onMessage(FixMessageListener.RECV, message,
 						sessionId);
 			}
 		}
@@ -78,9 +78,9 @@ public class QFixMessengerApplication implements Application
 			throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue,
 			UnsupportedMessageType
 	{
-		for (QFixMessageListener messageListener : messageListeners)
+		for (FixMessageListener messageListener : messageListeners)
 		{
-			messageListener.onMessage(QFixMessageListener.RECV, message,
+			messageListener.onMessage(FixMessageListener.RECV, message,
 					sessionId);
 		}
 	}
@@ -185,9 +185,9 @@ public class QFixMessengerApplication implements Application
 	@Override
 	public void toApp(Message message, SessionID sessionId) throws DoNotSend
 	{
-		for (QFixMessageListener messageListener : messageListeners)
+		for (FixMessageListener messageListener : messageListeners)
 		{
-			messageListener.onMessage(QFixMessageListener.SENT, message,
+			messageListener.onMessage(FixMessageListener.SENT, message,
 					sessionId);
 		}
 	}

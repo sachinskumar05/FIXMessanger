@@ -9,7 +9,7 @@ sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
 application {
-    mainClass = "com.sachin.qfixmessenger.QFixMessenger"
+    mainClass = "com.sachin.qfixmessenger.FixMessenger"
 }
 
 repositories {

@@ -24,16 +24,16 @@ import javax.swing.border.EtchedBorder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 
 public class AboutActionListener implements ActionListener
 {
 	private static final Logger logger = LoggerFactory
 			.getLogger(AboutActionListener.class);
 
-	private QFixMessengerFrame frame;
+	private FixMessengerFrame frame;
 
-	public AboutActionListener(QFixMessengerFrame frame)
+	public AboutActionListener(FixMessengerFrame frame)
 	{
 		this.frame = frame;
 	}

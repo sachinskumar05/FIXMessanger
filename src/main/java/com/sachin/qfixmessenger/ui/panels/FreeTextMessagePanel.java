@@ -18,7 +18,7 @@ import quickfix.Session;
 
 import com.sachin.fix.model.Message;
 import com.sachin.fix.xml.MessageType;
-import com.sachin.qfixmessenger.QFixMessenger;
+import com.sachin.qfixmessenger.FixMessenger;
 import com.sachin.qfixmessenger.ui.util.TitledBorderUtil;
 
 public class FreeTextMessagePanel extends JPanel implements
@@ -26,7 +26,7 @@ public class FreeTextMessagePanel extends JPanel implements
 {
 	private static final long serialVersionUID = -7614167852761624847L;
 
-	private final QFixMessenger messenger;
+	private final FixMessenger messenger;
 
 	private final Session session;
 
@@ -36,7 +36,7 @@ public class FreeTextMessagePanel extends JPanel implements
 
 	private JTextArea messageTextArea;
 
-	public FreeTextMessagePanel(QFixMessenger messenger, Session session,
+	public FreeTextMessagePanel(FixMessenger messenger, Session session,
 			String appVersion, boolean isFixTSession)
 	{
 		this.messenger = messenger;

@@ -5,13 +5,13 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 
 public class CloseProjectActionListener implements ActionListener
 {
-	private QFixMessengerFrame frame;
+	private FixMessengerFrame frame;
 
-	public CloseProjectActionListener(QFixMessengerFrame frame)
+	public CloseProjectActionListener(FixMessengerFrame frame)
 	{
 		this.frame = frame;
 	}

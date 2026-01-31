@@ -4,7 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-import com.sachin.qfixmessenger.QFixMessengerConstants;
+import com.sachin.qfixmessenger.FixMessengerConstants;
 
 /**
  * Represents a QuickFIX Messenger configuration
@@ -12,7 +12,7 @@ import com.sachin.qfixmessenger.QFixMessengerConstants;
 
 
  */
-public class QFixMessengerConfig
+public class FixMessengerConfig
 {
 	private static final String IS_INITIATOR_PROP = "messenger.isInitiator";
 	private static final String PARSER_THREADS_PROP = "messenger.parser.threads";
@@ -36,7 +36,7 @@ public class QFixMessengerConfig
 
 	private final Properties properties;
 
-	public QFixMessengerConfig(String configFileName) throws IOException
+	public FixMessengerConfig(String configFileName) throws IOException
 	{
 		properties = new Properties();
 		properties.load(new FileInputStream(configFileName));
@@ -83,45 +83,45 @@ public class QFixMessengerConfig
 
 	public String getFixDictionaryLocation(String beginString)
 	{
-		if (beginString.equals(QFixMessengerConstants.BEGIN_STRING_FIX40))
+		if (beginString.equals(FixMessengerConstants.BEGIN_STRING_FIX40))
 		{
 			return getFix40DictionaryLocation();
 		}
 
-		else if (beginString.equals(QFixMessengerConstants.BEGIN_STRING_FIX41))
+		else if (beginString.equals(FixMessengerConstants.BEGIN_STRING_FIX41))
 		{
 			return getFix41DictionaryLocation();
 		}
 
-		else if (beginString.equals(QFixMessengerConstants.BEGIN_STRING_FIX42))
+		else if (beginString.equals(FixMessengerConstants.BEGIN_STRING_FIX42))
 		{
 			return getFix42DictionaryLocation();
 		}
 
-		else if (beginString.equals(QFixMessengerConstants.BEGIN_STRING_FIX43))
+		else if (beginString.equals(FixMessengerConstants.BEGIN_STRING_FIX43))
 		{
 			return getFix43DictionaryLocation();
 		}
 
-		else if (beginString.equals(QFixMessengerConstants.BEGIN_STRING_FIX44))
+		else if (beginString.equals(FixMessengerConstants.BEGIN_STRING_FIX44))
 		{
 			return getFix44DictionaryLocation();
 		}
 
-		else if (beginString.equals(QFixMessengerConstants.BEGIN_STRING_FIX50))
+		else if (beginString.equals(FixMessengerConstants.BEGIN_STRING_FIX50))
 		{
 			return getFix50DictionaryLocation();
 		}
-		else if (beginString.equals(QFixMessengerConstants.BEGIN_STRING_FIX50SP1))
+		else if (beginString.equals(FixMessengerConstants.BEGIN_STRING_FIX50SP1))
 		{
 			return getFix50SP1DictionaryLocation();
 		}
-		else if (beginString.equals(QFixMessengerConstants.BEGIN_STRING_FIX50SP2))
+		else if (beginString.equals(FixMessengerConstants.BEGIN_STRING_FIX50SP2))
 		{
 			return getFix50SP2DictionaryLocation();
 		}
 
-		else if (beginString.equals(QFixMessengerConstants.BEGIN_STRING_FIXT11))
+		else if (beginString.equals(FixMessengerConstants.BEGIN_STRING_FIXT11))
 		{
 			return getFixT11DictionaryLocation();
 		}

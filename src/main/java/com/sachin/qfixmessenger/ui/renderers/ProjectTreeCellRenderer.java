@@ -17,16 +17,16 @@ import com.sachin.fix.xml.MessagesType;
 import com.sachin.fix.xml.ProjectType;
 import com.sachin.fix.xml.SessionType;
 import com.sachin.fix.xml.TrailerType;
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 import com.sachin.qfixmessenger.ui.util.IconBuilder;
 
 public class ProjectTreeCellRenderer extends DefaultTreeCellRenderer
 {
 	private static final long serialVersionUID = -435212244413010769L;
 
-	private final QFixMessengerFrame frame;
+	private final FixMessengerFrame frame;
 
-	public ProjectTreeCellRenderer(QFixMessengerFrame frame)
+	public ProjectTreeCellRenderer(FixMessengerFrame frame)
 	{
 		this.frame = frame;
 	}

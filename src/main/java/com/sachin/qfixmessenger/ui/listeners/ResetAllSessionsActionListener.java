@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import quickfix.Session;
 import quickfix.SessionID;
 
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 
 /**
  * 
@@ -22,9 +22,9 @@ public class ResetAllSessionsActionListener implements ActionListener
 	private static final Logger logger = LoggerFactory
 			.getLogger(ResetAllSessionsActionListener.class);
 
-	private QFixMessengerFrame frame;
+	private FixMessengerFrame frame;
 
-	public ResetAllSessionsActionListener(QFixMessengerFrame frame)
+	public ResetAllSessionsActionListener(FixMessengerFrame frame)
 	{
 		this.frame = frame;
 	}

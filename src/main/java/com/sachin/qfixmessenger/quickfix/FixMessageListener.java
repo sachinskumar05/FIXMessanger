@@ -8,7 +8,7 @@ import quickfix.SessionID;
  * 
 
  */
-public interface QFixMessageListener
+public interface FixMessageListener
 {
 	public static final String SENT = "Sent";
 	public static final String RECV = "Received";

@@ -12,14 +12,14 @@ import javax.swing.JPanel;
 
 import quickfix.Session;
 
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 
 public class SessionStatusActionListener implements ActionListener
 {
-	private QFixMessengerFrame frame;
+	private FixMessengerFrame frame;
 	private Session session;
 
-	public SessionStatusActionListener(QFixMessengerFrame frame, Session session)
+	public SessionStatusActionListener(FixMessengerFrame frame, Session session)
 	{
 		this.frame = frame;
 		this.session = session;

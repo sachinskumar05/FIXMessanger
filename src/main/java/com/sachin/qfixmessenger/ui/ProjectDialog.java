@@ -28,7 +28,7 @@ public class ProjectDialog extends JDialog
 {
 	private static final long serialVersionUID = -1653220967743151936L;
 
-	private final QFixMessengerFrame frame;
+	private final FixMessengerFrame frame;
 
 	private final ProjectType xmlProjectType;
 
@@ -36,7 +36,7 @@ public class ProjectDialog extends JDialog
 
 	private JTree projectTree;
 
-	public ProjectDialog(QFixMessengerFrame frame, ProjectType xmlProjectType)
+	public ProjectDialog(FixMessengerFrame frame, ProjectType xmlProjectType)
 	{
 		this.frame = frame;
 		this.xmlProjectType = xmlProjectType;

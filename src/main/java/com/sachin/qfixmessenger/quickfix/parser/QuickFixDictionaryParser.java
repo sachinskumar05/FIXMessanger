@@ -48,20 +48,20 @@ import com.sachin.qfixmessenger.util.StringUtil;
  * 
 
  */
-public class QFixDictionaryParser implements FixDictionaryParser
+public class QuickFixDictionaryParser implements FixDictionaryParser
 {
 	private static final Logger logger = LoggerFactory
-			.getLogger(QFixDictionaryParser.class);
+			.getLogger(QuickFixDictionaryParser.class);
 
 	private final ExecutorService threadPool;
 
 	/**
-	 * Creates a new QFixDictionaryParser
+	 * Creates a new QuickFixDictionaryParser
 	 * 
 	 * @param noOfThreads
 	 *            the number of parser threads to use
 	 */
-	public QFixDictionaryParser(int noOfThreads)
+	public QuickFixDictionaryParser(int noOfThreads)
 	{
 		threadPool = Executors.newFixedThreadPool(noOfThreads,
 				new ParserThreadFactory());

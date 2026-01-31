@@ -14,8 +14,8 @@ import quickfix.Message;
 import quickfix.SessionID;
 import quickfix.field.MsgType;
 
-import com.sachin.qfixmessenger.quickfix.QFixMessageListener;
-import com.sachin.qfixmessenger.quickfix.util.QFixUtil;
+import com.sachin.qfixmessenger.quickfix.FixMessageListener;
+import com.sachin.qfixmessenger.quickfix.util.FixUtil;
 import com.sachin.qfixmessenger.ui.models.data.MessagesTableModelData;
 
 /**
@@ -24,7 +24,7 @@ import com.sachin.qfixmessenger.ui.models.data.MessagesTableModelData;
 
  */
 public class MessagesTableModel extends AbstractTableModel implements
-		QFixMessageListener
+		FixMessageListener
 {
 	private static final Logger logger = LoggerFactory
 			.getLogger(MessagesTableModel.class);
@@ -118,7 +118,7 @@ public class MessagesTableModel extends AbstractTableModel implements
 			MsgType msgType = (MsgType) message.getHeader().getField(
 					new MsgType());
 			MessagesTableModelData data = new MessagesTableModelData(
-					new Date(), direction, QFixUtil.getSessionName(sessionId),
+					new Date(), direction, FixUtil.getSessionName(sessionId),
 					message.toString(), msgType.getValue());
 			addRow(data);
 		} catch (FieldNotFound ex)

@@ -32,9 +32,9 @@ import com.sachin.fix.xml.MessageType;
 import com.sachin.fix.xml.ObjectFactory;
 import com.sachin.fix.xml.SessionType;
 import com.sachin.fix.xml.TrailerType;
-import com.sachin.qfixmessenger.QFixMessengerConstants;
-import com.sachin.qfixmessenger.quickfix.util.QFixUtil;
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.FixMessengerConstants;
+import com.sachin.qfixmessenger.quickfix.util.FixUtil;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 import com.sachin.qfixmessenger.ui.util.TitledBorderUtil;
 
 public class MessagePanel extends JPanel implements
@@ -42,7 +42,7 @@ public class MessagePanel extends JPanel implements
 {
 	private static final long serialVersionUID = 7937359075224178112L;
 
-	private final QFixMessengerFrame frame;
+	private final FixMessengerFrame frame;
 
 	private final Session session;
 
@@ -105,19 +105,19 @@ public class MessagePanel extends JPanel implements
 		for (MemberPanel<?, ?, ?> memberPanel : headerMembers)
 		{
 			sb.append(memberPanel.getFixString());
-			sb.append(QFixMessengerConstants.SOH);
+			sb.append(FixMessengerConstants.SOH);
 		}
 
 		for (MemberPanel<?, ?, ?> memberPanel : bodyMembers)
 		{
 			sb.append(memberPanel.getFixString());
-			sb.append(QFixMessengerConstants.SOH);
+			sb.append(FixMessengerConstants.SOH);
 		}
 
 		for (MemberPanel<?, ?, ?> memberPanel : trailerMembers)
 		{
 			sb.append(memberPanel.getFixString());
-			sb.append(QFixMessengerConstants.SOH);
+			sb.append(FixMessengerConstants.SOH);
 		}
 
 		return sb.toString();
@@ -143,7 +143,7 @@ public class MessagePanel extends JPanel implements
 		if (isFixTSession)
 		{
 			ApplVerID applVerID = new ApplVerID(
-					QFixMessengerConstants.APPVER_ID_MAP.get(appVersion));
+					FixMessengerConstants.APPVER_ID_MAP.get(appVersion));
 			qfixMessage.getHeader().setField(applVerID);
 		}
 
@@ -235,7 +235,7 @@ public class MessagePanel extends JPanel implements
 		xmlMessageType.setIsRequiredOnly(isRequiredOnly);
 
 		SessionType xmlSessionType = xmlObjectFactory.createSessionType();
-		xmlSessionType.setName(QFixUtil.getSessionName(session.getSessionID()));
+		xmlSessionType.setName(FixUtil.getSessionName(session.getSessionID()));
 		if (isFixTSession)
 		{
 			xmlSessionType.setAppVersionId(appVersion);
@@ -549,7 +549,7 @@ public class MessagePanel extends JPanel implements
 
 	public static class MessagePanelBuilder
 	{
-		private QFixMessengerFrame frame;
+		private FixMessengerFrame frame;
 
 		private Session session;
 
@@ -595,7 +595,7 @@ public class MessagePanel extends JPanel implements
 			return fixTDictionary;
 		}
 
-		public QFixMessengerFrame getFrame()
+		public FixMessengerFrame getFrame()
 		{
 			return frame;
 		}
@@ -660,7 +660,7 @@ public class MessagePanel extends JPanel implements
 			this.fixTDictionary = fixTDictionary;
 		}
 
-		public void setFrame(QFixMessengerFrame frame)
+		public void setFrame(FixMessengerFrame frame)
 		{
 			this.frame = frame;
 		}

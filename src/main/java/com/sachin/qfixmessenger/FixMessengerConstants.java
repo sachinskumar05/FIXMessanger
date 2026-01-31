@@ -10,8 +10,9 @@ import java.util.Map;
  * TODO These values need to be configurable
  * </p>
  * 
+
  */
-public class QFixMessengerConstants
+public class FixMessengerConstants
 {
 	public static final String UTC_DATE_FORMAT = "yyyyMMdd-HH:mm:ss.SSS";
 

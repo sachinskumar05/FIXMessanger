@@ -12,18 +12,18 @@ import javax.swing.JTree;
 
 import com.sachin.fix.xml.MessageType;
 import com.sachin.fix.xml.ProjectType;
-import com.sachin.qfixmessenger.QFixMessengerException;
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.FixMessengerException;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 import com.sachin.qfixmessenger.ui.models.ProjectTreeModel;
 import com.sachin.qfixmessenger.ui.util.IconBuilder;
 
 public class ProjectTreeMouseListener extends MouseAdapter
 {
-	private final QFixMessengerFrame frame;
+	private final FixMessengerFrame frame;
 
 	private final JTree projectTree;
 
-	public ProjectTreeMouseListener(QFixMessengerFrame frame, JTree projectTree)
+	public ProjectTreeMouseListener(FixMessengerFrame frame, JTree projectTree)
 	{
 		this.frame = frame;
 		this.projectTree = projectTree;
@@ -49,7 +49,7 @@ public class ProjectTreeMouseListener extends MouseAdapter
 						try
 						{
 							frame.getMessenger().sendXmlMessage(xmlMessageType);
-						} catch (QFixMessengerException ex)
+						} catch (FixMessengerException ex)
 						{
 							JOptionPane.showMessageDialog(
 									frame.getProjectFrame(),
@@ -132,7 +132,7 @@ public class ProjectTreeMouseListener extends MouseAdapter
 						try
 						{
 							frame.getMessenger().sendXmlMessage(xmlMessageType);
-						} catch (QFixMessengerException ex)
+						} catch (FixMessengerException ex)
 						{
 							JOptionPane.showMessageDialog(
 									frame.getProjectFrame(),

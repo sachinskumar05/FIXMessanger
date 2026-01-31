@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.sachin.fix.model.Member;
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 
 public abstract class AbstractMemberPanel<M extends Member, Q, X> extends
 		JPanel implements MemberPanel<M, Q, X>
@@ -22,11 +22,11 @@ public abstract class AbstractMemberPanel<M extends Member, Q, X> extends
 	private static final Logger logger = LoggerFactory
 			.getLogger(AbstractMemberPanel.class);
 
-	private QFixMessengerFrame frame;
+	private FixMessengerFrame frame;
 
 	private M member;
 
-	public AbstractMemberPanel(QFixMessengerFrame frame, M member)
+	public AbstractMemberPanel(FixMessengerFrame frame, M member)
 	{
 		this.frame = frame;
 		this.member = member;
@@ -39,7 +39,7 @@ public abstract class AbstractMemberPanel<M extends Member, Q, X> extends
 		return member;
 	}
 
-	protected QFixMessengerFrame getFrame()
+	protected FixMessengerFrame getFrame()
 	{
 		return frame;
 	}

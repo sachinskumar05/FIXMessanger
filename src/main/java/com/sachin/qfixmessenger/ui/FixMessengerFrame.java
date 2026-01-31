@@ -78,10 +78,10 @@ import com.sachin.fix.model.parser.FixParsingException;
 import com.sachin.fix.xml.MessageType;
 import com.sachin.fix.xml.ProjectType;
 import com.sachin.fix.xml.SessionType;
-import com.sachin.qfixmessenger.QFixMessenger;
-import com.sachin.qfixmessenger.QFixMessengerConstants;
-import com.sachin.qfixmessenger.quickfix.QFixMessageListener;
-import com.sachin.qfixmessenger.quickfix.util.QFixUtil;
+import com.sachin.qfixmessenger.FixMessenger;
+import com.sachin.qfixmessenger.FixMessengerConstants;
+import com.sachin.qfixmessenger.quickfix.FixMessageListener;
+import com.sachin.qfixmessenger.quickfix.util.FixUtil;
 import com.sachin.qfixmessenger.ui.listeners.AboutActionListener;
 import com.sachin.qfixmessenger.ui.listeners.CloseProjectActionListener;
 import com.sachin.qfixmessenger.ui.listeners.FrameExitActionListener;
@@ -115,12 +115,12 @@ import com.sachin.qfixmessenger.ui.util.IconBuilder;
 
 
  */
-public class QFixMessengerFrame extends JFrame
+public class FixMessengerFrame extends JFrame
 {
 	private static final long serialVersionUID = 7906369617506618477L;
 
 	private static final Logger logger = LoggerFactory
-			.getLogger(QFixMessengerFrame.class);
+			.getLogger(FixMessengerFrame.class);
 
 	private static final int FRAME_MIN_HEIGHT = 510;
 
@@ -135,13 +135,13 @@ public class QFixMessengerFrame extends JFrame
 	/**
 	 * Launches the frame
 	 */
-	public static void launch(QFixMessenger messenger)
+	public static void launch(FixMessenger messenger)
 	{
 		class Launcher implements Runnable
 		{
-			private final QFixMessenger messenger;
+			private final FixMessenger messenger;
 
-			private Launcher(QFixMessenger messenger)
+			private Launcher(FixMessenger messenger)
 			{
 				this.messenger = messenger;
 			}
@@ -149,7 +149,7 @@ public class QFixMessengerFrame extends JFrame
 			@Override
 			public void run()
 			{
-				QFixMessengerFrame frame = new QFixMessengerFrame(messenger);
+				FixMessengerFrame frame = new FixMessengerFrame(messenger);
 				frame.initFrame();
 				frame.initComponents();
 				frame.positionFrame();
@@ -165,7 +165,7 @@ public class QFixMessengerFrame extends JFrame
 
 	private final JPanel blankPanel = new JPanel();
 
-	private final QFixMessenger messenger;
+	private final FixMessenger messenger;
 
 	private final FixDictionary fixTDictionary;
 
@@ -253,7 +253,7 @@ public class QFixMessengerFrame extends JFrame
 
 	private LogfileDialog logfileDialog;
 
-	private QFixMessengerFrame(QFixMessenger messenger)
+	private FixMessengerFrame(FixMessenger messenger)
 	{
 		super();
 		this.messenger = messenger;
@@ -374,7 +374,7 @@ public class QFixMessengerFrame extends JFrame
 	 * 
 	 * @return the application instance
 	 */
-	public QFixMessenger getMessenger()
+	public FixMessenger getMessenger()
 	{
 		return messenger;
 	}
@@ -676,7 +676,7 @@ public class QFixMessengerFrame extends JFrame
 		// Sessions Panel
 		sessionsList = new JList<Session>();
 		appVersionsComboBox = new JComboBox<String>(
-				QFixMessengerConstants.FIXT_APP_VERSIONS);
+				FixMessengerConstants.FIXT_APP_VERSIONS);
 		JPanel sessionsPanel = new JPanel();
 		sessionsPanel.setBorder(new TitledBorder("Current Sessions"));
 		sessionsPanel.setLayout(new BorderLayout());
@@ -921,7 +921,7 @@ public class QFixMessengerFrame extends JFrame
 		for (SessionID sessionId : messenger.getConnector().getSessions())
 		{
 			Session session = Session.lookupSession(sessionId);
-			currentSessionMenu = new JMenu(QFixUtil.getSessionName(sessionId));
+			currentSessionMenu = new JMenu(FixUtil.getSessionName(sessionId));
 
 			logonMenuItem = new JCheckBoxMenuItem("Logon");
 			logonMenuItem
@@ -1191,7 +1191,7 @@ public class QFixMessengerFrame extends JFrame
 		for (int i = 0; i < listModel.getSize(); i++)
 		{
 			Session session = listModel.getElementAt(i);
-			if (QFixUtil.getSessionName(session.getSessionID()).equals(
+			if (FixUtil.getSessionName(session.getSessionID()).equals(
 					xmlSessionType.getName()))
 			{
 				sessionsList.setSelectedIndex(i);
@@ -1307,9 +1307,9 @@ public class QFixMessengerFrame extends JFrame
 
 	private static class AddMessageActionListener implements ActionListener
 	{
-		private QFixMessengerFrame frame;
+		private FixMessengerFrame frame;
 
-		public AddMessageActionListener(QFixMessengerFrame frame)
+		public AddMessageActionListener(FixMessengerFrame frame)
 		{
 			this.frame = frame;
 		}
@@ -1335,9 +1335,9 @@ public class QFixMessengerFrame extends JFrame
 	private static class AppVersionsComboBoxActionListener implements
 			ActionListener
 	{
-		private QFixMessengerFrame frame;
+		private FixMessengerFrame frame;
 
-		public AppVersionsComboBoxActionListener(QFixMessengerFrame frame)
+		public AppVersionsComboBoxActionListener(FixMessengerFrame frame)
 		{
 			this.frame = frame;
 		}
@@ -1370,9 +1370,9 @@ public class QFixMessengerFrame extends JFrame
 
 	private static class DestroyMessageActionListener implements ActionListener
 	{
-		private QFixMessengerFrame frame;
+		private FixMessengerFrame frame;
 
-		private DestroyMessageActionListener(QFixMessengerFrame frame)
+		private DestroyMessageActionListener(FixMessengerFrame frame)
 		{
 			this.frame = frame;
 		}
@@ -1394,9 +1394,9 @@ public class QFixMessengerFrame extends JFrame
 
 	private static class ExportMessageActionListener implements ActionListener
 	{
-		private QFixMessengerFrame frame;
+		private FixMessengerFrame frame;
 
-		public ExportMessageActionListener(QFixMessengerFrame frame)
+		public ExportMessageActionListener(FixMessengerFrame frame)
 		{
 			this.frame = frame;
 		}
@@ -1428,9 +1428,9 @@ public class QFixMessengerFrame extends JFrame
 
 	private static class FrameWindowAdapter extends WindowAdapter
 	{
-		private QFixMessengerFrame frame;
+		private FixMessengerFrame frame;
 
-		public FrameWindowAdapter(QFixMessengerFrame frame)
+		public FrameWindowAdapter(FixMessengerFrame frame)
 		{
 			this.frame = frame;
 		}
@@ -1445,11 +1445,11 @@ public class QFixMessengerFrame extends JFrame
 	private static class MarshallMessageTypeWorker extends
 			SwingWorker<Void, Void>
 	{
-		private final QFixMessengerFrame frame;
+		private final FixMessengerFrame frame;
 		private final MessageType xmlMessageType;
 		private final File file;
 
-		MarshallMessageTypeWorker(QFixMessengerFrame frame,
+		MarshallMessageTypeWorker(FixMessengerFrame frame,
 				MessageType xmlMessageType, File file)
 		{
 			this.frame = frame;
@@ -1494,11 +1494,11 @@ public class QFixMessengerFrame extends JFrame
 	private static class MarshallProjectTypeWorker extends
 			SwingWorker<Void, Void>
 	{
-		private final QFixMessengerFrame frame;
+		private final FixMessengerFrame frame;
 		private final ProjectType xmlProjectType;
 		private final File file;
 
-		MarshallProjectTypeWorker(QFixMessengerFrame frame,
+		MarshallProjectTypeWorker(FixMessengerFrame frame,
 				ProjectType xmlProjectType, File file)
 		{
 			this.frame = frame;
@@ -1542,9 +1542,9 @@ public class QFixMessengerFrame extends JFrame
 
 	private class RecentMessagesListMouseAdapter extends MouseAdapter
 	{
-		private QFixMessengerFrame frame;
+		private FixMessengerFrame frame;
 
-		public RecentMessagesListMouseAdapter(QFixMessengerFrame frame)
+		public RecentMessagesListMouseAdapter(FixMessengerFrame frame)
 		{
 			this.frame = frame;
 		}
@@ -1592,9 +1592,9 @@ public class QFixMessengerFrame extends JFrame
 	private static class RecentMessagesListSelectionListener implements
 			ListSelectionListener
 	{
-		private QFixMessengerFrame frame;
+		private FixMessengerFrame frame;
 
-		public RecentMessagesListSelectionListener(QFixMessengerFrame frame)
+		public RecentMessagesListSelectionListener(FixMessengerFrame frame)
 		{
 			this.frame = frame;
 		}
@@ -1624,9 +1624,9 @@ public class QFixMessengerFrame extends JFrame
 
 	private class MessagesListMouseAdapter extends MouseAdapter
 	{
-		private QFixMessengerFrame frame;
+		private FixMessengerFrame frame;
 
-		public MessagesListMouseAdapter(QFixMessengerFrame frame)
+		public MessagesListMouseAdapter(FixMessengerFrame frame)
 		{
 			this.frame = frame;
 		}
@@ -1667,9 +1667,9 @@ public class QFixMessengerFrame extends JFrame
 	private static class MessagesListSelectionListener implements
 			ListSelectionListener
 	{
-		private QFixMessengerFrame frame;
+		private FixMessengerFrame frame;
 
-		public MessagesListSelectionListener(QFixMessengerFrame frame)
+		public MessagesListSelectionListener(FixMessengerFrame frame)
 		{
 			this.frame = frame;
 		}
@@ -1699,9 +1699,9 @@ public class QFixMessengerFrame extends JFrame
 
 	private class MessagesTableMouseListener extends MouseAdapter
 	{
-		private QFixMessengerFrame frame;
+		private FixMessengerFrame frame;
 
-		public MessagesTableMouseListener(QFixMessengerFrame frame)
+		public MessagesTableMouseListener(FixMessengerFrame frame)
 		{
 			this.frame = frame;
 		}
@@ -1739,7 +1739,7 @@ public class QFixMessengerFrame extends JFrame
 					panel.add(Box.createRigidArea(new Dimension(50, 10)), c);
 
 					JLabel directionLabel;
-					if (data.getDirection().equals(QFixMessageListener.RECV))
+					if (data.getDirection().equals(FixMessageListener.RECV))
 					{
 						directionLabel = new JLabel(
 								"<html><b>Direction:</b> <i><b><font color = '#FF8040'>"
@@ -1834,11 +1834,11 @@ public class QFixMessengerFrame extends JFrame
 	private class ResendMessagesActionListener implements ActionListener
 	{
 
-		private QFixMessengerFrame frame;
+		private FixMessengerFrame frame;
 		private MouseEvent event;
 		private Session session;
 
-		public ResendMessagesActionListener(QFixMessengerFrame frame,
+		public ResendMessagesActionListener(FixMessengerFrame frame,
 				MouseEvent event)
 		{
 			this.frame = frame;
@@ -1874,9 +1874,9 @@ public class QFixMessengerFrame extends JFrame
 
 	private static class ProjectWindowActionListener implements ActionListener
 	{
-		private QFixMessengerFrame frame;
+		private FixMessengerFrame frame;
 
-		public ProjectWindowActionListener(QFixMessengerFrame frame)
+		public ProjectWindowActionListener(FixMessengerFrame frame)
 		{
 			this.frame = frame;
 		}
@@ -1897,9 +1897,9 @@ public class QFixMessengerFrame extends JFrame
 
 	private static class LogfileWindowActionListener implements ActionListener
 	{
-		private QFixMessengerFrame frame;
+		private FixMessengerFrame frame;
 
-		public LogfileWindowActionListener(QFixMessengerFrame frame)
+		public LogfileWindowActionListener(FixMessengerFrame frame)
 		{
 			this.frame = frame;
 		}
@@ -1923,9 +1923,9 @@ public class QFixMessengerFrame extends JFrame
 
 	private static class SendActionListener implements ActionListener
 	{
-		private QFixMessengerFrame frame;
+		private FixMessengerFrame frame;
 
-		public SendActionListener(QFixMessengerFrame frame)
+		public SendActionListener(FixMessengerFrame frame)
 		{
 			this.frame = frame;
 		}
@@ -2012,7 +2012,7 @@ public class QFixMessengerFrame extends JFrame
 				} else
 				{
 					JOptionPane.showMessageDialog(frame,
-							QFixUtil.getSessionName(session.getSessionID())
+							FixUtil.getSessionName(session.getSessionID())
 									+ " is not logged on!", "Error",
 							JOptionPane.WARNING_MESSAGE);
 				}
@@ -2061,9 +2061,9 @@ public class QFixMessengerFrame extends JFrame
 
 	private class SessionsListMouseAdapter extends MouseAdapter
 	{
-		private QFixMessengerFrame frame;
+		private FixMessengerFrame frame;
 
-		public SessionsListMouseAdapter(QFixMessengerFrame frame)
+		public SessionsListMouseAdapter(FixMessengerFrame frame)
 		{
 			this.frame = frame;
 		}
@@ -2125,9 +2125,9 @@ public class QFixMessengerFrame extends JFrame
 	private static class SessionsListSelectionListener implements
 			ListSelectionListener
 	{
-		private QFixMessengerFrame frame;
+		private FixMessengerFrame frame;
 
-		public SessionsListSelectionListener(QFixMessengerFrame frame)
+		public SessionsListSelectionListener(FixMessengerFrame frame)
 		{
 			this.frame = frame;
 		}
@@ -2142,7 +2142,7 @@ public class QFixMessengerFrame extends JFrame
 				SessionID sessionId = session.getSessionID();
 
 				if (sessionId.getBeginString().equals(
-						QFixMessengerConstants.BEGIN_STRING_FIXT11))
+						FixMessengerConstants.BEGIN_STRING_FIXT11))
 				{
 					frame.appVersionsComboBox.setEnabled(true);
 					frame.activeDictionary = null;

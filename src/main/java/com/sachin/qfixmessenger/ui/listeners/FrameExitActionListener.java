@@ -3,13 +3,13 @@ package com.sachin.qfixmessenger.ui.listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 
 public class FrameExitActionListener implements ActionListener
 {
-	private QFixMessengerFrame frame;
+	private FixMessengerFrame frame;
 
-	public FrameExitActionListener(QFixMessengerFrame frame)
+	public FrameExitActionListener(FixMessengerFrame frame)
 	{
 		this.frame = frame;
 	}

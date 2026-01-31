@@ -21,13 +21,13 @@ import com.sachin.fix.model.parser.FixDictionaryParser;
 import com.sachin.fix.model.parser.FixParsingException;
 
 /**
- * JUnit test case for QFixDictionaryParser
+ * JUnit test case for QuickFixDictionaryParser
  * 
 
 
  */
 
-public class QFixDictionaryParserTest
+public class QuickFixDictionaryParserTest
 {
 	private static final String INDENT = "   ";
 
@@ -35,7 +35,7 @@ public class QFixDictionaryParserTest
 	public void testParseFIX40()
 	{
 		String path = "/FIX40.xml";
-		FixDictionaryParser parser = new QFixDictionaryParser(20);
+		FixDictionaryParser parser = new QuickFixDictionaryParser(20);
 
 		try
 		{
@@ -79,7 +79,7 @@ public class QFixDictionaryParserTest
 	public void testParseFIX41()
 	{
 		String path = "/FIX41.xml";
-		FixDictionaryParser parser = new QFixDictionaryParser(20);
+		FixDictionaryParser parser = new QuickFixDictionaryParser(20);
 
 		try
 		{
@@ -122,7 +122,7 @@ public class QFixDictionaryParserTest
 	public void testParseFIX42()
 	{
 		String path = "/FIX42.xml";
-		FixDictionaryParser parser = new QFixDictionaryParser(20);
+		FixDictionaryParser parser = new QuickFixDictionaryParser(20);
 
 		try
 		{
@@ -165,7 +165,7 @@ public class QFixDictionaryParserTest
 	public void testParseFIX43()
 	{
 		String path = "/FIX43.xml";
-		FixDictionaryParser parser = new QFixDictionaryParser(20);
+		FixDictionaryParser parser = new QuickFixDictionaryParser(20);
 
 		try
 		{
@@ -208,7 +208,7 @@ public class QFixDictionaryParserTest
 	public void testParseFIX44()
 	{
 		String path = "/FIX44.xml";
-		FixDictionaryParser parser = new QFixDictionaryParser(20);
+		FixDictionaryParser parser = new QuickFixDictionaryParser(20);
 
 		try
 		{
@@ -251,7 +251,7 @@ public class QFixDictionaryParserTest
 	public void testParseFIX50()
 	{
 		String path = "/FIX50.xml";
-		FixDictionaryParser parser = new QFixDictionaryParser(20);
+		FixDictionaryParser parser = new QuickFixDictionaryParser(20);
 
 		try
 		{
@@ -294,7 +294,7 @@ public class QFixDictionaryParserTest
 	public void testParseFIXT11()
 	{
 		String path = "/FIXT11.xml";
-		FixDictionaryParser parser = new QFixDictionaryParser(20);
+		FixDictionaryParser parser = new QuickFixDictionaryParser(20);
 
 		try
 		{

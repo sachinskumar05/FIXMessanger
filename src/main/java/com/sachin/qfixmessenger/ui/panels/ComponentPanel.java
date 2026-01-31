@@ -25,9 +25,9 @@ import com.sachin.fix.xml.ComponentType;
 import com.sachin.fix.xml.FieldType;
 import com.sachin.fix.xml.GroupsType;
 import com.sachin.fix.xml.ObjectFactory;
-import com.sachin.qfixmessenger.QFixMessengerConstants;
+import com.sachin.qfixmessenger.FixMessengerConstants;
 import com.sachin.qfixmessenger.quickfix.ComponentHelper;
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 
 public class ComponentPanel extends
 		AbstractMemberPanel<Component, ComponentHelper, ComponentType>
@@ -44,7 +44,7 @@ public class ComponentPanel extends
 
 	private JPanel membersPanel;
 
-	public ComponentPanel(QFixMessengerFrame frame, Component component,
+	public ComponentPanel(FixMessengerFrame frame, Component component,
 			boolean isRequiredOnly, boolean isRequired)
 	{
 		super(frame, component);
@@ -63,7 +63,7 @@ public class ComponentPanel extends
 		for (MemberPanel<?, ?, ?> memberPanel : members)
 		{
 			sb.append(memberPanel.getFixString());
-			sb.append(QFixMessengerConstants.SOH);
+			sb.append(FixMessengerConstants.SOH);
 		}
 
 		return sb.toString();

@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import com.sachin.qfixmessenger.quickfix.QFixMessageListener;
+import com.sachin.qfixmessenger.quickfix.FixMessageListener;
 import com.sachin.qfixmessenger.ui.models.MessagesTableModel;
 import com.sachin.qfixmessenger.ui.models.data.MessagesTableModelData;
 
@@ -28,7 +28,7 @@ public class MessagesTableCellRender extends DefaultTableCellRenderer
 			MessagesTableModel model = (MessagesTableModel) table.getModel();
 			MessagesTableModelData data = model.getData(modelRow);
 
-			if (data.getDirection().equals(QFixMessageListener.RECV))
+			if (data.getDirection().equals(FixMessageListener.RECV))
 			{
 				component.setBackground(Color.ORANGE);
 			} else

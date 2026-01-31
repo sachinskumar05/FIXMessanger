@@ -28,8 +28,8 @@ import com.sachin.fix.model.Field;
 import com.sachin.fix.model.FieldType;
 import com.sachin.fix.model.FieldValue;
 import com.sachin.fix.xml.ObjectFactory;
-import com.sachin.qfixmessenger.QFixMessengerConstants;
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.FixMessengerConstants;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 import com.sachin.qfixmessenger.ui.layers.FieldValidationLayerUI;
 import com.sachin.qfixmessenger.ui.renderers.FieldComboBoxCellRenderer;
 import com.sachin.qfixmessenger.util.StringUtil;
@@ -55,7 +55,7 @@ public class FieldPanel extends
 
 	private final String initialValue;
 
-	public FieldPanel(QFixMessengerFrame frame, Field field,
+	public FieldPanel(FixMessengerFrame frame, Field field,
 			boolean isRequired, String initialValue)
 	{
 		super(frame, field);
@@ -145,7 +145,7 @@ public class FieldPanel extends
 
 	private String generateUtcTimeStamp()
 	{
-		return new SimpleDateFormat(QFixMessengerConstants.UTC_DATE_FORMAT)
+		return new SimpleDateFormat(FixMessengerConstants.UTC_DATE_FORMAT)
 				.format(new Date());
 	}
 
@@ -190,7 +190,7 @@ public class FieldPanel extends
 			if (isFieldUtcType())
 			{
 				format = new SimpleDateFormat(
-						QFixMessengerConstants.UTC_DATE_FORMAT);
+						FixMessengerConstants.UTC_DATE_FORMAT);
 				toolTip = "Enter a date in UTC format";
 
 				dateButton = new JButton("UTC Date");

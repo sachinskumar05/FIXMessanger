@@ -2,7 +2,7 @@ package com.sachin.qfixmessenger.ui.util;
 
 import javax.swing.ImageIcon;
 
-import com.sachin.qfixmessenger.config.QFixMessengerConfig;
+import com.sachin.qfixmessenger.config.FixMessengerConfig;
 
 public final class IconBuilder
 {
@@ -53,7 +53,7 @@ public final class IconBuilder
 	public static String CLEAR_ALL_ICON = "clear-all.png";
 	public static String INVALID_FIELD = "invalid-field.png";
 
-	public static ImageIcon build(QFixMessengerConfig config, String path)
+	public static ImageIcon build(FixMessengerConfig config, String path)
 	{
 		String res = String.format("%s/%s", config.getIconsLocation(), path);
 		return new ImageIcon(IconBuilder.class.getResource(res));

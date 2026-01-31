@@ -29,7 +29,7 @@ public class LogfileDialog extends JDialog
 
 	private static final Logger logger = Logger.getLogger(LogfileDialog.class);
 
-	private final QFixMessengerFrame frame;
+	private final FixMessengerFrame frame;
 
 	private JTabbedPane logTabPane;
 
@@ -37,7 +37,7 @@ public class LogfileDialog extends JDialog
 
 	private JTextArea messageTextArea;
 
-	public LogfileDialog(QFixMessengerFrame frame)
+	public LogfileDialog(FixMessengerFrame frame)
 	{
 		this.frame = frame;
 	}

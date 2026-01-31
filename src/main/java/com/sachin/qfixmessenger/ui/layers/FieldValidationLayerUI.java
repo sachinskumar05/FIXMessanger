@@ -10,16 +10,16 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLayer;
 import javax.swing.plaf.LayerUI;
 
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 import com.sachin.qfixmessenger.ui.util.IconBuilder;
 
 public class FieldValidationLayerUI extends LayerUI<JFormattedTextField>
 {
 	private static final long serialVersionUID = 8928847899297723141L;
 
-	private QFixMessengerFrame frame;
+	private FixMessengerFrame frame;
 
-	public FieldValidationLayerUI(QFixMessengerFrame frame)
+	public FieldValidationLayerUI(FixMessengerFrame frame)
 	{
 		this.frame = frame;
 	}

@@ -6,13 +6,13 @@ import java.awt.event.ActionListener;
 import quickfix.Session;
 import quickfix.SessionID;
 
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 
 public class LogonAllSessionsActionListener implements ActionListener
 {
-	private QFixMessengerFrame frame;
+	private FixMessengerFrame frame;
 
-	public LogonAllSessionsActionListener(QFixMessengerFrame frame)
+	public LogonAllSessionsActionListener(FixMessengerFrame frame)
 	{
 		this.frame = frame;
 	}

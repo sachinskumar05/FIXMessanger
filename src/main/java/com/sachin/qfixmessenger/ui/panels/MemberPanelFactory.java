@@ -3,7 +3,7 @@ package com.sachin.qfixmessenger.ui.panels;
 import com.sachin.fix.model.Component;
 import com.sachin.fix.model.Field;
 import com.sachin.fix.model.Group;
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 
 /**
  * Static factory for creating MemberPanels
@@ -12,7 +12,7 @@ import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
  */
 public class MemberPanelFactory
 {
-	public static ComponentPanel createComponentPanel(QFixMessengerFrame frame,
+	public static ComponentPanel createComponentPanel(FixMessengerFrame frame,
 			Component component, boolean isRequiredOnly, boolean isRequired)
 	{
 		MemberPanel<?, ?, ?> prevMemberPanel = frame.getMemberPanelCache()
@@ -31,7 +31,7 @@ public class MemberPanelFactory
 		return componentPanel;
 	}
 
-	public static FieldPanel createFieldPanel(QFixMessengerFrame frame,
+	public static FieldPanel createFieldPanel(FixMessengerFrame frame,
 			Field field, boolean isRequired)
 	{
 		MemberPanel<?, ?, ?> prevMemberPanel = frame.getMemberPanelCache()
@@ -47,7 +47,7 @@ public class MemberPanelFactory
 		return fieldPanel;
 	}
 
-	public static GroupPanel createGroupPanel(QFixMessengerFrame frame,
+	public static GroupPanel createGroupPanel(FixMessengerFrame frame,
 			Group group, boolean isRequiredOnly, boolean isRequired)
 	{
 		MemberPanel<?, ?, ?> prevMemberPanel = frame.getMemberPanelCache()

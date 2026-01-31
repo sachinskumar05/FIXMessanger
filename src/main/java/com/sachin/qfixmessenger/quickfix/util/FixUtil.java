@@ -7,7 +7,7 @@ import quickfix.SessionID;
  * 
 
  */
-public class QFixUtil
+public class FixUtil
 {
 	/**
 	 * Returns the preferred session name format from a QuickFIX SessionID

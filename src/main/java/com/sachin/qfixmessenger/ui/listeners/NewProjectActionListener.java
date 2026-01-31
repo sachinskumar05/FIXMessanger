@@ -7,13 +7,13 @@ import javax.swing.JOptionPane;
 
 import com.sachin.fix.xml.ObjectFactory;
 import com.sachin.fix.xml.ProjectType;
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 
 public class NewProjectActionListener implements ActionListener
 {
-	private QFixMessengerFrame frame;
+	private FixMessengerFrame frame;
 
-	public NewProjectActionListener(QFixMessengerFrame frame)
+	public NewProjectActionListener(FixMessengerFrame frame)
 	{
 		this.frame = frame;
 	}

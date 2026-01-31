@@ -14,17 +14,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.sachin.fix.xml.ProjectType;
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame.XmlFileFilter;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame.XmlFileFilter;
 
 public class OpenProjectActionListener implements ActionListener
 {
 	private static final Logger logger = LoggerFactory
 			.getLogger(OpenProjectActionListener.class);
 
-	private QFixMessengerFrame frame;
+	private FixMessengerFrame frame;
 
-	public OpenProjectActionListener(QFixMessengerFrame frame)
+	public OpenProjectActionListener(FixMessengerFrame frame)
 	{
 		this.frame = frame;
 	}
@@ -74,10 +74,10 @@ public class OpenProjectActionListener implements ActionListener
 	private static class UnmarshallWorker extends
 			SwingWorker<ProjectType, Void>
 	{
-		private QFixMessengerFrame frame;
+		private FixMessengerFrame frame;
 		private File file;
 
-		public UnmarshallWorker(QFixMessengerFrame frame, File file)
+		public UnmarshallWorker(FixMessengerFrame frame, File file)
 		{
 			this.frame = frame;
 			this.file = file;

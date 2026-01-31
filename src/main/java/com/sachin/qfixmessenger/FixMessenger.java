@@ -49,22 +49,22 @@ import com.sachin.fix.xml.GroupsType;
 import com.sachin.fix.xml.HeaderType;
 import com.sachin.fix.xml.MessageType;
 import com.sachin.fix.xml.TrailerType;
-import com.sachin.qfixmessenger.config.QFixMessengerConfig;
+import com.sachin.qfixmessenger.config.FixMessengerConfig;
 import com.sachin.qfixmessenger.quickfix.ComponentHelper;
-import com.sachin.qfixmessenger.quickfix.QFixMessengerApplication;
-import com.sachin.qfixmessenger.quickfix.parser.QFixDictionaryParser;
-import com.sachin.qfixmessenger.quickfix.util.QFixUtil;
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.quickfix.FixMessengerApplication;
+import com.sachin.qfixmessenger.quickfix.parser.QuickFixDictionaryParser;
+import com.sachin.qfixmessenger.quickfix.util.FixUtil;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 
 /**
  * QuickFIX Messenger main application
  * 
 
  */
-public class QFixMessenger
+public class FixMessenger
 {
 	private static final Logger logger = LoggerFactory
-			.getLogger(QFixMessenger.class);
+			.getLogger(FixMessenger.class);
 	private static final CountDownLatch shutdownLatch = new CountDownLatch(1);
 
 	public static void main(String[] args) throws Exception
@@ -109,10 +109,10 @@ public class QFixMessenger
 					SessionSettings settings = new SessionSettings(inputStream);
 					inputStream.close();
 
-					QFixMessenger messenger = new QFixMessenger(configFileName,
+					FixMessenger messenger = new FixMessenger(configFileName,
 							settings);
 					messenger.logon();
-					QFixMessengerFrame.launch(messenger);
+					FixMessengerFrame.launch(messenger);
 
 					shutdownLatch.await();
 					logger.info("Shutting down at " + new Date() + "...");
@@ -131,7 +131,7 @@ public class QFixMessenger
 			}
 		} else
 		{
-			System.out.println("Usage: QFixMessenger <app cfg file>"
+			System.out.println("Usage: FixMessenger <app cfg file>"
 					+ " <quickfix cfg file>");
 			System.exit(0);
 		}
@@ -160,11 +160,11 @@ public class QFixMessenger
 		}
 	}
 
-	private final QFixMessengerConfig config;
+	private final FixMessengerConfig config;
 
 	private final FixDictionaryParser parser;
 
-	private final QFixMessengerApplication application;
+	private final FixMessengerApplication application;
 
 	private final Connector connector;
 
@@ -172,17 +172,17 @@ public class QFixMessenger
 
 	private JAXBContext jaxbContext;
 
-	private QFixMessenger(String configFileName, SessionSettings settings)
+	private FixMessenger(String configFileName, SessionSettings settings)
 			throws ConfigError, IOException
 	{
 		// Load application configuration
-		config = new QFixMessengerConfig(configFileName);
+		config = new FixMessengerConfig(configFileName);
 
 		// Create the dictionary parser
-		parser = new QFixDictionaryParser(config.getNoOfParserThreads());
+		parser = new QuickFixDictionaryParser(config.getNoOfParserThreads());
 
 		// Create the QuickFIX application
-		application = new QFixMessengerApplication(settings);
+		application = new FixMessengerApplication(settings);
 
 		// Initialise the factories
 		MessageStoreFactory messageStoreFactory = new FileStoreFactory(settings);
@@ -227,7 +227,7 @@ public class QFixMessenger
 	 * 
 	 * @return the QuickFIX application
 	 */
-	public QFixMessengerApplication getApplication()
+	public FixMessengerApplication getApplication()
 	{
 		return application;
 	}
@@ -237,7 +237,7 @@ public class QFixMessenger
 	 * 
 	 * @return the QuickFIX configuration
 	 */
-	public QFixMessengerConfig getConfig()
+	public FixMessengerConfig getConfig()
 	{
 		return config;
 	}
@@ -333,16 +333,16 @@ public class QFixMessenger
 	 * @param xmlMessageType
 	 *            an XML Message
 	 * @return whether the message was sent or not
-	 * @throws QFixMessengerException
+	 * @throws FixMessengerException
 	 */
 	public boolean sendXmlMessage(MessageType xmlMessageType)
-			throws QFixMessengerException
+			throws FixMessengerException
 	{
 		Session session = null;
 		List<SessionID> sessionIds = connector.getSessions();
 		for (SessionID sessionId : sessionIds)
 		{
-			if (QFixUtil.getSessionName(sessionId).equals(
+			if (FixUtil.getSessionName(sessionId).equals(
 					xmlMessageType.getSession().getName()))
 			{
 				session = Session.lookupSession(sessionId);
@@ -360,7 +360,7 @@ public class QFixMessenger
 				if (xmlMessageType.getSession().getAppVersionId() != null)
 				{
 					ApplVerID applVerID = new ApplVerID(
-							QFixMessengerConstants.APPVER_ID_MAP
+							FixMessengerConstants.APPVER_ID_MAP
 									.get(xmlMessageType.getSession()
 											.getAppVersionId()));
 					message.getHeader().setField(applVerID);
@@ -425,12 +425,12 @@ public class QFixMessenger
 				return sendQFixMessage(message, session);
 			} else
 			{
-				throw new QFixMessengerException("Session not logged on: "
+				throw new FixMessengerException("Session not logged on: "
 						+ xmlMessageType.getSession().getName());
 			}
 		} else
 		{
-			throw new QFixMessengerException("Unrecognized session: "
+			throw new FixMessengerException("Unrecognized session: "
 					+ xmlMessageType.getSession().getName());
 		}
 	}

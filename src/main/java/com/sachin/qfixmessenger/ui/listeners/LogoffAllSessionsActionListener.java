@@ -8,13 +8,13 @@ import javax.swing.JOptionPane;
 import quickfix.Session;
 import quickfix.SessionID;
 
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 
 public class LogoffAllSessionsActionListener implements ActionListener
 {
-	private QFixMessengerFrame frame;
+	private FixMessengerFrame frame;
 
-	public LogoffAllSessionsActionListener(QFixMessengerFrame frame)
+	public LogoffAllSessionsActionListener(FixMessengerFrame frame)
 	{
 		this.frame = frame;
 	}

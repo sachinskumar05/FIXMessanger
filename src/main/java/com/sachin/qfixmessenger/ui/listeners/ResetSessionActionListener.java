@@ -10,18 +10,18 @@ import org.slf4j.LoggerFactory;
 
 import quickfix.Session;
 
-import com.sachin.qfixmessenger.ui.QFixMessengerFrame;
+import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 
 public class ResetSessionActionListener implements ActionListener
 {
 	private static final Logger logger = LoggerFactory
 			.getLogger(ResetSessionActionListener.class);
 
-	private QFixMessengerFrame frame;
+	private FixMessengerFrame frame;
 
 	private Session session;
 
-	public ResetSessionActionListener(QFixMessengerFrame frame, Session session)
+	public ResetSessionActionListener(FixMessengerFrame frame, Session session)
 	{
 		this.frame = frame;
 		this.session = session;
