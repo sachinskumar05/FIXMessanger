@@ -5,8 +5,8 @@ apply plugin: 'eclipse'
 def generateSourceDir = new File("${project.buildDir}/gen-src/main/java")
 
 version             = '2.1-SNAPSHOT'
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
+sourceCompatibility = '25'
+targetCompatibility = '25'
 
 application {
     mainClass = "com.sachin.qfixmessenger.FixMessenger"
