@@ -25,9 +25,9 @@ import org.apache.log4j.Logger;
 public class LogfileDialog extends JDialog
 {
 
-\t@java.io.Serial
-\tprivate static final long serialVersionUID = -1373316797900491533L;
-
+	
+	 @java.io.Serial
+	 private static final long serialVersionUID = -1373316797900491533L;
 	private static final Logger logger = Logger.getLogger(LogfileDialog.class);
 
 	private final FixMessengerFrame frame;
@@ -137,4 +137,6 @@ public class LogfileDialog extends JDialog
 	}
 
 }
+
+
 

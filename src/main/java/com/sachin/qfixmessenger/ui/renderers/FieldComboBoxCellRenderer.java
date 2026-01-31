@@ -11,9 +11,9 @@ import com.sachin.qfixmessenger.util.StringUtil;
 
 public class FieldComboBoxCellRenderer extends DefaultListCellRenderer
 {
-\t@java.io.Serial
-\tprivate static final long serialVersionUID = 3395233974501496236L;
-
+	
+	 @java.io.Serial
+	 private static final long serialVersionUID = 3395233974501496236L;
 	@Override
 	public Component getListCellRendererComponent(JList<?> list, Object value,
 			int index, boolean isSelected, boolean cellHasFocus)
@@ -37,4 +37,6 @@ public class FieldComboBoxCellRenderer extends DefaultListCellRenderer
 		return label;
 	}
 }
+
+
 

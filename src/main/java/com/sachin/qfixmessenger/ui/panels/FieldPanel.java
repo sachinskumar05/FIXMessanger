@@ -37,9 +37,9 @@ import com.sachin.qfixmessenger.util.StringUtil;
 public class FieldPanel extends
 		AbstractMemberPanel<Field, StringField, com.sachin.fix.xml.FieldType>
 {
-\t@java.io.Serial
-\tprivate static final long serialVersionUID = -8397965355420860765L;
-
+	
+	 @java.io.Serial
+	 private static final long serialVersionUID = -8397965355420860765L;
 	private static final FieldValue EMPTY_FIELD_VALUE = new FieldValue("", "");
 
 	private final boolean isRequired;
@@ -299,4 +299,6 @@ public class FieldPanel extends
 		}
 	}
 }
+
+
 

@@ -22,9 +22,9 @@ import com.sachin.qfixmessenger.ui.util.IconBuilder;
 
 public class ProjectTreeCellRenderer extends DefaultTreeCellRenderer
 {
-\t@java.io.Serial
-\tprivate static final long serialVersionUID = -435212244413010769L;
-
+	
+	 @java.io.Serial
+	 private static final long serialVersionUID = -435212244413010769L;
 	private final FixMessengerFrame frame;
 
 	public ProjectTreeCellRenderer(FixMessengerFrame frame)
@@ -154,4 +154,6 @@ public class ProjectTreeCellRenderer extends DefaultTreeCellRenderer
 		return label;
 	}
 }
+
+
 

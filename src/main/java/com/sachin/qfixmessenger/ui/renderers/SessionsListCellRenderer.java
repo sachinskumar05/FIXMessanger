@@ -13,9 +13,9 @@ import com.sachin.qfixmessenger.quickfix.util.FixUtil;
 
 public class SessionsListCellRenderer extends DefaultListCellRenderer
 {
-\t@java.io.Serial
-\tprivate static final long serialVersionUID = 3103171726329501169L;
-
+	
+	 @java.io.Serial
+	 private static final long serialVersionUID = 3103171726329501169L;
 	@Override
 	public Component getListCellRendererComponent(JList<?> list, Object value,
 			int index, boolean isSelected, boolean cellHasFocus)
@@ -42,4 +42,6 @@ public class SessionsListCellRenderer extends DefaultListCellRenderer
 		return label;
 	}
 }
+
+
 

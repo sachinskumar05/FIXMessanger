@@ -77,6 +77,10 @@ public class QuickFixDictionaryParser implements FixDictionaryParser
 		} catch (FileNotFoundException ex)
 		{
 			throw new FixParsingException("File " + fileName + " not foud!", ex);
+		} catch (IOException ex)
+		{
+			throw new FixParsingException("Unable to read file " + fileName + "!",
+					ex);
 		}
 	}
 
@@ -177,7 +181,7 @@ public class QuickFixDictionaryParser implements FixDictionaryParser
 			firstTag = dictionary.getFields().get(firstTagName);
 		}
 
-		Map<MemberOrder, Boolean> members = parseMembers(dictionary,
+		SortedMap<MemberOrder, Boolean> members = parseMembers(dictionary,
 				componentElement);
 
 		return new Component(name, members, firstTag);
@@ -291,7 +295,7 @@ public class QuickFixDictionaryParser implements FixDictionaryParser
 		String groupName = groupElement.getAttributeValue("name");
 
 		Field field = dictionary.getFields().get(groupName);
-		Map<MemberOrder, Boolean> members = parseMembers(dictionary,
+		SortedMap<MemberOrder, Boolean> members = parseMembers(dictionary,
 				groupElement);
 
 		Member firstMember = null;
@@ -325,7 +329,7 @@ public class QuickFixDictionaryParser implements FixDictionaryParser
 	private void parseHeader(FixDictionary dictionary, Element headerElement)
 			throws FixParsingException
 	{
-		Map<MemberOrder, Boolean> members = parseMembers(dictionary,
+		SortedMap<MemberOrder, Boolean> members = parseMembers(dictionary,
 				headerElement);
 		dictionary.setHeader(new Header(members));
 	}
@@ -411,7 +415,7 @@ public class QuickFixDictionaryParser implements FixDictionaryParser
 		String msgType = messageElement.getAttributeValue("msgtype");
 		MessageCategory category = MessageCategory.valueOf(messageElement
 				.getAttributeValue("msgcat"));
-		Map<MemberOrder, Boolean> members = parseMembers(dictionary,
+		SortedMap<MemberOrder, Boolean> members = parseMembers(dictionary,
 				messageElement);
 
 		return new Message(name, msgType, category, members);
@@ -475,7 +479,7 @@ public class QuickFixDictionaryParser implements FixDictionaryParser
 	private void parseTrailer(FixDictionary dictionary, Element trailerElement)
 			throws FixParsingException
 	{
-		Map<MemberOrder, Boolean> members = parseMembers(dictionary,
+		SortedMap<MemberOrder, Boolean> members = parseMembers(dictionary,
 				trailerElement);
 		dictionary.setTrailer(new Trailer(members));
 	}

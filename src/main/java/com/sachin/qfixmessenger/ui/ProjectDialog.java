@@ -26,9 +26,9 @@ import com.sachin.qfixmessenger.ui.util.IconBuilder;
  */
 public class ProjectDialog extends JDialog
 {
-\t@java.io.Serial
-\tprivate static final long serialVersionUID = -1653220967743151936L;
-
+	
+	 @java.io.Serial
+	 private static final long serialVersionUID = -1653220967743151936L;
 	private final FixMessengerFrame frame;
 
 	private final ProjectType xmlProjectType;
@@ -130,4 +130,6 @@ public class ProjectDialog extends JDialog
 		setLocation((x > 0) ? x : 0, y);
 	}
 }
+
+
 

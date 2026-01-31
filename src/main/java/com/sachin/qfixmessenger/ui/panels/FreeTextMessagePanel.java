@@ -24,9 +24,9 @@ import com.sachin.qfixmessenger.ui.util.TitledBorderUtil;
 public class FreeTextMessagePanel extends JPanel implements
 		MemberPanel<Message, quickfix.Message, MessageType>
 {
-\t@java.io.Serial
-\tprivate static final long serialVersionUID = -7614167852761624847L;
-
+	
+	 @java.io.Serial
+	 private static final long serialVersionUID = -7614167852761624847L;
 	private final FixMessenger messenger;
 
 	private final Session session;
@@ -148,4 +148,6 @@ public class FreeTextMessagePanel extends JPanel implements
 		add(messageTextScrollPane, BorderLayout.NORTH);
 	}
 }
+
+
 

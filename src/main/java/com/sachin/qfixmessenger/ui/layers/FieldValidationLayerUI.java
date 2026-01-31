@@ -15,9 +15,9 @@ import com.sachin.qfixmessenger.ui.util.IconBuilder;
 
 public class FieldValidationLayerUI extends LayerUI<JFormattedTextField>
 {
-\t@java.io.Serial
-\tprivate static final long serialVersionUID = 8928847899297723141L;
-
+	
+	 @java.io.Serial
+	 private static final long serialVersionUID = 8928847899297723141L;
 	private FixMessengerFrame frame;
 
 	public FieldValidationLayerUI(FixMessengerFrame frame)
@@ -57,4 +57,6 @@ public class FieldValidationLayerUI extends LayerUI<JFormattedTextField>
 		}
 	}
 }
+
+
 
