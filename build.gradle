@@ -5,9 +5,12 @@ apply plugin: 'eclipse'
 def generateSourceDir = new File("${project.buildDir}/gen-src/main/java")
 
 version             = '2.1-SNAPSHOT'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-mainClassName       = "com.jramoyo.qfixmessenger.QFixMessenger"
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+application {
+    mainClass = "com.sachin.qfixmessenger.QFixMessenger"
+}
 
 repositories {
     mavenCentral()
