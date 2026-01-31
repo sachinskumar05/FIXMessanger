@@ -7,8 +7,8 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.Unmarshaller;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.Unmarshaller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,36 +17,31 @@ import com.sachin.fix.xml.ProjectType;
 import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 import com.sachin.qfixmessenger.ui.FixMessengerFrame.XmlFileFilter;
 
-public class OpenProjectActionListener implements ActionListener
-{
+public class OpenProjectActionListener implements ActionListener {
 	private static final Logger logger = LoggerFactory
 			.getLogger(OpenProjectActionListener.class);
 
 	private FixMessengerFrame frame;
 
-	public OpenProjectActionListener(FixMessengerFrame frame)
-	{
+	public OpenProjectActionListener(FixMessengerFrame frame) {
 		this.frame = frame;
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		if (frame.getActiveXmlProject() != null)
-		{
+	public void actionPerformed(ActionEvent e) {
+		if (frame.getActiveXmlProject() != null) {
 			int choice = JOptionPane.showConfirmDialog(frame,
 					"Do you want to save \""
 							+ frame.getActiveXmlProject().getName() + "\"?",
 					"Save Current Project", JOptionPane.YES_NO_CANCEL_OPTION);
-			switch (choice)
-			{
-			case JOptionPane.NO_OPTION:
-				break;
-			case JOptionPane.YES_OPTION:
-				frame.marshallActiveXmlProject();
-				break;
-			case JOptionPane.CANCEL_OPTION:
-				return;
+			switch (choice) {
+				case JOptionPane.NO_OPTION:
+					break;
+				case JOptionPane.YES_OPTION:
+					frame.marshallActiveXmlProject();
+					break;
+				case JOptionPane.CANCEL_OPTION:
+					return;
 			}
 		}
 
@@ -55,14 +50,11 @@ public class OpenProjectActionListener implements ActionListener
 		jFileChooser.setDialogTitle("Open Project");
 
 		int choice = jFileChooser.showOpenDialog(frame);
-		if (choice == JFileChooser.APPROVE_OPTION)
-		{
+		if (choice == JFileChooser.APPROVE_OPTION) {
 			File file = jFileChooser.getSelectedFile();
-			try
-			{
+			try {
 				new UnmarshallWorker(frame, file).execute();
-			} catch (Exception ex)
-			{
+			} catch (Exception ex) {
 				logger.error(
 						"A JAXBException occurred while importing message.", ex);
 				JOptionPane.showMessageDialog(frame, "Unable to open file!",
@@ -72,20 +64,17 @@ public class OpenProjectActionListener implements ActionListener
 	}
 
 	private static class UnmarshallWorker extends
-			SwingWorker<ProjectType, Void>
-	{
+			SwingWorker<ProjectType, Void> {
 		private FixMessengerFrame frame;
 		private File file;
 
-		public UnmarshallWorker(FixMessengerFrame frame, File file)
-		{
+		public UnmarshallWorker(FixMessengerFrame frame, File file) {
 			this.frame = frame;
 			this.file = file;
 		}
 
 		@Override
-		protected ProjectType doInBackground() throws Exception
-		{
+		protected ProjectType doInBackground() throws Exception {
 			Unmarshaller unmarshaller = frame.getMessenger().getJaxbContext()
 					.createUnmarshaller();
 			@SuppressWarnings("unchecked")
@@ -95,15 +84,12 @@ public class OpenProjectActionListener implements ActionListener
 		}
 
 		@Override
-		protected void done()
-		{
+		protected void done() {
 			ProjectType xmlProjectType;
-			try
-			{
+			try {
 				xmlProjectType = get();
 				frame.setActiveXmlProject(xmlProjectType, file);
-			} catch (Exception ex)
-			{
+			} catch (Exception ex) {
 				logger.error("An Exception occurred while importing message.",
 						ex);
 				JOptionPane.showMessageDialog(frame, "Unable to open file!",

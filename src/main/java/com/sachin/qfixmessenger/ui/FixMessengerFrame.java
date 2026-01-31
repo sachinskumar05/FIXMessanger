@@ -59,8 +59,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileFilter;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.Marshaller;
+import jakarta.xml.bind.JAXBElement;
+import jakarta.xml.bind.Marshaller;
 import javax.xml.namespace.QName;
 
 import org.slf4j.Logger;
@@ -112,11 +112,10 @@ import com.sachin.qfixmessenger.ui.util.IconBuilder;
 /**
  * Main application frame
  * 
-
-
+ * 
+ * 
  */
-public class FixMessengerFrame extends JFrame
-{
+public class FixMessengerFrame extends JFrame {
 	private static final long serialVersionUID = 7906369617506618477L;
 
 	private static final Logger logger = LoggerFactory
@@ -135,20 +134,16 @@ public class FixMessengerFrame extends JFrame
 	/**
 	 * Launches the frame
 	 */
-	public static void launch(FixMessenger messenger)
-	{
-		class Launcher implements Runnable
-		{
+	public static void launch(FixMessenger messenger) {
+		class Launcher implements Runnable {
 			private final FixMessenger messenger;
 
-			private Launcher(FixMessenger messenger)
-			{
+			private Launcher(FixMessenger messenger) {
 				this.messenger = messenger;
 			}
 
 			@Override
-			public void run()
-			{
+			public void run() {
 				FixMessengerFrame frame = new FixMessengerFrame(messenger);
 				frame.initFrame();
 				frame.initComponents();
@@ -253,8 +248,7 @@ public class FixMessengerFrame extends JFrame
 
 	private LogfileDialog logfileDialog;
 
-	private FixMessengerFrame(FixMessenger messenger)
-	{
+	private FixMessengerFrame(FixMessenger messenger) {
 		super();
 		this.messenger = messenger;
 
@@ -265,12 +259,10 @@ public class FixMessengerFrame extends JFrame
 				.getFixT11DictionaryLocation();
 
 		FixDictionary dictionary = null;
-		try
-		{
+		try {
 			dictionary = parser.parse(getClass().getResourceAsStream(
 					fixTDictionaryFile));
-		} catch (FixParsingException ex)
-		{
+		} catch (FixParsingException ex) {
 			logger.error("Unable to parse FIXT 1.1 Dictionary!", ex);
 			System.exit(1);
 		}
@@ -281,27 +273,24 @@ public class FixMessengerFrame extends JFrame
 	/**
 	 * Disposes the frame and gracefully exits the application
 	 */
-	public void close()
-	{
+	public void close() {
 		int choice = JOptionPane.showConfirmDialog(this,
 				"Exit QuickFIX Messenger?", "Quit", JOptionPane.YES_NO_OPTION);
-		if (choice == JOptionPane.YES_OPTION)
-		{
-			if (activeXmlProject != null)
-			{
+		if (choice == JOptionPane.YES_OPTION) {
+			if (activeXmlProject != null) {
 				choice = JOptionPane.showConfirmDialog(this,
 						"Do you want to save \"" + activeXmlProject.getName()
-								+ "\"?", "Save Current Project",
+								+ "\"?",
+						"Save Current Project",
 						JOptionPane.YES_NO_CANCEL_OPTION);
-				switch (choice)
-				{
-				case JOptionPane.NO_OPTION:
-					break;
-				case JOptionPane.YES_OPTION:
-					marshallActiveXmlProject();
-					break;
-				case JOptionPane.CANCEL_OPTION:
-					return;
+				switch (choice) {
+					case JOptionPane.NO_OPTION:
+						break;
+					case JOptionPane.YES_OPTION:
+						marshallActiveXmlProject();
+						break;
+					case JOptionPane.CANCEL_OPTION:
+						return;
 				}
 			}
 			dispose();
@@ -309,20 +298,16 @@ public class FixMessengerFrame extends JFrame
 		}
 	}
 
-	public void displayMainPanel()
-	{
-		if (messagePanel != null)
-		{
+	public void displayMainPanel() {
+		if (messagePanel != null) {
 			memberPanelCache.encacheMembers(messagePanel.getHeaderMembers());
 			memberPanelCache.encacheMembers(messagePanel.getBodyMembers());
 			memberPanelCache.encacheMembers(messagePanel.getTrailerMembers());
 		}
 
 		JPanel mainPanel;
-		if (activeMessage != null)
-		{
-			if (!activeMessage.equals(freeTextMessage))
-			{
+		if (activeMessage != null) {
+			if (!activeMessage.equals(freeTextMessage)) {
 				MessagePanelBuilder builder = new MessagePanelBuilder();
 				builder.setFrame(this);
 				builder.setSession(sessionsList.getSelectedValue());
@@ -338,16 +323,14 @@ public class FixMessengerFrame extends JFrame
 
 				messagePanel = builder.build();
 				mainPanel = messagePanel;
-			} else
-			{
+			} else {
 				freeTextMessagePanel = new FreeTextMessagePanel(messenger,
 						sessionsList.getSelectedValue(),
 						(String) appVersionsComboBox.getSelectedItem(),
 						isFixTSession);
 				mainPanel = freeTextMessagePanel;
 			}
-		} else
-		{
+		} else {
 			mainPanel = blankPanel;
 		}
 
@@ -359,13 +342,11 @@ public class FixMessengerFrame extends JFrame
 	 * 
 	 * @return the active XML ProjectType
 	 */
-	public ProjectType getActiveXmlProject()
-	{
+	public ProjectType getActiveXmlProject() {
 		return activeXmlProject;
 	}
 
-	public MemberPanelCache getMemberPanelCache()
-	{
+	public MemberPanelCache getMemberPanelCache() {
 		return memberPanelCache;
 	}
 
@@ -374,8 +355,7 @@ public class FixMessengerFrame extends JFrame
 	 * 
 	 * @return the application instance
 	 */
-	public FixMessenger getMessenger()
-	{
+	public FixMessenger getMessenger() {
 		return messenger;
 	}
 
@@ -384,8 +364,7 @@ public class FixMessengerFrame extends JFrame
 	 * 
 	 * @return the current ProjectFrame instance
 	 */
-	public ProjectDialog getProjectFrame()
-	{
+	public ProjectDialog getProjectFrame() {
 		return projectDialog;
 	}
 
@@ -393,14 +372,11 @@ public class FixMessengerFrame extends JFrame
 	 * Loads an XML MessageType to the UI
 	 * 
 	 * @param xmlMessageType
-	 *            an XML MessageType
+	 *                       an XML MessageType
 	 */
-	public void loadXmlMessage(MessageType xmlMessageType)
-	{
-		if (selectSession(xmlMessageType.getSession()))
-		{
-			if (selectMessage(xmlMessageType))
-			{
+	public void loadXmlMessage(MessageType xmlMessageType) {
+		if (selectSession(xmlMessageType.getSession())) {
+			if (selectMessage(xmlMessageType)) {
 				messagePanel.populateXml(xmlMessageType);
 			}
 		}
@@ -409,23 +385,19 @@ public class FixMessengerFrame extends JFrame
 	/**
 	 * Saves the active XML ProjectType to a file
 	 */
-	public void marshallActiveXmlProject()
-	{
-		if (activeProjectFile == null)
-		{
+	public void marshallActiveXmlProject() {
+		if (activeProjectFile == null) {
 			JFileChooser jFileChooser = new JFileChooser();
 			jFileChooser.setFileFilter(XmlFileFilter.INSTANCE);
 			jFileChooser.setDialogTitle("Save Project");
 			jFileChooser.setSelectedFile(new File("*.xml"));
 
 			int choice = jFileChooser.showSaveDialog(this);
-			if (choice == JFileChooser.APPROVE_OPTION)
-			{
+			if (choice == JFileChooser.APPROVE_OPTION) {
 				activeProjectFile = jFileChooser.getSelectedFile();
 			}
 
-			else if (choice == JFileChooser.CANCEL_OPTION)
-			{
+			else if (choice == JFileChooser.CANCEL_OPTION) {
 				return;
 			}
 		}
@@ -438,18 +410,16 @@ public class FixMessengerFrame extends JFrame
 	 * Saves an XML MessageType to a file
 	 * 
 	 * @param xmlMessageType
-	 *            an XML MessageType
+	 *                       an XML MessageType
 	 */
-	public void marshallXmlMessage(MessageType xmlMessageType)
-	{
+	public void marshallXmlMessage(MessageType xmlMessageType) {
 		JFileChooser jFileChooser = new JFileChooser();
 		jFileChooser.setFileFilter(XmlFileFilter.INSTANCE);
 		jFileChooser.setDialogTitle("Export Message");
 		jFileChooser.setSelectedFile(new File("*.xml"));
 
 		int choice = jFileChooser.showSaveDialog(this);
-		if (choice == JFileChooser.APPROVE_OPTION)
-		{
+		if (choice == JFileChooser.APPROVE_OPTION) {
 			File file = jFileChooser.getSelectedFile();
 			new MarshallMessageTypeWorker(this, xmlMessageType, file).execute();
 		}
@@ -459,28 +429,24 @@ public class FixMessengerFrame extends JFrame
 	 * Sets the active XML ProjectType
 	 * 
 	 * @param xmlProjectType
-	 *            an XML ProjectType
+	 *                       an XML ProjectType
 	 */
 	public void setActiveXmlProject(ProjectType xmlProjectType,
-			File xmlProjectFile)
-	{
+			File xmlProjectFile) {
 		this.activeXmlProject = xmlProjectType;
 		this.activeProjectFile = xmlProjectFile;
-		if (projectDialog != null)
-		{
+		if (projectDialog != null) {
 			projectDialog.dispose();
 			projectDialog = null;
 		}
 
-		if (xmlProjectType != null)
-		{
+		if (xmlProjectType != null) {
 			projectTitle = xmlProjectType.getName();
 			loadFrameTitle();
 			saveProjectMenuItem.setEnabled(true);
 			closeProjectMenuItem.setEnabled(true);
 			launchProjectDialog();
-		} else
-		{
+		} else {
 			projectTitle = EMPTY_PROJECT_NAME;
 			loadFrameTitle();
 			saveProjectMenuItem.setEnabled(false);
@@ -490,8 +456,7 @@ public class FixMessengerFrame extends JFrame
 		updateButtons();
 	}
 
-	private GridBagConstraints createRightPanelConstraints()
-	{
+	private GridBagConstraints createRightPanelConstraints() {
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 
@@ -507,15 +472,13 @@ public class FixMessengerFrame extends JFrame
 		return c;
 	}
 
-	private void initAppVersionsComboBox()
-	{
+	private void initAppVersionsComboBox() {
 		appVersionsComboBox.setEnabled(false);
 		appVersionsComboBox
 				.addActionListener(new AppVersionsComboBoxActionListener(this));
 	}
 
-	private void initBottomPanel()
-	{
+	private void initBottomPanel() {
 		MessagesTableModel messagesTableModel = new MessagesTableModel();
 
 		messagesTable = new JTable(messagesTableModel);
@@ -539,8 +502,7 @@ public class FixMessengerFrame extends JFrame
 		add(bottomPanelScrollPane, BorderLayout.SOUTH);
 	}
 
-	private void initComponents()
-	{
+	private void initComponents() {
 		setLayout(new BorderLayout());
 
 		initMenuBar();
@@ -552,8 +514,7 @@ public class FixMessengerFrame extends JFrame
 		pack();
 	}
 
-	private void initFileMenu()
-	{
+	private void initFileMenu() {
 		fileMenu = new JMenu("File");
 		fileMenu.setMnemonic('F');
 
@@ -630,13 +591,10 @@ public class FixMessengerFrame extends JFrame
 		fileMenu.add(exitMenuItem);
 	}
 
-	private void initFrame()
-	{
-		if (messenger.getConfig().isInitiator())
-		{
+	private void initFrame() {
+		if (messenger.getConfig().isInitiator()) {
 			frameTitle = "QuickFIX Messenger " + VERSION + " (Initiator)";
-		} else
-		{
+		} else {
 			frameTitle = "QuickFIX Messenger " + VERSION + " (Acceptor)";
 		}
 		loadFrameTitle();
@@ -647,8 +605,7 @@ public class FixMessengerFrame extends JFrame
 		setMinimumSize(new Dimension(FRAME_MIN_WIDTH, FRAME_MIN_HEIGHT));
 	}
 
-	private void initHelpMenu()
-	{
+	private void initHelpMenu() {
 		helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic('H');
 
@@ -668,8 +625,7 @@ public class FixMessengerFrame extends JFrame
 		helpMenu.add(aboutMenuItem);
 	}
 
-	private void initLeftPanel()
-	{
+	private void initLeftPanel() {
 		leftPanel = new JPanel();
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 
@@ -732,14 +688,12 @@ public class FixMessengerFrame extends JFrame
 		add(leftPanel, BorderLayout.WEST);
 	}
 
-	private void initMainPanel()
-	{
+	private void initMainPanel() {
 		mainPanelScrollPane = new JScrollPane();
 		add(mainPanelScrollPane, BorderLayout.CENTER);
 	}
 
-	private void initMenuBar()
-	{
+	private void initMenuBar() {
 		menuBar = new JMenuBar();
 
 		initFileMenu();
@@ -755,8 +709,7 @@ public class FixMessengerFrame extends JFrame
 		setJMenuBar(menuBar);
 	}
 
-	private void initMessagesList()
-	{
+	private void initMessagesList() {
 		messagesList.setCellRenderer(new MessagesListCellRenderer());
 		messagesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		messagesList.getSelectionModel().addListSelectionListener(
@@ -772,8 +725,7 @@ public class FixMessengerFrame extends JFrame
 				this));
 	}
 
-	private void initRightPanel()
-	{
+	private void initRightPanel() {
 		rightPanel = new JPanel();
 		rightPanel.setLayout(new BorderLayout());
 
@@ -782,21 +734,16 @@ public class FixMessengerFrame extends JFrame
 		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.Y_AXIS));
 
 		requiredCheckBox = new JCheckBox("Required Only", true);
-		requiredCheckBox.addItemListener(new ItemListener()
-		{
+		requiredCheckBox.addItemListener(new ItemListener() {
 			@Override
-			public void itemStateChanged(ItemEvent e)
-			{
-				if (e.getStateChange() == ItemEvent.SELECTED)
-				{
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
 					isRequiredOnly = true;
-				} else
-				{
+				} else {
 					isRequiredOnly = false;
 				}
 
-				if (logger.isDebugEnabled())
-				{
+				if (logger.isDebugEnabled()) {
 					logger.debug("Selected isRequiredOnly = " + isRequiredOnly);
 				}
 				displayMainPanel();
@@ -804,21 +751,16 @@ public class FixMessengerFrame extends JFrame
 		});
 
 		modifyHeaderCheckBox = new JCheckBox("Modify Header", false);
-		modifyHeaderCheckBox.addItemListener(new ItemListener()
-		{
+		modifyHeaderCheckBox.addItemListener(new ItemListener() {
 			@Override
-			public void itemStateChanged(ItemEvent e)
-			{
-				if (e.getStateChange() == ItemEvent.SELECTED)
-				{
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
 					isModifyHeader = true;
-				} else
-				{
+				} else {
 					isModifyHeader = false;
 				}
 
-				if (logger.isDebugEnabled())
-				{
+				if (logger.isDebugEnabled()) {
 					logger.debug("Selected isModifyHeader = " + isModifyHeader);
 				}
 				displayMainPanel();
@@ -826,21 +768,16 @@ public class FixMessengerFrame extends JFrame
 		});
 
 		modifyTrailerCheckBox = new JCheckBox("Modify Trailer", false);
-		modifyTrailerCheckBox.addItemListener(new ItemListener()
-		{
+		modifyTrailerCheckBox.addItemListener(new ItemListener() {
 			@Override
-			public void itemStateChanged(ItemEvent e)
-			{
-				if (e.getStateChange() == ItemEvent.SELECTED)
-				{
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
 					isModifyTrailer = true;
-				} else
-				{
+				} else {
 					isModifyTrailer = false;
 				}
 
-				if (logger.isDebugEnabled())
-				{
+				if (logger.isDebugEnabled()) {
 					logger.debug("Selected isModifyTrailer = "
 							+ isModifyTrailer);
 				}
@@ -857,21 +794,16 @@ public class FixMessengerFrame extends JFrame
 
 		previewBeforeSendCheckBox = new JCheckBox("Preview Before Sending",
 				false);
-		previewBeforeSendCheckBox.addItemListener(new ItemListener()
-		{
+		previewBeforeSendCheckBox.addItemListener(new ItemListener() {
 			@Override
-			public void itemStateChanged(ItemEvent e)
-			{
-				if (e.getStateChange() == ItemEvent.SELECTED)
-				{
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) {
 					isPreviewBeforeSend = true;
-				} else
-				{
+				} else {
 					isPreviewBeforeSend = false;
 				}
 
-				if (logger.isDebugEnabled())
-				{
+				if (logger.isDebugEnabled()) {
 					logger.debug("Selected isPreviewBeforeSend = "
 							+ isPreviewBeforeSend);
 				}
@@ -909,8 +841,7 @@ public class FixMessengerFrame extends JFrame
 		add(rightPanel, BorderLayout.EAST);
 	}
 
-	private void initSessionMenu()
-	{
+	private void initSessionMenu() {
 		sessionMenu = new JMenu("Session");
 		sessionMenu.setMnemonic('S');
 
@@ -918,19 +849,16 @@ public class FixMessengerFrame extends JFrame
 		JCheckBoxMenuItem logonMenuItem;
 		JMenuItem resetMenuItem;
 		JMenuItem statusMenuItem;
-		for (SessionID sessionId : messenger.getConnector().getSessions())
-		{
+		for (SessionID sessionId : messenger.getConnector().getSessions()) {
 			Session session = Session.lookupSession(sessionId);
 			currentSessionMenu = new JMenu(FixUtil.getSessionName(sessionId));
 
 			logonMenuItem = new JCheckBoxMenuItem("Logon");
 			logonMenuItem
 					.addItemListener(new LogonSessionItemListener(session));
-			if (session.isLoggedOn())
-			{
+			if (session.isLoggedOn()) {
 				logonMenuItem.setSelected(true);
-			} else
-			{
+			} else {
 				logonMenuItem.setSelected(false);
 			}
 			session.addStateListener(new LogonSessionMenuItemSessionStateListener(
@@ -986,25 +914,21 @@ public class FixMessengerFrame extends JFrame
 		sessionMenu.add(resetAllSessionsMenuItem);
 	}
 
-	private void initSessionsList()
-	{
+	private void initSessionsList() {
 		sessionsList = new JList<Session>();
 
 		List<SessionID> sessionIds = messenger.getConnector().getSessions();
 		List<Session> sessions = new ArrayList<Session>(sessionIds.size());
-		for (SessionID sessionId : sessionIds)
-		{
+		for (SessionID sessionId : sessionIds) {
 			Session session = Session.lookupSession(sessionId);
 			session.addStateListener(new SessionsListSessionStateListener(
 					sessionsList));
 			sessions.add(session);
 		}
 
-		Collections.sort(sessions, new Comparator<Session>()
-		{
+		Collections.sort(sessions, new Comparator<Session>() {
 			@Override
-			public int compare(Session o1, Session o2)
-			{
+			public int compare(Session o1, Session o2) {
 				return o1.getSessionID().getBeginString()
 						.compareTo(o2.getSessionID().getBeginString());
 			}
@@ -1018,8 +942,7 @@ public class FixMessengerFrame extends JFrame
 		sessionsList.addMouseListener(new SessionsListMouseAdapter(this));
 	}
 
-	private void initWindowMenu()
-	{
+	private void initWindowMenu() {
 		windowMenu = new JMenu("Window");
 		windowMenu.setMnemonic('W');
 
@@ -1046,44 +969,35 @@ public class FixMessengerFrame extends JFrame
 		windowMenu.add(projectWindowMenuItem);
 	}
 
-	private void launchProjectDialog()
-	{
-		if (projectDialog == null || !projectDialog.isDisplayable())
-		{
+	private void launchProjectDialog() {
+		if (projectDialog == null || !projectDialog.isDisplayable()) {
 			projectDialog = new ProjectDialog(this, activeXmlProject);
 			projectDialog.launch();
-		} else
-		{
+		} else {
 			projectDialog.requestFocus();
 		}
 	}
 
-	private void launchLogfileDialog()
-	{
+	private void launchLogfileDialog() {
 		String beginStr = sessionsList.getSelectedValue().getSessionID()
 				.getBeginString();
 
-		if (logfileDialog == null || !logfileDialog.isDisplayable())
-		{
+		if (logfileDialog == null || !logfileDialog.isDisplayable()) {
 
 			logfileDialog = new LogfileDialog(this);
 			logfileDialog.launch(beginStr);
-		} else
-		{
+		} else {
 			logfileDialog.loadLogfile(beginStr);
 			logfileDialog.requestFocus();
 		}
 	}
 
-	private void loadFrameTitle()
-	{
+	private void loadFrameTitle() {
 		setTitle(frameTitle + " - " + projectTitle);
 	}
 
-	private void loadMessagesList()
-	{
-		if (activeDictionary != null)
-		{
+	private void loadMessagesList() {
+		if (activeDictionary != null) {
 			List<Message> messages = new ArrayList<Message>();
 			messages.addAll(activeDictionary.getMessages().values());
 			Collections.sort(messages);
@@ -1094,16 +1008,13 @@ public class FixMessengerFrame extends JFrame
 
 			DefaultListModel<Message> listModel = recentMessagesMap
 					.get(activeDictionary.getFullVersion());
-			if (listModel != null)
-			{
+			if (listModel != null) {
 				recentMessagesListModel = listModel;
-			} else
-			{
+			} else {
 				recentMessagesListModel = new DefaultListModel<>();
 			}
 
-		} else
-		{
+		} else {
 			recentMessagesListModel = new DefaultListModel<Message>();
 			messagesList.setListData(new Message[] {});
 		}
@@ -1115,8 +1026,7 @@ public class FixMessengerFrame extends JFrame
 	/*
 	 * Position the frame at the center of the screen
 	 */
-	private void positionFrame()
-	{
+	private void positionFrame() {
 		Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
 		Dimension screenSize = defaultToolkit.getScreenSize();
 		int screenHeight = screenSize.height;
@@ -1125,42 +1035,33 @@ public class FixMessengerFrame extends JFrame
 		setLocation(screenWidth / 4, screenHeight / 4);
 	}
 
-	private boolean selectMessage(MessageType xmlMessageType)
-	{
+	private boolean selectMessage(MessageType xmlMessageType) {
 		boolean isRecognizedMessage = false;
 		ListModel<Message> listModel = messagesList.getModel();
-		for (int i = 0; i < listModel.getSize(); i++)
-		{
+		for (int i = 0; i < listModel.getSize(); i++) {
 			Message message = listModel.getElementAt(i);
-			if (message.getMsgType().equals(xmlMessageType.getMsgType()))
-			{
+			if (message.getMsgType().equals(xmlMessageType.getMsgType())) {
 				messagesList.setSelectedIndex(i);
 
-				if (xmlMessageType.isIsRequiredOnly())
-				{
+				if (xmlMessageType.isIsRequiredOnly()) {
 					requiredCheckBox.setSelected(true);
-				} else
-				{
+				} else {
 					requiredCheckBox.setSelected(false);
 				}
 
 				if (xmlMessageType.getHeader() != null
 						&& xmlMessageType.getHeader().getField() != null
-						&& xmlMessageType.getHeader().getField().isEmpty())
-				{
+						&& xmlMessageType.getHeader().getField().isEmpty()) {
 					modifyHeaderCheckBox.setSelected(true);
-				} else
-				{
+				} else {
 					modifyHeaderCheckBox.setSelected(false);
 				}
 
 				if (xmlMessageType.getTrailer() != null
 						&& xmlMessageType.getTrailer().getField() != null
-						&& xmlMessageType.getTrailer().getField().isEmpty())
-				{
+						&& xmlMessageType.getTrailer().getField().isEmpty()) {
 					modifyTrailerCheckBox.setSelected(true);
-				} else
-				{
+				} else {
 					modifyTrailerCheckBox.setSelected(false);
 				}
 
@@ -1168,15 +1069,15 @@ public class FixMessengerFrame extends JFrame
 			}
 		}
 
-		if (!isRecognizedMessage)
-		{
+		if (!isRecognizedMessage) {
 			logger.error("Unrecognized message: ", xmlMessageType.getName()
 					+ " (" + xmlMessageType.getMsgType() + ")");
 			JOptionPane.showMessageDialog(
 					this,
 					"Unable to import message from unrecognized message: "
 							+ xmlMessageType.getName() + " ("
-							+ xmlMessageType.getMsgType() + ")", "Error",
+							+ xmlMessageType.getMsgType() + ")",
+					"Error",
 					JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
@@ -1184,43 +1085,34 @@ public class FixMessengerFrame extends JFrame
 		return true;
 	}
 
-	private boolean selectSession(SessionType xmlSessionType)
-	{
+	private boolean selectSession(SessionType xmlSessionType) {
 		boolean isRecognizedSession = false;
 		ListModel<Session> listModel = sessionsList.getModel();
-		for (int i = 0; i < listModel.getSize(); i++)
-		{
+		for (int i = 0; i < listModel.getSize(); i++) {
 			Session session = listModel.getElementAt(i);
 			if (FixUtil.getSessionName(session.getSessionID()).equals(
-					xmlSessionType.getName()))
-			{
+					xmlSessionType.getName())) {
 				sessionsList.setSelectedIndex(i);
 				isRecognizedSession = true;
 			}
 		}
 
-		if (isRecognizedSession)
-		{
-			if (isFixTSession)
-			{
+		if (isRecognizedSession) {
+			if (isFixTSession) {
 				if (xmlSessionType.getAppVersionId() != null
-						&& !xmlSessionType.getAppVersionId().isEmpty())
-				{
+						&& !xmlSessionType.getAppVersionId().isEmpty()) {
 					boolean isRecognizedAppVersionId = false;
 					ComboBoxModel<String> comboBoxModel = appVersionsComboBox
 							.getModel();
-					for (int i = 0; i < comboBoxModel.getSize(); i++)
-					{
+					for (int i = 0; i < comboBoxModel.getSize(); i++) {
 						if (comboBoxModel.getElementAt(i).equals(
-								xmlSessionType.getAppVersionId()))
-						{
+								xmlSessionType.getAppVersionId())) {
 							appVersionsComboBox.setSelectedIndex(i);
 							isRecognizedAppVersionId = true;
 						}
 					}
 
-					if (!isRecognizedAppVersionId)
-					{
+					if (!isRecognizedAppVersionId) {
 						logger.error("Unrecognized AppVersionId: "
 								+ xmlSessionType.getAppVersionId());
 						JOptionPane.showMessageDialog(
@@ -1230,20 +1122,19 @@ public class FixMessengerFrame extends JFrame
 								"Error", JOptionPane.ERROR_MESSAGE);
 						return false;
 					}
-				} else
-				{
+				} else {
 					logger.error("FIXT session ", xmlSessionType.getName()
 							+ " has no AppVersionId");
 					JOptionPane.showMessageDialog(this,
 							"Unable to find AppVersionId for FIXT session: "
-									+ xmlSessionType.getName(), "Error",
+									+ xmlSessionType.getName(),
+							"Error",
 							JOptionPane.ERROR_MESSAGE);
 					return false;
 				}
 			}
 
-		} else
-		{
+		} else {
 			logger.error("Unrecognized session: ", xmlSessionType.getName());
 			JOptionPane.showMessageDialog(this, "Unable to"
 					+ " import message from unrecognized session: "
@@ -1255,76 +1146,60 @@ public class FixMessengerFrame extends JFrame
 		return true;
 	}
 
-	private void updateButtons()
-	{
-		if (activeMessage != null)
-		{
+	private void updateButtons() {
+		if (activeMessage != null) {
 			destroyButton.setEnabled(true);
 			sendButton.setEnabled(true);
-			if (activeXmlProject != null)
-			{
+			if (activeXmlProject != null) {
 				addButton.setEnabled(true);
-			} else
-			{
+			} else {
 				addButton.setEnabled(false);
 			}
-		} else
-		{
+		} else {
 			destroyButton.setEnabled(false);
 			sendButton.setEnabled(false);
 			addButton.setEnabled(false);
 		}
 	}
 
-	private void updateLogFile(String beginStr)
-	{
-		if (logfileDialog != null && logfileDialog.isVisible())
-		{
+	private void updateLogFile(String beginStr) {
+		if (logfileDialog != null && logfileDialog.isVisible()) {
 			logfileDialog.loadLogfile(beginStr);
 		}
 	}
 
-	public static class XmlFileFilter extends FileFilter
-	{
+	public static class XmlFileFilter extends FileFilter {
 		public static final XmlFileFilter INSTANCE = new XmlFileFilter();
 
 		@Override
-		public boolean accept(File f)
-		{
-			if (f.isDirectory())
-			{
+		public boolean accept(File f) {
+			if (f.isDirectory()) {
 				return true;
 			}
 			return f.getName().endsWith(".xml");
 		}
 
 		@Override
-		public String getDescription()
-		{
+		public String getDescription() {
 			return "XML Files (*.xml)";
 		}
 	}
 
-	private static class AddMessageActionListener implements ActionListener
-	{
+	private static class AddMessageActionListener implements ActionListener {
 		private FixMessengerFrame frame;
 
-		public AddMessageActionListener(FixMessengerFrame frame)
-		{
+		public AddMessageActionListener(FixMessengerFrame frame) {
 			this.frame = frame;
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			if (!frame.activeMessage.equals(frame.freeTextMessage))
-			{
+		public void actionPerformed(ActionEvent e) {
+			if (!frame.activeMessage.equals(frame.freeTextMessage)) {
 				MessageType xmlMessageType = frame.messagePanel.getXmlMember();
 				ProjectType xmlProjectType = frame.getActiveXmlProject();
 				xmlProjectType.getMessages().getMessage().add(xmlMessageType);
 				frame.projectDialog.updateMessageAdded(xmlMessageType);
-			} else
-			{
+			} else {
 				JOptionPane.showMessageDialog(frame,
 						"Projects do not support free text messages!", "Error",
 						JOptionPane.WARNING_MESSAGE);
@@ -1333,58 +1208,48 @@ public class FixMessengerFrame extends JFrame
 	}
 
 	private static class AppVersionsComboBoxActionListener implements
-			ActionListener
-	{
+			ActionListener {
 		private FixMessengerFrame frame;
 
-		public AppVersionsComboBoxActionListener(FixMessengerFrame frame)
-		{
+		public AppVersionsComboBoxActionListener(FixMessengerFrame frame) {
 			this.frame = frame;
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent e)
-		{
+		public void actionPerformed(ActionEvent e) {
 			String appVersion = (String) frame.appVersionsComboBox
 					.getSelectedItem();
-			try
-			{
+			try {
 				String fixDictionaryLocation = frame.messenger.getConfig()
 						.getFixDictionaryLocation(appVersion);
 				frame.activeDictionary = frame.messenger.getParser().parse(
 						getClass().getResourceAsStream(fixDictionaryLocation));
-			} catch (FixParsingException ex)
-			{
+			} catch (FixParsingException ex) {
 				JOptionPane.showMessageDialog(frame, "An error occured while"
 						+ " parsing the FIX dictionary: " + ex, "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
 
-			if (logger.isDebugEnabled())
-			{
+			if (logger.isDebugEnabled()) {
 				logger.debug("Selected dictionary " + frame.activeDictionary);
 			}
 			frame.loadMessagesList();
 		}
 	}
 
-	private static class DestroyMessageActionListener implements ActionListener
-	{
+	private static class DestroyMessageActionListener implements ActionListener {
 		private FixMessengerFrame frame;
 
-		private DestroyMessageActionListener(FixMessengerFrame frame)
-		{
+		private DestroyMessageActionListener(FixMessengerFrame frame) {
 			this.frame = frame;
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent e)
-		{
+		public void actionPerformed(ActionEvent e) {
 			int choice = JOptionPane.showConfirmDialog(frame,
 					"Clear all saved fields?", "Destroy Message?",
 					JOptionPane.YES_NO_OPTION);
-			if (choice == JOptionPane.YES_OPTION)
-			{
+			if (choice == JOptionPane.YES_OPTION) {
 				frame.messagePanel = null;
 				frame.getMemberPanelCache().clear();
 				frame.displayMainPanel();
@@ -1392,33 +1257,26 @@ public class FixMessengerFrame extends JFrame
 		}
 	}
 
-	private static class ExportMessageActionListener implements ActionListener
-	{
+	private static class ExportMessageActionListener implements ActionListener {
 		private FixMessengerFrame frame;
 
-		public ExportMessageActionListener(FixMessengerFrame frame)
-		{
+		public ExportMessageActionListener(FixMessengerFrame frame) {
 			this.frame = frame;
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			if (frame.activeMessage != null)
-			{
-				if (!frame.activeMessage.equals(frame.freeTextMessage))
-				{
+		public void actionPerformed(ActionEvent e) {
+			if (frame.activeMessage != null) {
+				if (!frame.activeMessage.equals(frame.freeTextMessage)) {
 					MessageType xmlMessageType = frame.messagePanel
 							.getXmlMember();
 					frame.marshallXmlMessage(xmlMessageType);
-				} else
-				{
+				} else {
 					JOptionPane.showMessageDialog(frame,
 							"Free text message cannot be exported!", "Error",
 							JOptionPane.WARNING_MESSAGE);
 				}
-			} else
-			{
+			} else {
 				JOptionPane.showMessageDialog(frame,
 						"Please create a message!", "Error",
 						JOptionPane.WARNING_MESSAGE);
@@ -1426,40 +1284,34 @@ public class FixMessengerFrame extends JFrame
 		}
 	}
 
-	private static class FrameWindowAdapter extends WindowAdapter
-	{
+	private static class FrameWindowAdapter extends WindowAdapter {
 		private FixMessengerFrame frame;
 
-		public FrameWindowAdapter(FixMessengerFrame frame)
-		{
+		public FrameWindowAdapter(FixMessengerFrame frame) {
 			this.frame = frame;
 		}
 
 		@Override
-		public void windowClosing(WindowEvent e)
-		{
+		public void windowClosing(WindowEvent e) {
 			frame.close();
 		}
 	}
 
 	private static class MarshallMessageTypeWorker extends
-			SwingWorker<Void, Void>
-	{
+			SwingWorker<Void, Void> {
 		private final FixMessengerFrame frame;
 		private final MessageType xmlMessageType;
 		private final File file;
 
 		MarshallMessageTypeWorker(FixMessengerFrame frame,
-				MessageType xmlMessageType, File file)
-		{
+				MessageType xmlMessageType, File file) {
 			this.frame = frame;
 			this.xmlMessageType = xmlMessageType;
 			this.file = file;
 		}
 
 		@Override
-		protected Void doInBackground() throws Exception
-		{
+		protected Void doInBackground() throws Exception {
 			JAXBElement<MessageType> rootElement = new JAXBElement<MessageType>(
 					new QName("http://xml.fix.sachin.com", "message"),
 					MessageType.class, xmlMessageType);
@@ -1471,17 +1323,14 @@ public class FixMessengerFrame extends JFrame
 			return null;
 		}
 
-		protected void done()
-		{
-			try
-			{
+		protected void done() {
+			try {
 				get();
 				logger.debug("Message exported to " + file.getName());
 				JOptionPane.showMessageDialog(frame, "Message exported to "
 						+ file.getName(), "Export",
 						JOptionPane.INFORMATION_MESSAGE);
-			} catch (Exception ex)
-			{
+			} catch (Exception ex) {
 				logger.error(
 						"A JAXBException occurred while exporting message.", ex);
 				JOptionPane.showMessageDialog(frame,
@@ -1492,23 +1341,20 @@ public class FixMessengerFrame extends JFrame
 	}
 
 	private static class MarshallProjectTypeWorker extends
-			SwingWorker<Void, Void>
-	{
+			SwingWorker<Void, Void> {
 		private final FixMessengerFrame frame;
 		private final ProjectType xmlProjectType;
 		private final File file;
 
 		MarshallProjectTypeWorker(FixMessengerFrame frame,
-				ProjectType xmlProjectType, File file)
-		{
+				ProjectType xmlProjectType, File file) {
 			this.frame = frame;
 			this.xmlProjectType = xmlProjectType;
 			this.file = file;
 		}
 
 		@Override
-		protected Void doInBackground() throws Exception
-		{
+		protected Void doInBackground() throws Exception {
 			JAXBElement<ProjectType> rootElement = new JAXBElement<ProjectType>(
 					new QName("http://xml.fix.sachin.com", "project"),
 					ProjectType.class, xmlProjectType);
@@ -1520,17 +1366,14 @@ public class FixMessengerFrame extends JFrame
 			return null;
 		}
 
-		protected void done()
-		{
-			try
-			{
+		protected void done() {
+			try {
 				get();
 				logger.debug("Project saved to " + file.getName());
 				JOptionPane.showMessageDialog(frame,
 						"Project saved to " + file.getName(), "Export",
 						JOptionPane.INFORMATION_MESSAGE);
-			} catch (Exception ex)
-			{
+			} catch (Exception ex) {
 				logger.error(
 						"A JAXBException occurred while exporting message.", ex);
 				JOptionPane.showMessageDialog(frame,
@@ -1540,46 +1383,39 @@ public class FixMessengerFrame extends JFrame
 		}
 	}
 
-	private class RecentMessagesListMouseAdapter extends MouseAdapter
-	{
+	private class RecentMessagesListMouseAdapter extends MouseAdapter {
 		private FixMessengerFrame frame;
 
-		public RecentMessagesListMouseAdapter(FixMessengerFrame frame)
-		{
+		public RecentMessagesListMouseAdapter(FixMessengerFrame frame) {
 			this.frame = frame;
 		}
 
 		@Override
-		public void mouseClicked(MouseEvent e)
-		{
-			if (e.getClickCount() == 2)
-			{
+		public void mouseClicked(MouseEvent e) {
+			if (e.getClickCount() == 2) {
 				int index = frame.recentMessagesList.locationToIndex(e
 						.getPoint());
-				if (index != -1)
-				{
+				if (index != -1) {
 					Message message = (Message) frame.recentMessagesList
 							.getModel().getElementAt(index);
 
 					Message selectedMessage = (Message) frame.recentMessagesList
 							.getSelectedValue();
 					if (message == selectedMessage
-							&& message.getCategory() != null)
-					{
-						try
-						{
+							&& message.getCategory() != null) {
+						try {
 							String url = frame.getMessenger().getConfig()
 									.getFixWikiUrl()
 									+ message.getName();
 							java.awt.Desktop.getDesktop().browse(
 									java.net.URI.create(url));
-						} catch (IOException ex)
-						{
+						} catch (IOException ex) {
 							JOptionPane.showMessageDialog(
 									frame,
 									"An exception occured:\n"
 											+ Arrays.toString(ex
-													.getStackTrace()), "Error",
+													.getStackTrace()),
+									"Error",
 									JOptionPane.ERROR_MESSAGE);
 						}
 					}
@@ -1590,25 +1426,20 @@ public class FixMessengerFrame extends JFrame
 	}
 
 	private static class RecentMessagesListSelectionListener implements
-			ListSelectionListener
-	{
+			ListSelectionListener {
 		private FixMessengerFrame frame;
 
-		public RecentMessagesListSelectionListener(FixMessengerFrame frame)
-		{
+		public RecentMessagesListSelectionListener(FixMessengerFrame frame) {
 			this.frame = frame;
 		}
 
 		@Override
-		public void valueChanged(ListSelectionEvent e)
-		{
-			if (!e.getValueIsAdjusting())
-			{
+		public void valueChanged(ListSelectionEvent e) {
+			if (!e.getValueIsAdjusting()) {
 				frame.activeMessage = (Message) frame.recentMessagesList
 						.getSelectedValue();
 
-				if (logger.isDebugEnabled())
-				{
+				if (logger.isDebugEnabled()) {
 					logger.debug("Selected message " + frame.activeMessage);
 				}
 
@@ -1622,37 +1453,30 @@ public class FixMessengerFrame extends JFrame
 		}
 	}
 
-	private class MessagesListMouseAdapter extends MouseAdapter
-	{
+	private class MessagesListMouseAdapter extends MouseAdapter {
 		private FixMessengerFrame frame;
 
-		public MessagesListMouseAdapter(FixMessengerFrame frame)
-		{
+		public MessagesListMouseAdapter(FixMessengerFrame frame) {
 			this.frame = frame;
 		}
 
 		@Override
-		public void mouseClicked(MouseEvent e)
-		{
-			if (e.getClickCount() == 2)
-			{
+		public void mouseClicked(MouseEvent e) {
+			if (e.getClickCount() == 2) {
 				int index = frame.messagesList.locationToIndex(e.getPoint());
 				Message message = (Message) frame.messagesList.getModel()
 						.getElementAt(index);
 
 				Message selectedMessage = (Message) frame.messagesList
 						.getSelectedValue();
-				if (message == selectedMessage && message.getCategory() != null)
-				{
-					try
-					{
+				if (message == selectedMessage && message.getCategory() != null) {
+					try {
 						String url = frame.getMessenger().getConfig()
 								.getFixWikiUrl()
 								+ message.getName();
 						java.awt.Desktop.getDesktop().browse(
 								java.net.URI.create(url));
-					} catch (IOException ex)
-					{
+					} catch (IOException ex) {
 						JOptionPane.showMessageDialog(
 								frame,
 								"An exception occured:\n"
@@ -1665,25 +1489,20 @@ public class FixMessengerFrame extends JFrame
 	}
 
 	private static class MessagesListSelectionListener implements
-			ListSelectionListener
-	{
+			ListSelectionListener {
 		private FixMessengerFrame frame;
 
-		public MessagesListSelectionListener(FixMessengerFrame frame)
-		{
+		public MessagesListSelectionListener(FixMessengerFrame frame) {
 			this.frame = frame;
 		}
 
 		@Override
-		public void valueChanged(ListSelectionEvent e)
-		{
-			if (!e.getValueIsAdjusting())
-			{
+		public void valueChanged(ListSelectionEvent e) {
+			if (!e.getValueIsAdjusting()) {
 				frame.activeMessage = (Message) frame.messagesList
 						.getSelectedValue();
 
-				if (logger.isDebugEnabled())
-				{
+				if (logger.isDebugEnabled()) {
 					logger.debug("Selected message " + frame.activeMessage);
 				}
 
@@ -1697,22 +1516,17 @@ public class FixMessengerFrame extends JFrame
 		}
 	}
 
-	private class MessagesTableMouseListener extends MouseAdapter
-	{
+	private class MessagesTableMouseListener extends MouseAdapter {
 		private FixMessengerFrame frame;
 
-		public MessagesTableMouseListener(FixMessengerFrame frame)
-		{
+		public MessagesTableMouseListener(FixMessengerFrame frame) {
 			this.frame = frame;
 		}
 
 		@Override
-		public void mouseClicked(MouseEvent e)
-		{
-			if (e.getButton() == MouseEvent.BUTTON1)
-			{
-				if (e.getClickCount() == 2)
-				{
+		public void mouseClicked(MouseEvent e) {
+			if (e.getButton() == MouseEvent.BUTTON1) {
+				if (e.getClickCount() == 2) {
 					int viewRow = frame.messagesTable.rowAtPoint(e.getPoint());
 					int modelRow = frame.messagesTable
 							.convertRowIndexToModel(viewRow);
@@ -1739,14 +1553,12 @@ public class FixMessengerFrame extends JFrame
 					panel.add(Box.createRigidArea(new Dimension(50, 10)), c);
 
 					JLabel directionLabel;
-					if (data.getDirection().equals(FixMessageListener.RECV))
-					{
+					if (data.getDirection().equals(FixMessageListener.RECV)) {
 						directionLabel = new JLabel(
 								"<html><b>Direction:</b> <i><b><font color = '#FF8040'>"
 										+ data.getDirection()
 										+ "</font></b></i></html>");
-					} else
-					{
+					} else {
 						directionLabel = new JLabel(
 								"<html><b>Direction:</b> <i><b><font color = '#669900'>"
 										+ data.getDirection()
@@ -1798,8 +1610,7 @@ public class FixMessengerFrame extends JFrame
 							"MsgType(35) = " + data.getMsgType(),
 							JOptionPane.PLAIN_MESSAGE);
 				}
-			} else if (e.getButton() == MouseEvent.BUTTON3)
-			{
+			} else if (e.getButton() == MouseEvent.BUTTON3) {
 				JPopupMenu popupMenu = new JPopupMenu();
 
 				JMenuItem clearAllMenuItem = new JMenuItem("Clear All");
@@ -1807,11 +1618,9 @@ public class FixMessengerFrame extends JFrame
 
 				clearAllMenuItem.setIcon(IconBuilder.build(getMessenger()
 						.getConfig(), IconBuilder.CLEAR_ALL_ICON));
-				clearAllMenuItem.addActionListener(new ActionListener()
-				{
+				clearAllMenuItem.addActionListener(new ActionListener() {
 					@Override
-					public void actionPerformed(ActionEvent e)
-					{
+					public void actionPerformed(ActionEvent e) {
 						MessagesTableModel model = (MessagesTableModel) frame.messagesTable
 								.getModel();
 						model.clear();
@@ -1831,24 +1640,21 @@ public class FixMessengerFrame extends JFrame
 		}
 	}
 
-	private class ResendMessagesActionListener implements ActionListener
-	{
+	private class ResendMessagesActionListener implements ActionListener {
 
 		private FixMessengerFrame frame;
 		private MouseEvent event;
 		private Session session;
 
 		public ResendMessagesActionListener(FixMessengerFrame frame,
-				MouseEvent event)
-		{
+				MouseEvent event) {
 			this.frame = frame;
 			this.event = event;
 			this.session = frame.sessionsList.getSelectedValue();
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent e)
-		{
+		public void actionPerformed(ActionEvent e) {
 			int viewRow = frame.messagesTable.rowAtPoint(event.getPoint());
 			int modelRow = frame.messagesTable.convertRowIndexToModel(viewRow);
 
@@ -1858,13 +1664,11 @@ public class FixMessengerFrame extends JFrame
 					.getModel();
 			MessagesTableModelData data = model.getData(modelRow);
 
-			try
-			{
+			try {
 				message.fromString(data.getMessage(),
 						session.getDataDictionary(), false);
 				session.send(message);
-			} catch (InvalidMessage e1)
-			{
+			} catch (InvalidMessage e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
@@ -1872,46 +1676,36 @@ public class FixMessengerFrame extends JFrame
 
 	}
 
-	private static class ProjectWindowActionListener implements ActionListener
-	{
+	private static class ProjectWindowActionListener implements ActionListener {
 		private FixMessengerFrame frame;
 
-		public ProjectWindowActionListener(FixMessengerFrame frame)
-		{
+		public ProjectWindowActionListener(FixMessengerFrame frame) {
 			this.frame = frame;
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			if (frame.activeXmlProject != null)
-			{
+		public void actionPerformed(ActionEvent e) {
+			if (frame.activeXmlProject != null) {
 				frame.launchProjectDialog();
-			} else
-			{
+			} else {
 				JOptionPane.showMessageDialog(frame, "No active project!",
 						"Error", JOptionPane.WARNING_MESSAGE);
 			}
 		}
 	}
 
-	private static class LogfileWindowActionListener implements ActionListener
-	{
+	private static class LogfileWindowActionListener implements ActionListener {
 		private FixMessengerFrame frame;
 
-		public LogfileWindowActionListener(FixMessengerFrame frame)
-		{
+		public LogfileWindowActionListener(FixMessengerFrame frame) {
 			this.frame = frame;
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent e)
-		{
-			if (!frame.sessionsList.isSelectionEmpty())
-			{
+		public void actionPerformed(ActionEvent e) {
+			if (!frame.sessionsList.isSelectionEmpty()) {
 				frame.launchLogfileDialog();
-			} else
-			{
+			} else {
 				JOptionPane.showMessageDialog(frame,
 						"Please select a session first!", "Error",
 						JOptionPane.WARNING_MESSAGE);
@@ -1921,34 +1715,25 @@ public class FixMessengerFrame extends JFrame
 
 	}
 
-	private static class SendActionListener implements ActionListener
-	{
+	private static class SendActionListener implements ActionListener {
 		private FixMessengerFrame frame;
 
-		public SendActionListener(FixMessengerFrame frame)
-		{
+		public SendActionListener(FixMessengerFrame frame) {
 			this.frame = frame;
 		}
 
 		@Override
-		public void actionPerformed(ActionEvent e)
-		{
+		public void actionPerformed(ActionEvent e) {
 			Session session = (Session) frame.sessionsList.getSelectedValue();
-			if (session != null)
-			{
-				if (session.isLoggedOn())
-				{
-					if (frame.activeMessage != null)
-					{
+			if (session != null) {
+				if (session.isLoggedOn()) {
+					if (frame.activeMessage != null) {
 						quickfix.Message message = null;
-						if (!frame.activeMessage.equals(frame.freeTextMessage))
-						{
-							if (frame.messagePanel.hasValidFormat())
-							{
+						if (!frame.activeMessage.equals(frame.freeTextMessage)) {
+							if (frame.messagePanel.hasValidFormat()) {
 								message = frame.messagePanel
 										.getQuickFixMember();
-							} else
-							{
+							} else {
 								int choice = JOptionPane
 										.showConfirmDialog(
 												frame,
@@ -1956,22 +1741,18 @@ public class FixMessengerFrame extends JFrame
 												"Format Errors",
 												JOptionPane.YES_NO_OPTION,
 												JOptionPane.WARNING_MESSAGE);
-								if (choice == JOptionPane.YES_OPTION)
-								{
+								if (choice == JOptionPane.YES_OPTION) {
 									message = frame.messagePanel
 											.getQuickFixMember();
 								}
 							}
-						} else
-						{
+						} else {
 							message = frame.freeTextMessagePanel
 									.getQuickFixMember();
 						}
 
-						if (message != null)
-						{
-							if (frame.isPreviewBeforeSend)
-							{
+						if (message != null) {
+							if (frame.isPreviewBeforeSend) {
 								JTextArea messageText = new JTextArea(
 										message.toString(), 5, 40);
 								messageText.setLineWrap(true);
@@ -1987,15 +1768,13 @@ public class FixMessengerFrame extends JFrame
 										"Send Message?",
 										JOptionPane.YES_NO_OPTION,
 										JOptionPane.PLAIN_MESSAGE);
-								if (choice == JOptionPane.YES_OPTION)
-								{
+								if (choice == JOptionPane.YES_OPTION) {
 									logger.info("Sending message "
 											+ message.toString());
 									session.send(message);
 									updateRecentList(frame.activeMessage);
 								}
-							} else
-							{
+							} else {
 								logger.info("Sending message "
 										+ message.toString());
 								frame.getMessenger().sendQFixMessage(message,
@@ -2003,21 +1782,19 @@ public class FixMessengerFrame extends JFrame
 								updateRecentList(frame.activeMessage);
 							}
 						}
-					} else
-					{
+					} else {
 						JOptionPane.showMessageDialog(frame,
 								"Please create a message!", "Error",
 								JOptionPane.WARNING_MESSAGE);
 					}
-				} else
-				{
+				} else {
 					JOptionPane.showMessageDialog(frame,
 							FixUtil.getSessionName(session.getSessionID())
-									+ " is not logged on!", "Error",
+									+ " is not logged on!",
+							"Error",
 							JOptionPane.WARNING_MESSAGE);
 				}
-			} else
-			{
+			} else {
 				JOptionPane.showMessageDialog(frame,
 						"Please create a message!", "Error",
 						JOptionPane.WARNING_MESSAGE);
@@ -2026,10 +1803,8 @@ public class FixMessengerFrame extends JFrame
 
 		// Get Message from ActiveMessage rather than recent list or message
 		// list
-		public void updateRecentList(Message recentMsg)
-		{
-			if ("Free Text".equals(recentMsg.getName()))
-			{
+		public void updateRecentList(Message recentMsg) {
+			if ("Free Text".equals(recentMsg.getName())) {
 				return;
 			}
 
@@ -2037,19 +1812,15 @@ public class FixMessengerFrame extends JFrame
 			Map<String, DefaultListModel<Message>> tmpMap = frame.recentMessagesMap;
 			DefaultListModel<Message> tmpListModel;
 
-			if (tmpMap.containsKey(key))
-			{
+			if (tmpMap.containsKey(key)) {
 				tmpListModel = tmpMap.get(key);
-				if (tmpListModel.contains(recentMsg))
-				{
+				if (tmpListModel.contains(recentMsg)) {
 					tmpListModel.remove(tmpListModel.indexOf(recentMsg));
 					tmpListModel.add(0, recentMsg);
-				} else
-				{
+				} else {
 					tmpListModel.add(0, recentMsg);
 				}
-			} else
-			{
+			} else {
 				tmpListModel = new DefaultListModel<Message>();
 				tmpListModel.add(0, recentMsg);
 				tmpMap.put(key, tmpListModel);
@@ -2059,28 +1830,23 @@ public class FixMessengerFrame extends JFrame
 		}
 	}
 
-	private class SessionsListMouseAdapter extends MouseAdapter
-	{
+	private class SessionsListMouseAdapter extends MouseAdapter {
 		private FixMessengerFrame frame;
 
-		public SessionsListMouseAdapter(FixMessengerFrame frame)
-		{
+		public SessionsListMouseAdapter(FixMessengerFrame frame) {
 			this.frame = frame;
 		}
 
 		@Override
-		public void mouseClicked(MouseEvent e)
-		{
-			if (e.getButton() == MouseEvent.BUTTON3)
-			{
+		public void mouseClicked(MouseEvent e) {
+			if (e.getButton() == MouseEvent.BUTTON3) {
 				int index = frame.sessionsList.locationToIndex(e.getPoint());
 				Session session = (Session) frame.sessionsList.getModel()
 						.getElementAt(index);
 
 				Session selectedSession = (Session) frame.sessionsList
 						.getSelectedValue();
-				if (session == selectedSession)
-				{
+				if (session == selectedSession) {
 					JPopupMenu sessionMenuPopup;
 					JCheckBoxMenuItem logonMenuItem;
 					JMenuItem resetMenuItem;
@@ -2091,11 +1857,9 @@ public class FixMessengerFrame extends JFrame
 					logonMenuItem = new JCheckBoxMenuItem("Logon");
 					logonMenuItem.addItemListener(new LogonSessionItemListener(
 							session));
-					if (session.isLoggedOn())
-					{
+					if (session.isLoggedOn()) {
 						logonMenuItem.setSelected(true);
-					} else
-					{
+					} else {
 						logonMenuItem.setSelected(false);
 					}
 					session.addStateListener(new LogonSessionMenuItemSessionStateListener(
@@ -2123,37 +1887,30 @@ public class FixMessengerFrame extends JFrame
 	}
 
 	private static class SessionsListSelectionListener implements
-			ListSelectionListener
-	{
+			ListSelectionListener {
 		private FixMessengerFrame frame;
 
-		public SessionsListSelectionListener(FixMessengerFrame frame)
-		{
+		public SessionsListSelectionListener(FixMessengerFrame frame) {
 			this.frame = frame;
 		}
 
 		@Override
-		public void valueChanged(ListSelectionEvent e)
-		{
-			if (!e.getValueIsAdjusting())
-			{
+		public void valueChanged(ListSelectionEvent e) {
+			if (!e.getValueIsAdjusting()) {
 				Session session = (Session) frame.sessionsList
 						.getSelectedValue();
 				SessionID sessionId = session.getSessionID();
 
 				if (sessionId.getBeginString().equals(
-						FixMessengerConstants.BEGIN_STRING_FIXT11))
-				{
+						FixMessengerConstants.BEGIN_STRING_FIXT11)) {
 					frame.appVersionsComboBox.setEnabled(true);
 					frame.activeDictionary = null;
 					frame.isFixTSession = true;
-				} else
-				{
+				} else {
 					frame.appVersionsComboBox.setEnabled(false);
 					frame.isFixTSession = false;
 
-					try
-					{
+					try {
 						FixDictionaryParser parser = frame.messenger
 								.getParser();
 						String fixDictionaryLocation = frame.messenger
@@ -2161,8 +1918,7 @@ public class FixMessengerFrame extends JFrame
 										sessionId.getBeginString());
 						frame.activeDictionary = parser.parse(getClass()
 								.getResourceAsStream(fixDictionaryLocation));
-					} catch (FixParsingException ex)
-					{
+					} catch (FixParsingException ex) {
 						JOptionPane.showMessageDialog(frame,
 								"An error occured while"
 										+ " parsing the FIX dictionary: " + ex,
@@ -2170,8 +1926,7 @@ public class FixMessengerFrame extends JFrame
 					}
 				}
 
-				if (logger.isDebugEnabled())
-				{
+				if (logger.isDebugEnabled()) {
 					logger.debug("Selected dictionary "
 							+ frame.activeDictionary);
 				}

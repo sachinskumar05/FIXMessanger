@@ -5,8 +5,12 @@ apply plugin: 'eclipse'
 def generateSourceDir = new File("${project.buildDir}/gen-src/main/java")
 
 version             = '2.1-SNAPSHOT'
-sourceCompatibility = '25'
-targetCompatibility = '25'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
 
 application {
     mainClass = "com.sachin.qfixmessenger.FixMessenger"
@@ -23,10 +27,14 @@ configurations {
 dependencies {
 
     xjc 'com.sun.xml.bind:jaxb-xjc:4.0.0'
+    xjc 'com.sun.xml.bind:jaxb-core:4.0.0'
+    xjc 'com.sun.xml.bind:jaxb-impl:4.0.0'
+    xjc 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
+    xjc 'jakarta.activation:jakarta.activation-api:2.1.2'
+
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
-    implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+    implementation 'com.sun.xml.bind:jaxb-impl:4.0.0' // Upgraded to match
     implementation 'com.sun.xml.bind:jaxb-core:4.0.0'
-    implementation 'com.sun.xml.bind:jaxb-impl:2.3.1'
 
     implementation 'org.quickfixj:quickfixj-all:2.3.1'
 
@@ -36,6 +44,8 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:1.7.36'
     implementation 'org.slf4j:slf4j-log4j12:1.7.36'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.9.0'
     testImplementation 'org.hamcrest:hamcrest-core:2.2'
 
     implementation     fileTree(dir: 'lib/compile', include: '*.jar')
@@ -49,30 +59,27 @@ sourceSets {
     }
 }
 
-task createDirs () {
-    generateSourceDir.mkdirs();
-}
-
-task xjc(dependsOn: createDirs) {
-    ant.taskdef(
-        name:      'xjc',
-        classname: 'com.sun.tools.xjc.XJCTask',
-        classpath: configurations.xjc.asPath
-    )
-
-    ant.xjc(
-        destdir:   generateSourceDir,
-        extension: true,
-        readonly:  true,
-    ) {
-        schema(
-            dir: 'src/main/xsd',
-            includes: '*.xsd'
-        )
+task createDirs {
+    doLast {
+        generateSourceDir.mkdirs()
     }
 }
 
-task generateSource (dependsOn: xjc) {
+tasks.register('xjc', JavaExec) {
+    dependsOn createDirs
+    
+    mainClass = 'com.sun.tools.xjc.XJCFacade'
+    classpath = configurations.xjc
+    args = ['-d', generateSourceDir, '-extension'] + fileTree(dir: 'src/main/xsd', include: '*.xsd').files
+    
+    doFirst {
+        logger.lifecycle("Running XJC...")
+    }
+}
+
+
+task generateSource {
+    dependsOn 'xjc'
 }
 
 clean.doLast {
@@ -86,30 +93,39 @@ cleanEclipse.doLast {
 
 compileJava.dependsOn generateSource
 
+test {
+    useJUnitPlatform()
+}
+
 jar {
     manifest {
         attributes 'Implementation-Title': 'QuickFIX Messenger', 'Implementation-Version': version
     }
 }
 
-applicationDistribution.from('src/main/cfg') {
-    into 'cfg'
+distributions {
+    main {
+        contents {
+            from('src/main/cfg') {
+                into 'cfg'
+            }
+
+            from('src/main/cfg/log4j.properties') {
+                into 'lib/log4j'
+            }
+
+            from('src/main/dictionary') {
+                into 'lib/dictionary'
+            }
+
+            from('src/main/scripts') {
+                into '.'
+            }
+        }
+    }
 }
 
-applicationDistribution.from('src/main/cfg/log4j.properties') {
-    into 'lib/log4j'
-}
-
-applicationDistribution.from('src/main/dictionary') {
-    into 'lib/dictionary'
-}
-
-applicationDistribution.from('src/main/scripts') {
-    into '.'
-}
-
-startScripts{
+startScripts {
     classpath += files('$APP_HOME/dictionary')
     classpath += files('$APP_HOME/log4j')
 }
-

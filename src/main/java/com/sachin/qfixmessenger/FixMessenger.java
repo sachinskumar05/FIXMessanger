@@ -16,8 +16,8 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,42 +59,33 @@ import com.sachin.qfixmessenger.ui.FixMessengerFrame;
 /**
  * QuickFIX Messenger main application
  * 
-
+ * 
  */
-public class FixMessenger
-{
+public class FixMessenger {
 	private static final Logger logger = LoggerFactory
 			.getLogger(FixMessenger.class);
 	private static final CountDownLatch shutdownLatch = new CountDownLatch(1);
 
-	public static void main(String[] args) throws Exception
-	{
-		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler()
-		{
+	public static void main(String[] args) throws Exception {
+		Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 			@Override
-			public void uncaughtException(Thread t, Throwable ex)
-			{
+			public void uncaughtException(Thread t, Throwable ex) {
 				logger.error("An unexpected exception occured!", ex);
 			}
 		});
 
-		SwingUtilities.invokeLater(new Runnable()
-		{
-			public void run()
-			{
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
 				setLookAndFeel();
 			}
 		});
 
-		if (args.length == 2)
-		{
+		if (args.length == 2) {
 			InputStream inputStream = null;
 			String configFileName = args[0];
-			try
-			{
+			try {
 				inputStream = new FileInputStream(args[1]);
-			} catch (FileNotFoundException ex)
-			{
+			} catch (FileNotFoundException ex) {
 				logger.error("File not found: " + args[1]);
 				logger.error("Quitting...");
 				System.err.println("File not found: " + args[1]);
@@ -102,10 +93,8 @@ public class FixMessenger
 				System.exit(0);
 			}
 
-			if (inputStream != null)
-			{
-				try
-				{
+			if (inputStream != null) {
+				try {
 					SessionSettings settings = new SessionSettings(inputStream);
 					inputStream.close();
 
@@ -117,45 +106,37 @@ public class FixMessenger
 					shutdownLatch.await();
 					logger.info("Shutting down at " + new Date() + "...");
 					System.exit(0);
-				} catch (ConfigError ex)
-				{
+				} catch (ConfigError ex) {
 					logger.error("Unable to read config file!", ex);
 					logger.error("Quitting...");
 					System.err.println("Unable to read config file!");
 					System.err.println("Quitting...");
 					System.exit(1);
-				} catch (IOException ex)
-				{
+				} catch (IOException ex) {
 					logger.warn("Unable to close config files!", ex);
 				}
 			}
-		} else
-		{
+		} else {
 			System.out.println("Usage: FixMessenger <app cfg file>"
 					+ " <quickfix cfg file>");
 			System.exit(0);
 		}
 	}
 
-	private static void setLookAndFeel()
-	{
-		try
-		{
+	private static void setLookAndFeel() {
+		try {
 			String useSystemLookAndFeelProperty = System
 					.getProperty("useSystemLaF");
-			if (Boolean.valueOf(useSystemLookAndFeelProperty))
-			{
+			if (Boolean.valueOf(useSystemLookAndFeelProperty)) {
 				UIManager.setLookAndFeel(UIManager
 						.getSystemLookAndFeelClassName());
-			} else
-			{
+			} else {
 				UIManager
 						.setLookAndFeel("org.pushingpixels.substance.api.skin.SubstanceDustLookAndFeel");
 				JFrame.setDefaultLookAndFeelDecorated(true);
 				JDialog.setDefaultLookAndFeelDecorated(true);
 			}
-		} catch (Exception ex)
-		{
+		} catch (Exception ex) {
 			logger.warn(ex.getMessage(), ex);
 		}
 	}
@@ -173,8 +154,7 @@ public class FixMessenger
 	private JAXBContext jaxbContext;
 
 	private FixMessenger(String configFileName, SessionSettings settings)
-			throws ConfigError, IOException
-	{
+			throws ConfigError, IOException {
 		// Load application configuration
 		config = new FixMessengerConfig(configFileName);
 
@@ -189,23 +169,19 @@ public class FixMessenger
 		LogFactory logFactory = new FileLogFactory(settings);
 		MessageFactory messageFactory = new DefaultMessageFactory();
 
-		if (config.isInitiator())
-		{
+		if (config.isInitiator()) {
 			connector = new SocketInitiator(application, messageStoreFactory,
 					settings, logFactory, messageFactory);
-		} else
-		{
+		} else {
 			connector = new SocketAcceptor(application, messageStoreFactory,
 					settings, logFactory, messageFactory);
 		}
 
 		connectorStarted = new AtomicBoolean(false);
 
-		try
-		{
+		try {
 			jaxbContext = JAXBContext.newInstance("com.sachin.fix.xml");
-		} catch (JAXBException ex)
-		{
+		} catch (JAXBException ex) {
 			logger.error("Unable to create JAXB context for com.sachin.fix.xml");
 			ex.printStackTrace();
 			System.exit(1);
@@ -215,8 +191,7 @@ public class FixMessenger
 	/**
 	 * Gracefully exits the application
 	 */
-	public void exit()
-	{
+	public void exit() {
 		logout();
 		connector.stop();
 		shutdownLatch.countDown();
@@ -227,8 +202,7 @@ public class FixMessenger
 	 * 
 	 * @return the QuickFIX application
 	 */
-	public FixMessengerApplication getApplication()
-	{
+	public FixMessengerApplication getApplication() {
 		return application;
 	}
 
@@ -237,8 +211,7 @@ public class FixMessenger
 	 * 
 	 * @return the QuickFIX configuration
 	 */
-	public FixMessengerConfig getConfig()
-	{
+	public FixMessengerConfig getConfig() {
 		return config;
 	}
 
@@ -247,8 +220,7 @@ public class FixMessenger
 	 * 
 	 * @return the QuickFIX connector
 	 */
-	public Connector getConnector()
-	{
+	public Connector getConnector() {
 		return connector;
 	}
 
@@ -257,8 +229,7 @@ public class FixMessenger
 	 * 
 	 * @return the JAXB context
 	 */
-	public JAXBContext getJaxbContext()
-	{
+	public JAXBContext getJaxbContext() {
 		return jaxbContext;
 	}
 
@@ -267,31 +238,24 @@ public class FixMessenger
 	 * 
 	 * @return the FixDictionaryParser
 	 */
-	public FixDictionaryParser getParser()
-	{
+	public FixDictionaryParser getParser() {
 		return parser;
 	}
 
 	/**
 	 * Logs the connector on
 	 */
-	public void logon()
-	{
-		if (!connectorStarted.get())
-		{
-			try
-			{
+	public void logon() {
+		if (!connectorStarted.get()) {
+			try {
 				connector.start();
 				connectorStarted.getAndSet(true);
-			} catch (Exception ex)
-			{
+			} catch (Exception ex) {
 				logger.error("Logon failed!", ex);
 			}
-		} else
-		{
+		} else {
 			Iterator<SessionID> sessionIds = connector.getSessions().iterator();
-			while (sessionIds.hasNext())
-			{
+			while (sessionIds.hasNext()) {
 				SessionID sessionId = (SessionID) sessionIds.next();
 				Session.lookupSession(sessionId).logon();
 			}
@@ -301,11 +265,9 @@ public class FixMessenger
 	/**
 	 * Logs the connector out
 	 */
-	public void logout()
-	{
+	public void logout() {
 		Iterator<SessionID> sessionIds = connector.getSessions().iterator();
-		while (sessionIds.hasNext())
-		{
+		while (sessionIds.hasNext()) {
 			SessionID sessionId = (SessionID) sessionIds.next();
 			Session.lookupSession(sessionId).logout("user requested");
 		}
@@ -315,13 +277,12 @@ public class FixMessenger
 	 * Sends a QuickFIX Message across a given session
 	 * 
 	 * @param message
-	 *            a QuickFIX Message
+	 *                a QuickFIX Message
 	 * @param session
-	 *            a QuickFIX Session
+	 *                a QuickFIX Session
 	 * @return whether the message was sent or not
 	 */
-	public boolean sendQFixMessage(Message message, Session session)
-	{
+	public boolean sendQFixMessage(Message message, Session session) {
 		logger.info("Sending message: " + message.toString());
 		return session.send(message);
 	}
@@ -331,34 +292,28 @@ public class FixMessenger
 	 * session
 	 * 
 	 * @param xmlMessageType
-	 *            an XML Message
+	 *                       an XML Message
 	 * @return whether the message was sent or not
 	 * @throws FixMessengerException
 	 */
 	public boolean sendXmlMessage(MessageType xmlMessageType)
-			throws FixMessengerException
-	{
+			throws FixMessengerException {
 		Session session = null;
 		List<SessionID> sessionIds = connector.getSessions();
-		for (SessionID sessionId : sessionIds)
-		{
+		for (SessionID sessionId : sessionIds) {
 			if (FixUtil.getSessionName(sessionId).equals(
-					xmlMessageType.getSession().getName()))
-			{
+					xmlMessageType.getSession().getName())) {
 				session = Session.lookupSession(sessionId);
 			}
 		}
 
-		if (session != null)
-		{
-			if (session.isLoggedOn())
-			{
+		if (session != null) {
+			if (session.isLoggedOn()) {
 				quickfix.Message message = session.getMessageFactory().create(
 						session.getSessionID().getBeginString(),
 						xmlMessageType.getMsgType());
 
-				if (xmlMessageType.getSession().getAppVersionId() != null)
-				{
+				if (xmlMessageType.getSession().getAppVersionId() != null) {
 					ApplVerID applVerID = new ApplVerID(
 							FixMessengerConstants.APPVER_ID_MAP
 									.get(xmlMessageType.getSession()
@@ -366,11 +321,9 @@ public class FixMessenger
 					message.getHeader().setField(applVerID);
 				}
 
-				if (xmlMessageType.getHeader() != null)
-				{
+				if (xmlMessageType.getHeader() != null) {
 					HeaderType xmlHeaderType = xmlMessageType.getHeader();
-					for (FieldType xmlFieldType : xmlHeaderType.getField())
-					{
+					for (FieldType xmlFieldType : xmlHeaderType.getField()) {
 						message.getHeader().setField(
 								createStringField(xmlFieldType));
 					}
@@ -378,79 +331,63 @@ public class FixMessenger
 
 				BodyType xmlBodyType = xmlMessageType.getBody();
 				for (Object xmlObject : xmlBodyType
-						.getFieldOrGroupsOrComponent())
-				{
-					if (xmlObject instanceof FieldType)
-					{
+						.getFieldOrGroupsOrComponent()) {
+					if (xmlObject instanceof FieldType) {
 						FieldType xmlFieldType = (FieldType) xmlObject;
 						message.setField(createStringField(xmlFieldType));
 					}
 
-					else if (xmlObject instanceof GroupsType)
-					{
+					else if (xmlObject instanceof GroupsType) {
 						GroupsType xmlGroupsType = (GroupsType) xmlObject;
-						for (Group group : createGroups(xmlGroupsType))
-						{
+						for (Group group : createGroups(xmlGroupsType)) {
 							message.addGroup(group);
 						}
 					}
 
-					else if (xmlObject instanceof ComponentType)
-					{
+					else if (xmlObject instanceof ComponentType) {
 						ComponentType xmlComponentType = (ComponentType) xmlObject;
 						ComponentHelper componentHelper = createComponent(xmlComponentType);
 						for (StringField stringField : componentHelper
-								.getFields())
-						{
+								.getFields()) {
 							message.setField(stringField);
 						}
 
-						for (Group group : componentHelper.getGroups())
-						{
+						for (Group group : componentHelper.getGroups()) {
 							message.addGroup(group);
 						}
 					}
 				}
 
-				if (xmlMessageType.getTrailer() != null)
-				{
+				if (xmlMessageType.getTrailer() != null) {
 					TrailerType xmlTrailerType = xmlMessageType.getTrailer();
-					for (FieldType xmlFieldType : xmlTrailerType.getField())
-					{
+					for (FieldType xmlFieldType : xmlTrailerType.getField()) {
 						message.getTrailer().setField(
 								createStringField(xmlFieldType));
 					}
 				}
 
 				return sendQFixMessage(message, session);
-			} else
-			{
+			} else {
 				throw new FixMessengerException("Session not logged on: "
 						+ xmlMessageType.getSession().getName());
 			}
-		} else
-		{
+		} else {
 			throw new FixMessengerException("Unrecognized session: "
 					+ xmlMessageType.getSession().getName());
 		}
 	}
 
-	private ComponentHelper createComponent(ComponentType xmlComponentType)
-	{
+	private ComponentHelper createComponent(ComponentType xmlComponentType) {
 		List<StringField> fields = new ArrayList<StringField>();
-		for (Object xmlObject : xmlComponentType.getFieldOrGroupsOrComponent())
-		{
-			if (xmlObject instanceof FieldType)
-			{
+		for (Object xmlObject : xmlComponentType.getFieldOrGroupsOrComponent()) {
+			if (xmlObject instanceof FieldType) {
 				fields.add(createStringField((FieldType) xmlObject));
 			}
 		}
 
 		List<quickfix.Group> groups = new ArrayList<quickfix.Group>();
-		for (Object xmlObject : xmlComponentType.getFieldOrGroupsOrComponent())
-		{
-			if (xmlObject instanceof GroupsType)
-			{
+		for (Object xmlObject : xmlComponentType.getFieldOrGroupsOrComponent()) {
+			if (xmlObject instanceof GroupsType) {
 				groups.addAll(createGroups((GroupsType) xmlObject));
 			}
 		}
@@ -458,55 +395,44 @@ public class FixMessenger
 		return new ComponentHelper(fields, groups);
 	}
 
-	private List<Group> createGroups(GroupsType xmlGroupsType)
-	{
+	private List<Group> createGroups(GroupsType xmlGroupsType) {
 		List<Group> groups = new ArrayList<Group>();
 
-		for (GroupType xmlGroupType : xmlGroupsType.getGroup())
-		{
+		for (GroupType xmlGroupType : xmlGroupsType.getGroup()) {
 			Object firstMember = xmlGroupType.getFieldOrGroupsOrComponent()
 					.get(0);
 			FieldType firstFieldType;
-			if (firstMember instanceof ComponentType)
-			{
+			if (firstMember instanceof ComponentType) {
 				firstFieldType = (FieldType) ((ComponentType) firstMember)
 						.getFieldOrGroupsOrComponent().get(0);
-			} else
-			{
+			} else {
 				firstFieldType = (FieldType) firstMember;
 			}
 
 			int i = 0;
 			Group group = new Group(xmlGroupsType.getId(),
 					firstFieldType.getId());
-			for (Object xmlObject : xmlGroupType.getFieldOrGroupsOrComponent())
-			{
-				if (xmlObject instanceof FieldType)
-				{
+			for (Object xmlObject : xmlGroupType.getFieldOrGroupsOrComponent()) {
+				if (xmlObject instanceof FieldType) {
 					FieldType xmlFieldType = (FieldType) xmlObject;
 					group.setField(++i, createStringField(xmlFieldType));
 				}
 
-				else if (xmlObject instanceof ComponentType)
-				{
+				else if (xmlObject instanceof ComponentType) {
 					ComponentType xmlComponentType = (ComponentType) xmlObject;
 					ComponentHelper componentHelper = createComponent(xmlComponentType);
-					for (StringField stringField : componentHelper.getFields())
-					{
+					for (StringField stringField : componentHelper.getFields()) {
 						group.setField(++i, stringField);
 					}
 
-					for (Group memberGroup : componentHelper.getGroups())
-					{
+					for (Group memberGroup : componentHelper.getGroups()) {
 						group.addGroup(memberGroup);
 					}
 				}
 
-				else if (xmlObject instanceof GroupsType)
-				{
+				else if (xmlObject instanceof GroupsType) {
 					GroupsType memberXmlGroupsType = (GroupsType) xmlObject;
-					for (Group memberGroup : createGroups(memberXmlGroupsType))
-					{
+					for (Group memberGroup : createGroups(memberXmlGroupsType)) {
 						group.addGroup(memberGroup);
 					}
 				}
@@ -518,8 +444,7 @@ public class FixMessenger
 		return groups;
 	}
 
-	private StringField createStringField(FieldType xmlFieldType)
-	{
+	private StringField createStringField(FieldType xmlFieldType) {
 		return new StringField(xmlFieldType.getId(), xmlFieldType.getValue());
 	}
 }
